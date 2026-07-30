@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import {
+  ArrowRight,
   ArrowUpRight,
   Award,
   Bot,
@@ -10,7 +11,6 @@ import {
   Database,
   Download,
   ExternalLink as ExternalIcon,
-  FileDown,
   FileText,
   Flame,
   FolderGit2,
@@ -53,6 +53,12 @@ import { ProjectCaseStudyModal } from "./components/ProjectCaseStudyModal";
 import { ResumeModal } from "./components/ResumeModal";
 import { GithubIcon, LinkedinIcon } from "./components/SocialIcons";
 
+/* Aceternity UI 3D & Glowing Components from Adrian Hajdin Portfolio */
+import { Spotlight } from "./components/ui/Spotlight";
+import { MagicButton } from "./components/ui/MagicButton";
+import { PinContainer } from "./components/ui/Pin";
+import { MovingBorderCard } from "./components/ui/MovingBorders";
+
 const navItems = [
   ["about", "About"],
   ["skills", "Skills"],
@@ -90,11 +96,11 @@ export function App() {
   };
 
   return (
-    <main className="page-grid-shell">
+    <main className="page-grid-shell relative min-h-screen bg-[#070b14] text-gray-100 selection:bg-emerald-500 selection:text-slate-950 font-sans overflow-x-hidden">
       {/* Scroll Progress Bar */}
       <ScrollProgress />
 
-      {/* Interactive Grid Canvas Background */}
+      {/* Interactive Grid Canvas Background ("Cái nền quẹt quẹt") */}
       <InteractiveGrid
         clickInteraction
         clickForce={0.8}
@@ -113,6 +119,13 @@ export function App() {
 
       {/* Mouse Radial Glow */}
       <MouseGlow />
+
+      {/* Adrian Hajdin Portfolio Spotlights */}
+      <div className="pointer-events-none overflow-hidden">
+        <Spotlight className="-top-40 -left-10 md:-left-32 md:-top-20 h-screen" fill="#10b981" />
+        <Spotlight className="h-[80vh] w-[50vw] top-10 left-full" fill="#06b6d4" />
+        <Spotlight className="left-80 top-28 h-[80vh] w-[50vw]" fill="#3b82f6" />
+      </div>
 
       {/* Floating Section Navigation Bar */}
       <nav className="section-nav" aria-label="Portfolio navigation">
@@ -145,13 +158,13 @@ export function App() {
       </nav>
 
       {/* MAIN CONTENT SHELL */}
-      <div className="page-reveal mx-auto flex min-h-screen w-full max-w-5xl flex-col px-3 py-4 text-sm leading-loose sm:px-6 lg:px-8">
+      <div className="page-reveal mx-auto flex min-h-screen w-full max-w-5xl flex-col px-3 py-4 text-sm leading-loose sm:px-6 lg:px-8 relative z-10">
         
         {/* HERO SECTION WITH FLUID GRADIENT NAME BANNER */}
         <section id="about" className="scroll-mt-24 pt-6">
-          {/* Giant Interactive Name Banner */}
+          {/* Giant Interactive Name Banner ("Banner Chính") */}
           <div className="hero-title">
-            <FluidGradientText text="NGUYEN NHAT THIEN" viewBoxWidth={2200} viewBoxHeight={300} />
+            <FluidGradientText text="NGUYEN NHAT THIEN" viewBoxWidth={2100} viewBoxHeight={240} />
           </div>
 
           <div className="intro-grid">
@@ -161,36 +174,52 @@ export function App() {
               </div>
             </ElectricBorder>
 
-            <div className="intro-copy">
+            <div className="intro-copy space-y-4">
               <p className="eyebrow">{personalInfo.title} • {personalInfo.location}</p>
-              <h1>
+              <h1 className="text-3xl sm:text-5xl font-extrabold text-white tracking-tight">
                 Building <ShimmerText>AI-powered</ShimmerText> software products for real users.
               </h1>
-              <p>
+              <p className="text-gray-300 text-sm leading-relaxed font-light">
                 Senior Information Technology student at <strong>HCMUTE</strong> (GPA {personalInfo.gpa}). Specializing in Full-Stack Web architecture, Computer Vision (YOLOv8), and Retrieval-Augmented Generation (RAG).
               </p>
 
-              <div className="stat-strip">
-                <Stat value="3.24" label="HCMUTE GPA" />
-                <Stat value="500+" label="AI Questions Generated" />
-                <Stat value="2027" label="Expected Grad" />
-              </div>
+              {/* Moving Border Card for Stats */}
+              <MovingBorderCard borderRadius="1rem" className="p-4 bg-[#090e17]/90">
+                <div className="grid grid-cols-3 gap-3 w-full">
+                  <Stat value="3.24" label="HCMUTE GPA" />
+                  <Stat value="500+" label="AI Questions Generated" />
+                  <Stat value="2027" label="Expected Grad" />
+                </div>
+              </MovingBorderCard>
 
-              <div className="hero-actions">
-                <Button as="a" href="#showcase" variant="primary">
-                  <Rocket className="h-4 w-4" />
-                  Showcase & Case Studies
-                </Button>
-                <Button onClick={() => setResumeOpen(true)} variant="outline">
-                  <FileText className="h-4 w-4" />
-                  View Resume
-                </Button>
-                <a href={personalInfo.github} target="_blank" rel="noreferrer" className="p-2 rounded-full border border-[var(--line)] text-gray-300 hover:text-white">
-                  <GithubIcon className="h-4 w-4" />
-                </a>
-                <a href={personalInfo.linkedin} target="_blank" rel="noreferrer" className="p-2 rounded-full border border-[var(--line)] text-gray-300 hover:text-white">
-                  <LinkedinIcon className="h-4 w-4" />
-                </a>
+              {/* Aceternity UI Magic Buttons (Adrian Hajdin Style) */}
+              <div className="flex flex-wrap items-center gap-4 pt-2">
+                <MagicButton
+                  title="Showcase & Case Studies"
+                  icon={<Rocket className="h-4 w-4" />}
+                  position="right"
+                  handleClick={() => {
+                    const el = document.getElementById("showcase");
+                    el?.scrollIntoView({ behavior: "smooth" });
+                  }}
+                />
+
+                <MagicButton
+                  title="View Resume"
+                  icon={<FileText className="h-4 w-4" />}
+                  position="left"
+                  handleClick={() => setResumeOpen(true)}
+                  otherClasses="bg-slate-900 border border-slate-700"
+                />
+
+                <div className="flex items-center gap-2 pl-2">
+                  <a href={personalInfo.github} target="_blank" rel="noreferrer" className="p-2.5 rounded-xl border border-white/10 bg-white/5 text-gray-300 hover:text-white hover:border-emerald-500/40 transition-colors">
+                    <GithubIcon className="h-4 w-4" />
+                  </a>
+                  <a href={personalInfo.linkedin} target="_blank" rel="noreferrer" className="p-2.5 rounded-xl border border-white/10 bg-white/5 text-gray-300 hover:text-white hover:border-emerald-500/40 transition-colors">
+                    <LinkedinIcon className="h-4 w-4" />
+                  </a>
+                </div>
               </div>
             </div>
           </div>
@@ -235,77 +264,66 @@ export function App() {
           </div>
         </section>
 
-        {/* FEATURED PROJECTS & SHOWCASE */}
-        <section id="showcase" className="content-section">
+        {/* FEATURED PROJECTS WITH 3D PIN CONTAINERS (ADRIAN HAJDIN PORTFOLIO STYLE) */}
+        <section id="showcase" className="content-section space-y-8">
           <SectionHeader
-            eyebrow="Case Studies & Products"
+            eyebrow="3D Case Studies & Products"
             title="Featured Projects"
-            description="In-depth engineering breakdown of software built to solve real-world problems. Click any project to open the full interactive Case Study."
+            description="3D Perspective cards powered by Aceternity PinContainer. Click any project to open the full interactive Case Study."
           />
 
-          <div className="project-grid featured-grid">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12 pt-8">
             {featuredProjects.map((project) => (
-              <Card key={project.id} className="project-card visual-project featured-project">
-                <ElectricBorder color="#10b981" borderRadius={12} className="project-visual-border">
-                  <div className="p-6 bg-[#090d16] space-y-4 rounded-xl border border-white/10">
-                    <div className="flex justify-between items-center">
-                      <Badge className="bg-emerald-500/20 text-emerald-300 border-emerald-500/40">
-                        {project.status}
-                      </Badge>
-                      <span className="text-xs font-mono text-gray-400">{project.category}</span>
-                    </div>
+              <div key={project.id} className="h-[26rem] flex items-center justify-center w-full">
+                <PinContainer
+                  title={project.title}
+                  href={project.githubUrl}
+                  containerClassName="w-full h-full"
+                >
+                  <div
+                    onClick={() => setSelectedProject(project)}
+                    className="flex flex-col p-4 tracking-tight text-slate-100/50 sm:basis-1/2 w-[20rem] sm:w-[22rem] h-[22rem] justify-between cursor-pointer"
+                  >
+                    <div className="space-y-2">
+                      <div className="flex justify-between items-center">
+                        <Badge className="bg-emerald-500/20 text-emerald-300 border-emerald-500/40">
+                          {project.status}
+                        </Badge>
+                        <span className="text-[11px] font-mono text-gray-400">{project.category}</span>
+                      </div>
 
-                    <div className="space-y-1">
-                      <h3 className="text-2xl font-extrabold text-white">{project.title}</h3>
+                      <h3 className="text-xl font-bold text-white tracking-tight">{project.title}</h3>
                       <p className="text-emerald-400 text-xs font-mono">{project.tagline}</p>
+                      <p className="text-xs text-gray-300 leading-relaxed font-light line-clamp-3">
+                        {project.summary}
+                      </p>
                     </div>
 
-                    <p className="text-xs text-gray-300 leading-relaxed font-light">{project.summary}</p>
+                    <div className="space-y-3 pt-3 border-t border-white/10">
+                      <div className="flex flex-wrap gap-1">
+                        {project.techStack.flatMap((ts) => ts.technologies).slice(0, 4).map((tag) => (
+                          <span key={tag} className="px-2 py-0.5 rounded text-[10px] font-mono bg-white/5 border border-white/10 text-gray-300">
+                            {tag}
+                          </span>
+                        ))}
+                      </div>
 
-                    <div className="grid grid-cols-2 gap-2 pt-2">
-                      {project.resultsMetrics.slice(0, 2).map((m, idx) => (
-                        <div key={idx} className="p-2 rounded bg-white/5 border border-white/10">
-                          <span className="block text-base font-bold text-white font-mono">{m.value}</span>
-                          <span className="block text-[10px] text-gray-400">{m.label}</span>
-                        </div>
-                      ))}
+                      <div className="flex items-center justify-between pt-1">
+                        <span className="text-xs font-mono text-emerald-400 flex items-center gap-1 font-bold">
+                          <Sparkles className="h-3.5 w-3.5" />
+                          View Case Study →
+                        </span>
+                        <ExternalLink href={project.githubUrl}>Code</ExternalLink>
+                      </div>
                     </div>
                   </div>
-                </ElectricBorder>
-
-                <div className="project-head mt-4">
-                  <div>
-                    <p>{project.category}</p>
-                    <h3>{project.title}</h3>
-                  </div>
-                  <Trophy className="h-5 w-5 text-emerald-400" />
-                </div>
-
-                <p className="card-copy">{project.motivation}</p>
-
-                <div className="chip-list">
-                  {project.techStack.flatMap((ts) => ts.technologies).map((tag) => (
-                    <span key={tag}>{tag}</span>
-                  ))}
-                </div>
-
-                <div className="link-row mt-4 flex items-center justify-between">
-                  <Button onClick={() => setSelectedProject(project)}>
-                    <Sparkles className="h-4 w-4" />
-                    Explore Case Study →
-                  </Button>
-
-                  <div className="flex items-center gap-3">
-                    <ExternalLink href={project.githubUrl}>GitHub</ExternalLink>
-                    {project.demoUrl && <ExternalLink href={project.demoUrl}>Live Demo</ExternalLink>}
-                  </div>
-                </div>
-              </Card>
+                </PinContainer>
+              </div>
             ))}
           </div>
 
           {/* SECONDARY / ARCHIVED PROJECTS */}
-          <div className="mt-12 space-y-4">
+          <div className="mt-16 space-y-4">
             <h3 className="text-xl font-bold text-white flex items-center gap-2">
               <Layers className="h-5 w-5 text-emerald-400" />
               <span>More Projects & Prototypes</span>
@@ -484,7 +502,7 @@ export function App() {
           </div>
 
           <footer className="footer-note mt-12">
-            <p>Built with care by {personalInfo.name}.</p>
+            <p>Built with care by {personalInfo.name}. Featuring Aceternity UI 3D Effects from Adrian Hajdin Portfolio.</p>
             <p>© {new Date().getFullYear()} {personalInfo.name} • {personalInfo.university}</p>
           </footer>
         </section>
