@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
-import { ArrowUp, Check, Copy, Github, Linkedin, Mail, MapPin, Phone, Send, Sparkles } from 'lucide-react';
+import { ArrowUp, Check, Copy, Mail, MapPin, Phone, Send, Sparkles } from 'lucide-react';
 import { personalInfo } from '../data/portfolioData';
+import { GithubIcon, LinkedinIcon } from './SocialIcons';
 
 export const ContactFooter: React.FC = () => {
   const [copiedEmail, setCopiedEmail] = useState(false);
@@ -188,7 +189,7 @@ export const ContactFooter: React.FC = () => {
               rel="noopener noreferrer"
               className="hover:text-white transition-colors flex items-center gap-1.5"
             >
-              <Github className="w-4 h-4" />
+              <GithubIcon className="w-4 h-4" />
               <span>GitHub</span>
             </a>
             <a
@@ -197,7 +198,7 @@ export const ContactFooter: React.FC = () => {
               rel="noopener noreferrer"
               className="hover:text-white transition-colors flex items-center gap-1.5"
             >
-              <Linkedin className="w-4 h-4" />
+              <LinkedinIcon className="w-4 h-4" />
               <span>LinkedIn</span>
             </a>
             <button

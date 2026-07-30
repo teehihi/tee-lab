@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
-import { ArrowRight, Bot, Code2, Download, FileText, Github, Linkedin, Mail, MapPin, Sparkles, Terminal } from 'lucide-react';
+import { ArrowRight, Bot, Code2, Download, FileText, Mail, MapPin, Sparkles, Terminal } from 'lucide-react';
 import { personalInfo } from '../data/portfolioData';
+import { GithubIcon, LinkedinIcon } from './SocialIcons';
 
 interface HeroProps {
   onOpenResume: () => void;
@@ -86,7 +87,7 @@ export const Hero: React.FC<HeroProps> = ({ onOpenResume }) => {
                   className="p-3 rounded-xl bg-white/5 border border-white/10 text-gray-300 hover:text-emerald-400 hover:border-emerald-500/40 transition-colors"
                   title="GitHub"
                 >
-                  <Github className="w-5 h-5" />
+                  <GithubIcon className="w-5 h-5" />
                 </a>
                 <a
                   href={personalInfo.linkedin}
@@ -95,7 +96,7 @@ export const Hero: React.FC<HeroProps> = ({ onOpenResume }) => {
                   className="p-3 rounded-xl bg-white/5 border border-white/10 text-gray-300 hover:text-teal-400 hover:border-emerald-500/40 transition-colors"
                   title="LinkedIn"
                 >
-                  <Linkedin className="w-5 h-5" />
+                  <LinkedinIcon className="w-5 h-5" />
                 </a>
                 <a
                   href={`mailto:${personalInfo.email}`}
@@ -165,7 +166,7 @@ export const Hero: React.FC<HeroProps> = ({ onOpenResume }) => {
                     <div className="pl-4"><span className="text-emerald-400">name</span>: <span className="text-teal-300">"Nguyen Nhat Thien"</span>,</div>
                     <div className="pl-4"><span className="text-emerald-400">role</span>: <span className="text-teal-300">"Full-Stack & AI Developer"</span>,</div>
                     <div className="pl-4"><span className="text-emerald-400">university</span>: <span className="text-teal-300">"HCMUTE (GPA: 3.24/4.0)"</span>,</div>
-                    <div className="pl-4"><span className="text-emerald-400">mindset</span>: <span className="text-teal-300">"Building real products > just assignments"</span>,</div>
+                    <div className="pl-4"><span className="text-emerald-400">mindset</span>: <span className="text-teal-300">"Building real products &gt; just assignments"</span>,</div>
                     <div className="pl-4"><span className="text-emerald-400">keyProjects</span>: [<span className="text-teal-300">"PhoenixVision"</span>, <span className="text-teal-300">"UniQuizz"</span>, <span className="text-teal-300">"XeNow"</span>],</div>
                     <div className="pl-4"><span className="text-emerald-400">experience</span>: <span className="text-teal-300">"Outlier (AI Evaluator & RLHF)"</span></div>
                     <div>&#125;;</div>

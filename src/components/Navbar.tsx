@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
-import { FileText, Github, Linkedin, Menu, Sparkles, X } from 'lucide-react';
+import { FileText, Menu, Sparkles, X } from 'lucide-react';
 import { personalInfo } from '../data/portfolioData';
+import { GithubIcon, LinkedinIcon } from './SocialIcons';
 
 interface NavbarProps {
   onOpenResume: () => void;
@@ -93,7 +94,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenResume }) => {
             className="p-2 rounded-lg bg-white/5 border border-white/10 text-gray-300 hover:text-white hover:border-emerald-500/40 transition-colors"
             title="GitHub"
           >
-            <Github className="w-4 h-4" />
+            <GithubIcon className="w-4 h-4" />
           </a>
           <a
             href={personalInfo.linkedin}
@@ -102,7 +103,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenResume }) => {
             className="p-2 rounded-lg bg-white/5 border border-white/10 text-gray-300 hover:text-white hover:border-emerald-500/40 transition-colors"
             title="LinkedIn"
           >
-            <Linkedin className="w-4 h-4" />
+            <LinkedinIcon className="w-4 h-4" />
           </a>
 
           <button
@@ -144,7 +145,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenResume }) => {
                 rel="noopener noreferrer"
                 className="p-2 rounded-lg bg-white/5 text-gray-300"
               >
-                <Github className="w-4 h-4" />
+                <GithubIcon className="w-4 h-4" />
               </a>
               <a
                 href={personalInfo.linkedin}
@@ -152,7 +153,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenResume }) => {
                 rel="noopener noreferrer"
                 className="p-2 rounded-lg bg-white/5 text-gray-300"
               >
-                <Linkedin className="w-4 h-4" />
+                <LinkedinIcon className="w-4 h-4" />
               </a>
             </div>
             <button
