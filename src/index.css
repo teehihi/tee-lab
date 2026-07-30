@@ -304,7 +304,7 @@ a {
 }
 
 .hero-title {
-  height: clamp(5.5rem, 12vw, 8.5rem);
+  height: clamp(7rem, 18vw, 11rem);
   width: 100%;
   overflow: visible;
   border-bottom: 1px solid var(--line);
@@ -331,17 +331,17 @@ a {
   display: block;
   width: 100%;
   height: 100%;
-  transform: translateY(0);
+  transform: translateY(32%);
   color: var(--foreground);
   user-select: none;
 }
 
 .fluid-gradient-title text,
 .fluid-text-element {
-  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-  font-size: 205px;
+  font-family: Helvetica, Arial, sans-serif;
+  font-size: 210px;
   font-weight: 900;
-  letter-spacing: -0.02em;
+  letter-spacing: -0.01em;
 }
 
 .intro-grid {

@@ -467,8 +467,8 @@ export function ThemeToggle({ className = "" }: { className?: string }) {
 
 export function FluidGradientText({
   text,
-  viewBoxWidth = 2100,
-  viewBoxHeight = 240,
+  viewBoxWidth = 2350,
+  viewBoxHeight = 300,
 }: {
   text: string;
   viewBoxWidth?: number;
