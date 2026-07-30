@@ -331,15 +331,17 @@ a {
   display: block;
   width: 100%;
   height: 100%;
-  transform: translateY(37.5%);
+  transform: translateY(0);
   color: var(--foreground);
   user-select: none;
 }
 
-.fluid-gradient-title text {
-  font-family: Helvetica, Arial, sans-serif;
-  font-size: 300px;
+.fluid-gradient-title text,
+.fluid-text-element {
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  font-size: 185px;
   font-weight: 900;
+  letter-spacing: -0.01em;
 }
 
 .intro-grid {
