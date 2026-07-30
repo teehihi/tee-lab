@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import {
-  ArrowRight,
   ArrowUpRight,
   Award,
   Bot,
@@ -11,6 +10,7 @@ import {
   Database,
   Download,
   ExternalLink as ExternalIcon,
+  FileDown,
   FileText,
   Flame,
   FolderGit2,
@@ -39,6 +39,9 @@ import {
 } from "./data/portfolioData";
 import { FeaturedProject } from "./types/portfolio";
 import {
+  ClickEffects,
+  ElectricBorder,
+  FluidGradientText,
   InteractiveGrid,
   MouseGlow,
   ScrollProgress,
@@ -61,13 +64,8 @@ const navItems = [
 
 function ExternalLink({ href, children }: { href: string; children: React.ReactNode }) {
   return (
-    <a
-      href={href}
-      target="_blank"
-      rel="noreferrer"
-      className="inline-flex items-center gap-1.5 text-xs text-gray-300 hover:text-emerald-400 font-mono transition-colors"
-    >
-      <span>{children}</span>
+    <a href={href} target="_blank" rel="noreferrer" className="inline-link">
+      {children}
       <ArrowUpRight className="h-3.5 w-3.5" />
     </a>
   );
@@ -78,7 +76,6 @@ export function App() {
   const [resumeOpen, setResumeOpen] = useState(false);
   const [copiedEmail, setCopiedEmail] = useState(false);
   const [messageSent, setMessageSent] = useState(false);
-  const [activeTab, setActiveTab] = useState<"profile" | "stack" | "ai">("profile");
 
   const handleCopyEmail = () => {
     navigator.clipboard.writeText(personalInfo.email);
@@ -93,233 +90,144 @@ export function App() {
   };
 
   return (
-    <main className="min-h-screen bg-[#070b14] text-gray-100 selection:bg-emerald-500 selection:text-slate-950 font-sans relative overflow-x-hidden">
+    <main className="page-grid-shell">
       {/* Scroll Progress Bar */}
       <ScrollProgress />
 
-      {/* Interactive Grid Background */}
-      <InteractiveGrid />
+      {/* Interactive Grid Canvas Background */}
+      <InteractiveGrid
+        clickInteraction
+        clickForce={0.8}
+        cursorTrail
+        trailMode="hover"
+        trailColor="#10b981"
+        hoverColor="#10b981"
+        gridSize={58}
+        radius={310}
+        repulsionStrength={-0.66}
+        motionSpeed={0.68}
+      />
 
-      {/* Mouse Glow */}
+      {/* Click Audio Synthesis & Ripple Effects */}
+      <ClickEffects />
+
+      {/* Mouse Radial Glow */}
       <MouseGlow />
 
-      {/* Sticky SaaS Navbar */}
-      <nav className="fixed top-3 left-1/2 -translate-x-1/2 z-50 flex items-center gap-2 px-3 py-2 rounded-full border border-white/10 bg-[#090d16]/80 backdrop-blur-xl shadow-2xl">
-        <a href="#about" className="font-bold text-xs font-mono px-3 py-1 text-emerald-400 flex items-center gap-1.5">
-          <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+      {/* Floating Section Navigation Bar */}
+      <nav className="section-nav" aria-label="Portfolio navigation">
+        <a href="#about" className="nav-signature" aria-label="Back to top">
           NNT
         </a>
-
-        <div className="hidden sm:flex items-center gap-1">
+        <div className="nav-links">
           {navItems.map(([id, label]) => (
-            <a
-              key={id}
-              href={`#${id}`}
-              className="px-3 py-1 rounded-full text-xs font-medium text-gray-300 hover:text-white hover:bg-white/5 transition-colors"
-            >
+            <a key={id} href={`#${id}`}>
               {label}
             </a>
           ))}
         </div>
-
-        <div className="flex items-center gap-2 pl-2 border-l border-white/10">
+        <div className="nav-actions">
+          <ThemeToggle />
           <button
             onClick={() => setResumeOpen(true)}
-            className="flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-500 text-slate-950 text-xs font-bold shadow-md hover:brightness-110 transition-all"
+            className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-mono bg-emerald-500/20 text-emerald-300 border border-emerald-500/40 hover:bg-emerald-500/30 transition-colors"
           >
             <FileText className="h-3.5 w-3.5" />
-            <span>Resume</span>
+            Resume
           </button>
-          <a
-            href={personalInfo.github}
-            target="_blank"
-            rel="noreferrer"
-            className="p-1.5 rounded-full hover:bg-white/10 text-gray-300 hover:text-white transition-colors"
-            title="GitHub"
-          >
+          <a href={personalInfo.github} target="_blank" rel="noreferrer" aria-label="GitHub">
             <GithubIcon className="h-4 w-4" />
           </a>
-          <a
-            href={personalInfo.linkedin}
-            target="_blank"
-            rel="noreferrer"
-            className="p-1.5 rounded-full hover:bg-white/10 text-gray-300 hover:text-white transition-colors"
-            title="LinkedIn"
-          >
+          <a href={personalInfo.linkedin} target="_blank" rel="noreferrer" aria-label="LinkedIn">
             <LinkedinIcon className="h-4 w-4" />
           </a>
         </div>
       </nav>
 
-      {/* MAIN CONTAINER */}
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 pt-28 pb-20 space-y-24 relative z-10">
+      {/* MAIN CONTENT SHELL */}
+      <div className="page-reveal mx-auto flex min-h-screen w-full max-w-5xl flex-col px-3 py-4 text-sm leading-loose sm:px-6 lg:px-8">
         
-        {/* HERO SECTION */}
-        <section id="about" className="scroll-mt-32 space-y-10">
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
-            
-            {/* Left Bio & Headline */}
-            <div className="lg:col-span-7 space-y-6">
-              <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 text-xs font-mono">
-                <span className="w-2 h-2 rounded-full bg-emerald-400 animate-ping"></span>
-                <span>Software Engineer | Full-Stack & AI Developer</span>
-              </div>
+        {/* HERO SECTION WITH FLUID GRADIENT NAME BANNER */}
+        <section id="about" className="scroll-mt-24 pt-6">
+          {/* Giant Interactive Name Banner */}
+          <div className="hero-title">
+            <FluidGradientText text="NGUYEN NHAT THIEN" viewBoxWidth={2200} viewBoxHeight={300} />
+          </div>
 
-              <div className="space-y-2">
-                <h1 className="text-4xl sm:text-6xl font-extrabold tracking-tight text-white leading-tight">
-                  {personalInfo.name}
-                </h1>
-                <p className="text-xl sm:text-2xl font-bold text-gradient-emerald">
-                  Building AI-powered software for real users.
-                </p>
+          <div className="intro-grid">
+            <ElectricBorder color="#10b981" speed={0.75} chaos={0.08} borderRadius={999} className="hero-orbit-card">
+              <div className="profile-avatar">
+                <span>NNT</span>
               </div>
+            </ElectricBorder>
 
-              <p className="text-gray-300 text-sm sm:text-base leading-relaxed font-light">
-                Final-year Information Technology student at <strong>HCMUTE</strong> (GPA 3.24 / 4.00). Specialized in production full-stack web architecture, Computer Vision (YOLOv8), and Retrieval-Augmented Generation (RAG).
+            <div className="intro-copy">
+              <p className="eyebrow">{personalInfo.title} • {personalInfo.location}</p>
+              <h1>
+                Building <ShimmerText>AI-powered</ShimmerText> software products for real users.
+              </h1>
+              <p>
+                Senior Information Technology student at <strong>HCMUTE</strong> (GPA {personalInfo.gpa}). Specializing in Full-Stack Web architecture, Computer Vision (YOLOv8), and Retrieval-Augmented Generation (RAG).
               </p>
 
-              {/* Stats */}
-              <div className="grid grid-cols-3 gap-3 pt-2">
+              <div className="stat-strip">
                 <Stat value="3.24" label="HCMUTE GPA" />
                 <Stat value="500+" label="AI Questions Generated" />
                 <Stat value="2027" label="Expected Grad" />
               </div>
 
-              {/* Action Buttons */}
-              <div className="flex flex-wrap items-center gap-4 pt-2">
+              <div className="hero-actions">
                 <Button as="a" href="#showcase" variant="primary">
-                  <span>Explore Case Studies</span>
-                  <ArrowRight className="h-4 w-4" />
+                  <Rocket className="h-4 w-4" />
+                  Showcase & Case Studies
                 </Button>
-
                 <Button onClick={() => setResumeOpen(true)} variant="outline">
                   <FileText className="h-4 w-4" />
-                  <span>View Resume</span>
+                  View Resume
                 </Button>
-
-                <div className="flex items-center gap-2 pl-2">
-                  <a
-                    href={personalInfo.github}
-                    target="_blank"
-                    rel="noreferrer"
-                    className="p-2.5 rounded-xl border border-white/10 bg-white/5 text-gray-300 hover:text-white hover:border-emerald-500/40 transition-colors"
-                  >
-                    <GithubIcon className="h-4 w-4" />
-                  </a>
-                  <a
-                    href={personalInfo.linkedin}
-                    target="_blank"
-                    rel="noreferrer"
-                    className="p-2.5 rounded-xl border border-white/10 bg-white/5 text-gray-300 hover:text-white hover:border-emerald-500/40 transition-colors"
-                  >
-                    <LinkedinIcon className="h-4 w-4" />
-                  </a>
-                </div>
+                <a href={personalInfo.github} target="_blank" rel="noreferrer" className="p-2 rounded-full border border-[var(--line)] text-gray-300 hover:text-white">
+                  <GithubIcon className="h-4 w-4" />
+                </a>
+                <a href={personalInfo.linkedin} target="_blank" rel="noreferrer" className="p-2 rounded-full border border-[var(--line)] text-gray-300 hover:text-white">
+                  <LinkedinIcon className="h-4 w-4" />
+                </a>
               </div>
-            </div>
-
-            {/* Right Terminal Console Card */}
-            <div className="lg:col-span-5">
-              <Card className="p-5 border-white/15 bg-[#090d16]/90 shadow-2xl relative">
-                {/* Header */}
-                <div className="flex items-center justify-between pb-3 border-b border-white/10 mb-3">
-                  <div className="flex items-center gap-2">
-                    <span className="w-3 h-3 rounded-full bg-red-500/80 inline-block" />
-                    <span className="w-3 h-3 rounded-full bg-yellow-500/80 inline-block" />
-                    <span className="w-3 h-3 rounded-full bg-emerald-500/80 inline-block" />
-                    <span className="font-mono text-xs text-gray-400 ml-1 flex items-center gap-1">
-                      <Terminal className="h-3.5 w-3.5 text-emerald-400" />
-                      developer.ts
-                    </span>
-                  </div>
-
-                  <div className="flex gap-1 bg-black/40 p-1 rounded-lg border border-white/10">
-                    {(["profile", "stack", "ai"] as const).map((tab) => (
-                      <button
-                        key={tab}
-                        onClick={() => setActiveTab(tab)}
-                        className={`px-2 py-0.5 rounded text-[11px] font-mono capitalize transition-colors ${
-                          activeTab === tab ? "bg-emerald-500/20 text-emerald-300 font-bold" : "text-gray-400 hover:text-white"
-                        }`}
-                      >
-                        {tab}
-                      </button>
-                    ))}
-                  </div>
-                </div>
-
-                {/* Console Snippets */}
-                <div className="font-mono text-xs leading-relaxed space-y-1.5 text-gray-300 bg-[#040710] p-4 rounded-xl border border-white/5 overflow-x-auto">
-                  {activeTab === "profile" && (
-                    <>
-                      <div><span className="text-purple-400">const</span> <span className="text-yellow-300">engineer</span> = &#123;</div>
-                      <div className="pl-4"><span className="text-emerald-400">name</span>: <span className="text-teal-300">"Nguyen Nhat Thien"</span>,</div>
-                      <div className="pl-4"><span className="text-emerald-400">role</span>: <span className="text-teal-300">"Software Engineer"</span>,</div>
-                      <div className="pl-4"><span className="text-emerald-400">university</span>: <span className="text-teal-300">"HCMUTE (3.24 GPA)"</span>,</div>
-                      <div className="pl-4"><span className="text-emerald-400">focus</span>: [<span className="text-teal-300">"Full-Stack"</span>, <span className="text-teal-300">"AI"</span>, <span className="text-teal-300">"Vision"</span>],</div>
-                      <div className="pl-4"><span className="text-emerald-400">experience</span>: <span className="text-teal-300">"Outlier AI Quality Evaluator"</span></div>
-                      <div>&#125;;</div>
-                    </>
-                  )}
-
-                  {activeTab === "stack" && (
-                    <>
-                      <div><span className="text-purple-400">const</span> <span className="text-yellow-300">techStack</span> = &#123;</div>
-                      <div className="pl-4"><span className="text-emerald-400">languages</span>: [<span className="text-teal-300">"TS"</span>, <span className="text-teal-300">"JS"</span>, <span className="text-teal-300">"Python"</span>, <span className="text-teal-300">"Java"</span>, <span className="text-teal-300">"SQL"</span>],</div>
-                      <div className="pl-4"><span className="text-emerald-400">frontend</span>: [<span className="text-teal-300">"React"</span>, <span className="text-teal-300">"Tailwind"</span>, <span className="text-teal-300">"Vite"</span>],</div>
-                      <div className="pl-4"><span className="text-emerald-400">backend</span>: [<span className="text-teal-300">"Node"</span>, <span className="text-teal-300">"FastAPI"</span>, <span className="text-teal-300">"Spring Boot"</span>],</div>
-                      <div className="pl-4"><span className="text-emerald-400">databases</span>: [<span className="text-teal-300">"MongoDB"</span>, <span className="text-teal-300">"MySQL"</span>]</div>
-                      <div>&#125;;</div>
-                    </>
-                  )}
-
-                  {activeTab === "ai" && (
-                    <>
-                      <div><span className="text-purple-400">async function</span> <span className="text-yellow-300">aiCapabilities</span>() &#123;</div>
-                      <div className="pl-4"><span className="text-purple-400">return</span> &#123;</div>
-                      <div className="pl-8"><span className="text-emerald-400">ragPipeline</span>: <span className="text-teal-300">"Gemini 1.5 Flash + Vector Search"</span>,</div>
-                      <div className="pl-8"><span className="text-emerald-400">computerVision</span>: <span className="text-teal-300">"YOLOv8 + OpenCV Fire Detection"</span>,</div>
-                      <div className="pl-8"><span className="text-emerald-400">tools</span>: [<span className="text-teal-300">"OpenAI Codex"</span>, <span className="text-teal-300">"Kiro"</span>]</div>
-                      <div className="pl-4">&#125;;</div>
-                      <div>&#125;</div>
-                    </>
-                  )}
-                </div>
-              </Card>
             </div>
           </div>
         </section>
 
         {/* SKILLS SECTION */}
-        <section id="skills" className="scroll-mt-24">
+        <section id="skills" className="content-section">
           <SectionHeader
             eyebrow="Capabilities"
-            title="Technical Skills & Stack"
-            description="Production-tested technologies across frontend, backend, databases, and AI frameworks."
+            title="Technical Stack & Expertise"
+            description="Modern full-stack web architecture, backend APIs, relational & vector databases, and AI tooling."
           />
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div className="profile-grid">
             {skillGroups.map((group) => (
-              <Card key={group.category} className="space-y-4">
-                <div className="flex items-center justify-between border-b border-white/10 pb-3">
-                  <div className="flex items-center gap-2">
-                    <Code2 className="h-4 w-4 text-emerald-400" />
-                    <h3 className="font-bold text-white text-base">{group.category}</h3>
+              <Card key={group.category} className="profile-card">
+                <div className="profile-card-head">
+                  <div className="p-2.5 rounded-xl bg-emerald-500/10 border border-emerald-500/30 text-emerald-400">
+                    <Code2 className="h-5 w-5" />
                   </div>
-                  <span className="text-[11px] font-mono text-gray-400">{group.skills.length} skills</span>
+                  <div>
+                    <h3>{group.category}</h3>
+                    <p className="profile-role">{group.skills.length} core technologies</p>
+                  </div>
                 </div>
 
-                <div className="flex flex-wrap gap-2">
+                <div className="chip-list mt-4">
                   {group.skills.map((skill) => (
-                    <Badge
+                    <span
                       key={skill.name}
                       className={
                         skill.level === "Advanced"
-                          ? "bg-emerald-500/20 text-emerald-300 border-emerald-500/40 font-bold"
-                          : "bg-white/5 text-gray-300 border-white/10"
+                          ? "border-emerald-500/40 text-emerald-300 bg-emerald-500/10 font-bold"
+                          : ""
                       }
                     >
                       {skill.name}
-                    </Badge>
+                    </span>
                   ))}
                 </div>
               </Card>
@@ -327,61 +235,68 @@ export function App() {
           </div>
         </section>
 
-        {/* FEATURED CASE STUDIES SHOWCASE */}
-        <section id="showcase" className="scroll-mt-24 space-y-8">
+        {/* FEATURED PROJECTS & SHOWCASE */}
+        <section id="showcase" className="content-section">
           <SectionHeader
-            eyebrow="Case Studies"
-            title="Flagship Projects"
-            description="Deep-dive engineering case studies. Click any project to open the full technical breakdown modal."
+            eyebrow="Case Studies & Products"
+            title="Featured Projects"
+            description="In-depth engineering breakdown of software built to solve real-world problems. Click any project to open the full interactive Case Study."
           />
 
-          <div className="space-y-8">
+          <div className="project-grid featured-grid">
             {featuredProjects.map((project) => (
-              <Card key={project.id} className="p-6 sm:p-8 space-y-6">
-                <div className="flex flex-wrap items-center justify-between gap-4 border-b border-white/10 pb-4">
-                  <div className="space-y-1">
-                    <span className="text-xs font-mono text-emerald-400">{project.category}</span>
-                    <h3 className="text-2xl sm:text-3xl font-extrabold text-white">{project.title}</h3>
-                    <p className="text-xs font-mono text-gray-400">{project.tagline}</p>
-                  </div>
-                  <Badge className="bg-emerald-500/20 text-emerald-300 border-emerald-500/40 text-xs px-3 py-1">
-                    {project.status}
-                  </Badge>
-                </div>
-
-                <p className="text-gray-300 text-sm leading-relaxed font-light">{project.summary}</p>
-
-                {/* Metrics Bar */}
-                <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
-                  {project.resultsMetrics.map((m, idx) => (
-                    <div key={idx} className="p-3 rounded-xl bg-white/[0.02] border border-white/10 text-center">
-                      <strong className="block text-xl font-bold text-white font-mono text-gradient-emerald">
-                        {m.value}
-                      </strong>
-                      <span className="block text-[11px] text-gray-400 font-mono">{m.label}</span>
+              <Card key={project.id} className="project-card visual-project featured-project">
+                <ElectricBorder color="#10b981" borderRadius={12} className="project-visual-border">
+                  <div className="p-6 bg-[#090d16] space-y-4 rounded-xl border border-white/10">
+                    <div className="flex justify-between items-center">
+                      <Badge className="bg-emerald-500/20 text-emerald-300 border-emerald-500/40">
+                        {project.status}
+                      </Badge>
+                      <span className="text-xs font-mono text-gray-400">{project.category}</span>
                     </div>
+
+                    <div className="space-y-1">
+                      <h3 className="text-2xl font-extrabold text-white">{project.title}</h3>
+                      <p className="text-emerald-400 text-xs font-mono">{project.tagline}</p>
+                    </div>
+
+                    <p className="text-xs text-gray-300 leading-relaxed font-light">{project.summary}</p>
+
+                    <div className="grid grid-cols-2 gap-2 pt-2">
+                      {project.resultsMetrics.slice(0, 2).map((m, idx) => (
+                        <div key={idx} className="p-2 rounded bg-white/5 border border-white/10">
+                          <span className="block text-base font-bold text-white font-mono">{m.value}</span>
+                          <span className="block text-[10px] text-gray-400">{m.label}</span>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                </ElectricBorder>
+
+                <div className="project-head mt-4">
+                  <div>
+                    <p>{project.category}</p>
+                    <h3>{project.title}</h3>
+                  </div>
+                  <Trophy className="h-5 w-5 text-emerald-400" />
+                </div>
+
+                <p className="card-copy">{project.motivation}</p>
+
+                <div className="chip-list">
+                  {project.techStack.flatMap((ts) => ts.technologies).map((tag) => (
+                    <span key={tag}>{tag}</span>
                   ))}
                 </div>
 
-                {/* Tech Stack Badges */}
-                <div className="flex flex-wrap gap-2 pt-1">
-                  {project.techStack.flatMap((ts) => ts.technologies).map((tech) => (
-                    <span key={tech} className="px-3 py-1 rounded-lg bg-white/5 border border-white/10 text-xs font-mono text-gray-300">
-                      {tech}
-                    </span>
-                  ))}
-                </div>
-
-                {/* Actions */}
-                <div className="flex flex-wrap items-center justify-between gap-4 pt-4 border-t border-white/10">
-                  <Button onClick={() => setSelectedProject(project)} variant="primary">
+                <div className="link-row mt-4 flex items-center justify-between">
+                  <Button onClick={() => setSelectedProject(project)}>
                     <Sparkles className="h-4 w-4" />
-                    <span>Explore Full Case Study</span>
-                    <ArrowRight className="h-4 w-4" />
+                    Explore Case Study →
                   </Button>
 
-                  <div className="flex items-center gap-4">
-                    <ExternalLink href={project.githubUrl}>GitHub Repo</ExternalLink>
+                  <div className="flex items-center gap-3">
+                    <ExternalLink href={project.githubUrl}>GitHub</ExternalLink>
                     {project.demoUrl && <ExternalLink href={project.demoUrl}>Live Demo</ExternalLink>}
                   </div>
                 </div>
@@ -389,48 +304,42 @@ export function App() {
             ))}
           </div>
 
-          {/* MORE PROJECTS ARCHIVE */}
-          <div className="pt-8 space-y-6">
+          {/* SECONDARY / ARCHIVED PROJECTS */}
+          <div className="mt-12 space-y-4">
             <h3 className="text-xl font-bold text-white flex items-center gap-2">
               <Layers className="h-5 w-5 text-emerald-400" />
-              <span>More Projects & Hackathon Builds</span>
+              <span>More Projects & Prototypes</span>
             </h3>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div className="supporting-projects">
               {secondaryProjects.map((project) => (
-                <Card key={project.id} className="space-y-4 flex flex-col justify-between">
-                  <div className="space-y-3">
-                    <div className="flex justify-between items-center">
-                      <span className="text-[11px] font-mono text-gray-400">{project.category}</span>
-                      <Badge className={project.status === "Hackathon Winner" ? "bg-amber-500/20 text-amber-300 border-amber-500/40" : ""}>
-                        {project.status}
-                      </Badge>
+                <Card key={project.id} className="project-card">
+                  <div className="project-head">
+                    <div>
+                      <p>{project.category}</p>
+                      <h3>{project.title}</h3>
                     </div>
+                    <Badge>{project.status}</Badge>
+                  </div>
+                  <p className="card-copy">{project.description}</p>
 
-                    <h4 className="font-bold text-white text-lg">{project.title}</h4>
-                    <p className="text-xs text-gray-300 leading-relaxed font-light">{project.description}</p>
-
-                    <div className="space-y-1 pt-2">
-                      <span className="text-[11px] font-mono text-emerald-400 uppercase">Contributions</span>
-                      {project.myContributions.map((c, i) => (
-                        <p key={i} className="text-[11px] text-gray-400">• {c}</p>
-                      ))}
-                    </div>
+                  <div className="note-list project-note-list mt-3">
+                    {project.myContributions.map((contrib, idx) => (
+                      <p key={idx}>
+                        <strong>• {contrib}</strong>
+                      </p>
+                    ))}
                   </div>
 
-                  <div className="space-y-3 pt-3 border-t border-white/10">
-                    <div className="flex flex-wrap gap-1.5">
-                      {project.techStack.map((tech) => (
-                        <span key={tech} className="px-2 py-0.5 rounded text-[10px] font-mono bg-white/5 border border-white/10 text-gray-300">
-                          {tech}
-                        </span>
-                      ))}
-                    </div>
+                  <div className="chip-list">
+                    {project.techStack.map((tag) => (
+                      <span key={tag}>{tag}</span>
+                    ))}
+                  </div>
 
-                    <div className="flex items-center justify-between pt-1">
-                      {project.githubUrl && <ExternalLink href={project.githubUrl}>Code</ExternalLink>}
-                      {project.demoUrl && <ExternalLink href={project.demoUrl}>Demo</ExternalLink>}
-                    </div>
+                  <div className="link-row mt-3">
+                    {project.githubUrl && <ExternalLink href={project.githubUrl}>GitHub</ExternalLink>}
+                    {project.demoUrl && <ExternalLink href={project.demoUrl}>Demo</ExternalLink>}
                   </div>
                 </Card>
               ))}
@@ -438,94 +347,84 @@ export function App() {
           </div>
         </section>
 
-        {/* WORK EXPERIENCE */}
-        <section id="experience" className="scroll-mt-24 space-y-6">
+        {/* WORK EXPERIENCE SECTION */}
+        <section id="experience" className="content-section">
           <SectionHeader
             eyebrow="Work Experience"
             title="AI Quality Evaluation & Prompt Iteration"
-            description="Evaluating machine learning model accuracy, fine-tuning multilingual prompt benchmarks, and RLHF workflows."
+            description="Evaluating machine learning outputs, multilingual prompt tuning, and RLHF workflows."
           />
-
-          {experienceData.map((exp) => (
-            <Card key={exp.company} className="space-y-4">
-              <div className="flex flex-wrap items-center justify-between gap-2 border-b border-white/10 pb-3">
-                <div>
-                  <h3 className="text-xl font-bold text-white">{exp.role} @ {exp.company}</h3>
-                  <p className="text-xs font-mono text-emerald-400">{exp.type} • {exp.period}</p>
-                </div>
-                <Badge className="bg-emerald-500/20 text-emerald-300 border-emerald-500/40">Active</Badge>
-              </div>
-
-              <ul className="space-y-2">
-                {exp.responsibilities.map((r, i) => (
-                  <li key={i} className="flex items-start gap-2.5 text-xs text-gray-300 font-light">
-                    <CheckCircle2 className="h-4 w-4 text-emerald-400 shrink-0 mt-0.5" />
-                    <span>{r}</span>
-                  </li>
-                ))}
-              </ul>
-
-              <div className="flex flex-wrap gap-2 pt-3 border-t border-white/10">
-                {exp.skills.map((s) => (
-                  <span key={s} className="px-2.5 py-1 rounded-lg bg-white/5 border border-white/10 text-xs font-mono text-emerald-300">
-                    {s}
-                  </span>
-                ))}
-              </div>
-            </Card>
-          ))}
-        </section>
-
-        {/* HONORS & CERTIFICATIONS */}
-        <section id="achievements" className="scroll-mt-24 space-y-6">
-          <SectionHeader
-            eyebrow="Honors & Credentials"
-            title="Hackathon Awards & Cloud Certifications"
-          />
-
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {achievementsData.map((item) => (
-              <Card key={item.title + item.event} className="space-y-3 flex flex-col justify-between">
-                <div className="space-y-2">
-                  <div className="flex justify-between items-center">
-                    <Trophy className="h-5 w-5 text-emerald-400" />
-                    <Badge className="bg-emerald-500/20 text-emerald-300 border-emerald-500/40 font-bold">
-                      {item.badge}
-                    </Badge>
+          <div className="space-y-4">
+            {experienceData.map((exp) => (
+              <Card key={exp.company} className="profile-card">
+                <div className="flex items-center justify-between border-b border-[var(--line)] pb-3">
+                  <div>
+                    <h3 className="text-lg font-bold text-white">{exp.role} @ {exp.company}</h3>
+                    <p className="text-xs text-emerald-400 font-mono">{exp.type} • {exp.period}</p>
                   </div>
-                  <span className="text-[11px] font-mono text-gray-400 uppercase">{item.event} • {item.year}</span>
-                  <h4 className="font-bold text-white text-base">{item.title}</h4>
-                  <p className="text-xs text-gray-300 leading-relaxed font-light">{item.description}</p>
+                  <Badge className="bg-emerald-500/20 text-emerald-300 border-emerald-500/40">Active</Badge>
+                </div>
+
+                <div className="note-list project-note-list mt-4">
+                  {exp.responsibilities.map((r, i) => (
+                    <p key={i}>
+                      <span className="text-gray-200">✓ {r}</span>
+                    </p>
+                  ))}
+                </div>
+
+                <div className="chip-list mt-4">
+                  {exp.skills.map((s) => (
+                    <span key={s}>{s}</span>
+                  ))}
                 </div>
               </Card>
             ))}
           </div>
         </section>
 
+        {/* ACHIEVEMENTS SECTION */}
+        <section id="achievements" className="content-section">
+          <SectionHeader
+            eyebrow="Honors & Certifications"
+            title="Hackathon Awards & Cloud Badges"
+          />
+          <div className="strength-grid">
+            {achievementsData.map((ach) => (
+              <Card key={ach.title + ach.event} className="strength-card">
+                <Trophy className="h-5 w-5 text-emerald-400" />
+                <h3>{ach.title}</h3>
+                <p className="text-xs text-emerald-400 font-mono">{ach.event} ({ach.year})</p>
+                <p>{ach.description}</p>
+              </Card>
+            ))}
+          </div>
+        </section>
+
         {/* PHILOSOPHY QUOTE CARD */}
-        <section className="scroll-mt-24">
-          <Card className="p-8 text-center space-y-3 border-emerald-500/30 bg-emerald-950/20">
-            <span className="text-xs font-mono text-emerald-400 uppercase tracking-wider">Engineering Philosophy</span>
-            <blockquote className="text-xl sm:text-2xl font-bold text-white italic max-w-2xl mx-auto">
+        <section className="content-section">
+          <Card className="p-8 text-center space-y-4 border-emerald-500/30 bg-emerald-950/20">
+            <p className="text-xs font-mono text-emerald-400 uppercase tracking-wider">Engineering Philosophy</p>
+            <blockquote className="text-xl sm:text-2xl font-bold text-white italic">
               "{personalInfo.quote}"
             </blockquote>
             <p className="text-xs text-gray-400 font-mono">— {personalInfo.name}</p>
           </Card>
         </section>
 
-        {/* CONTACT SECTION */}
-        <section id="contact" className="scroll-mt-24 space-y-8">
+        {/* CONTACT & FOOTER SECTION */}
+        <section id="contact" className="content-section pb-12">
           <SectionHeader
             eyebrow="Contact & Collaboration"
-            title="Let's build something great"
-            description="Looking for Software Engineering, Full-Stack, or AI Developer roles and internships."
+            title="Let's build together"
+            description="Available for Software Engineer, Full-Stack, and AI Developer opportunities."
           />
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <Card className="space-y-4">
+            <Card className="p-6 space-y-4">
               <h3 className="text-lg font-bold text-white">Direct Contact</h3>
 
-              <div className="space-y-3 text-xs font-mono">
+              <div className="space-y-3 text-xs">
                 <div className="flex items-center justify-between p-3 rounded-xl bg-white/5 border border-white/10">
                   <div className="flex items-center gap-2">
                     <Mail className="h-4 w-4 text-emerald-400" />
@@ -533,7 +432,7 @@ export function App() {
                   </div>
                   <button
                     onClick={handleCopyEmail}
-                    className="px-3 py-1 rounded bg-emerald-500/20 text-emerald-300 border border-emerald-500/40 text-[11px] font-bold"
+                    className="px-2.5 py-1 rounded bg-emerald-500/20 text-emerald-300 border border-emerald-500/40 text-[11px]"
                   >
                     {copiedEmail ? "Copied!" : "Copy"}
                   </button>
@@ -550,49 +449,48 @@ export function App() {
                 </div>
               </div>
 
-              <div className="flex gap-4 pt-2">
-                <ExternalLink href={personalInfo.github}>GitHub Profile</ExternalLink>
-                <ExternalLink href={personalInfo.linkedin}>LinkedIn Profile</ExternalLink>
+              <div className="flex gap-3 pt-2">
+                <ExternalLink href={personalInfo.github}>GitHub</ExternalLink>
+                <ExternalLink href={personalInfo.linkedin}>LinkedIn</ExternalLink>
               </div>
             </Card>
 
-            <Card className="space-y-3">
+            <Card className="p-6">
               <form onSubmit={handleSendMessage} className="space-y-3">
                 <h3 className="text-lg font-bold text-white">Send Message</h3>
                 <input
                   type="text"
                   required
                   placeholder="Your Name"
-                  className="w-full px-4 py-2.5 rounded-xl bg-black/40 border border-white/10 text-xs text-white placeholder-gray-500 focus:outline-none focus:border-emerald-500"
+                  className="w-full px-3 py-2 rounded-xl bg-black/40 border border-white/10 text-xs text-white placeholder-gray-500 focus:outline-none focus:border-emerald-500"
                 />
                 <input
                   type="email"
                   required
                   placeholder="Your Email"
-                  className="w-full px-4 py-2.5 rounded-xl bg-black/40 border border-white/10 text-xs text-white placeholder-gray-500 focus:outline-none focus:border-emerald-500"
+                  className="w-full px-3 py-2 rounded-xl bg-black/40 border border-white/10 text-xs text-white placeholder-gray-500 focus:outline-none focus:border-emerald-500"
                 />
                 <textarea
                   rows={3}
                   required
                   placeholder="Your Message..."
-                  className="w-full px-4 py-2.5 rounded-xl bg-black/40 border border-white/10 text-xs text-white placeholder-gray-500 focus:outline-none focus:border-emerald-500 resize-none"
+                  className="w-full px-3 py-2 rounded-xl bg-black/40 border border-white/10 text-xs text-white placeholder-gray-500 focus:outline-none focus:border-emerald-500 resize-none"
                 />
-                <Button type="submit" variant="primary" className="w-full">
+                <Button type="submit" className="w-full">
                   {messageSent ? "Message Sent!" : "Send Message"}
                 </Button>
               </form>
             </Card>
           </div>
 
-          <footer className="text-center pt-12 pb-6 border-t border-white/10 text-xs font-mono text-gray-500 space-y-1">
-            <p>© {new Date().getFullYear()} {personalInfo.name}. Built with React, TypeScript, & Tailwind CSS.</p>
-            <p>{personalInfo.university} • {personalInfo.major}</p>
+          <footer className="footer-note mt-12">
+            <p>Built with care by {personalInfo.name}.</p>
+            <p>© {new Date().getFullYear()} {personalInfo.name} • {personalInfo.university}</p>
           </footer>
         </section>
-
       </div>
 
-      {/* Case Study Modal View */}
+      {/* Detailed Case Study Modal */}
       <ProjectCaseStudyModal
         project={selectedProject}
         onClose={() => setSelectedProject(null)}

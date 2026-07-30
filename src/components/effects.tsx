@@ -19,150 +19,558 @@ export function MouseGlow() {
   }, []);
 
   return (
-    <div className="mouse-glow pointer-events-none fixed inset-0 z-0 overflow-hidden" aria-hidden="true">
+    <div className="mouse-glow" aria-hidden="true">
       <div
         ref={glowRef}
-        className="mouse-glow-inner absolute top-0 left-0 w-[60rem] h-[60rem] -ml-[30rem] -mt-[30rem] rounded-full pointer-events-none opacity-40 will-change-transform"
-        style={{
-          background: "radial-gradient(circle, rgba(16, 185, 129, 0.12) 0%, rgba(20, 184, 166, 0.04) 40%, transparent 70%)",
-          transform: "translate3d(50vw, 30vh, 0)",
-        }}
+        className="mouse-glow-inner"
+        style={{ transform: "translate3d(50vw, 50vh, 0)" }}
       />
     </div>
   );
 }
 
+function parseColor(color?: string) {
+  if (!color || color === "transparent") return { r: 0, g: 0, b: 0, a: 0 };
+
+  const rgbaMatch = color.match(/rgba\s*\(\s*(\d+)\s*,\s*(\d+)\s*,\s*(\d+)\s*,\s*([\d.]+)/i);
+  if (rgbaMatch) {
+    return {
+      r: Number.parseInt(rgbaMatch[1], 10),
+      g: Number.parseInt(rgbaMatch[2], 10),
+      b: Number.parseInt(rgbaMatch[3], 10),
+      a: Number.parseFloat(rgbaMatch[4]),
+    };
+  }
+
+  const rgbMatch = color.match(/rgb\s*\(\s*(\d+)\s*,\s*(\d+)\s*,\s*(\d+)/i);
+  if (rgbMatch) {
+    return {
+      r: Number.parseInt(rgbMatch[1], 10),
+      g: Number.parseInt(rgbMatch[2], 10),
+      b: Number.parseInt(rgbMatch[3], 10),
+      a: 1,
+    };
+  }
+
+  let hex = color.replace("#", "");
+  if (hex.length === 3) {
+    hex = hex
+      .split("")
+      .map((char) => char + char)
+      .join("");
+  }
+
+  return {
+    r: Number.parseInt(hex.slice(0, 2), 16) || 0,
+    g: Number.parseInt(hex.slice(2, 4), 16) || 0,
+    b: Number.parseInt(hex.slice(4, 6), 16) || 0,
+    a: hex.length === 8 ? (Number.parseInt(hex.slice(6, 8), 16) || 255) / 255 : 1,
+  };
+}
+
 export function InteractiveGrid({
+  clickInteraction = true,
+  clickForce = 0.72,
+  motionSpeed = 0.62,
+  cursorTrail = true,
+  trailMode = "hover",
+  trailLength = 0.16,
+  trailColor = "#10b981",
+  backgroundColor = "transparent",
+  gridColor,
+  dotColor,
+  hoverColor = "#10b981",
+  gridSize = 58,
+  repulsionStrength = -0.62,
+  radius = 300,
+  dotSize = 1.35,
+  gridThickness = 0.52,
+  baseOpacity = 0.085,
   className = "",
 }: {
+  clickInteraction?: boolean;
+  clickForce?: number;
+  motionSpeed?: number;
+  cursorTrail?: boolean;
+  trailMode?: string;
+  trailLength?: number;
+  trailColor?: string;
+  backgroundColor?: string;
+  gridColor?: string;
+  dotColor?: string;
+  hoverColor?: string;
+  gridSize?: number;
+  repulsionStrength?: number;
+  radius?: number;
+  dotSize?: number;
+  gridThickness?: number;
+  baseOpacity?: number;
   className?: string;
 }) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const animationRef = useRef<number>(0);
-  const dotsRef = useRef<Map<string, { x: number; y: number; vx: number; vy: number }>>(new Map());
+  const dotsRef = useRef<Map<string, { x: number; y: number; vx: number; vy: number; size: number }>>(new Map());
   const mousePosRef = useRef<{ x: number; y: number } | null>(null);
+  const rectRef = useRef({ left: 0, top: 0, width: 1, height: 1 });
+  const trailPointsRef = useRef<{ x: number; y: number; time: number }[]>([]);
+  const isMouseDownRef = useRef(false);
+  const configRef = useRef<any>({});
+  const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
-    const canvas = canvasRef.current;
-    if (!canvas) return;
-    const ctx = canvas.getContext("2d");
-    if (!ctx) return;
+    setMounted(true);
+  }, []);
 
-    let width = window.innerWidth;
-    let height = window.innerHeight;
-    const gridSize = 50;
+  useEffect(() => {
+    const isDark = document.documentElement.classList.contains("dark");
+    configRef.current = {
+      backgroundColor,
+      gridColor: gridColor ?? (isDark ? "#ffffff" : "#0f0f0f"),
+      dotColor: dotColor ?? (isDark ? "#ffffff" : "#0f0f0f"),
+      hoverColor,
+      gridSize,
+      repulsionStrength,
+      radius,
+      dotSize,
+      gridThickness,
+      baseOpacity,
+      clickInteraction,
+      clickForce,
+      motionSpeed,
+      cursorTrail,
+      trailMode,
+      trailLength,
+      trailColor,
+    };
+  }, [
+    backgroundColor,
+    gridColor,
+    dotColor,
+    hoverColor,
+    gridSize,
+    repulsionStrength,
+    radius,
+    dotSize,
+    gridThickness,
+    baseOpacity,
+    clickInteraction,
+    clickForce,
+    motionSpeed,
+    cursorTrail,
+    trailMode,
+    trailLength,
+    trailColor,
+  ]);
+
+  useEffect(() => {
+    if (!mounted) return undefined;
+
+    const canvas = canvasRef.current;
+    const ctx = canvas?.getContext("2d");
+    if (!canvas || !ctx) return undefined;
+
+    let width = 1;
+    let height = 1;
+    const maxDist = 400;
 
     const initDots = () => {
       dotsRef.current.clear();
-      for (let x = 0; x < width + gridSize; x += gridSize) {
-        for (let y = 0; y < height + gridSize; y += gridSize) {
-          dotsRef.current.set(`${x},${y}`, { x, y, vx: 0, vy: 0 });
+      const currentGridSize = configRef.current.gridSize;
+      for (let gx = -currentGridSize; gx < width + currentGridSize * 2; gx += currentGridSize) {
+        for (let gy = -currentGridSize; gy < height + currentGridSize * 2; gy += currentGridSize) {
+          dotsRef.current.set(`${gx},${gy}`, { x: gx, y: gy, vx: 0, vy: 0, size: 1 });
         }
       }
     };
 
-    const handleResize = () => {
-      width = window.innerWidth;
-      height = window.innerHeight;
+    const resize = () => {
+      const rect = canvas.getBoundingClientRect();
+      rectRef.current = rect;
       const dpr = Math.min(window.devicePixelRatio || 1, 1.5);
+      width = Math.max(1, rect.width);
+      height = Math.max(1, rect.height);
       canvas.width = width * dpr;
       canvas.height = height * dpr;
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
       initDots();
     };
 
-    const handleMouseMove = (e: MouseEvent) => {
-      mousePosRef.current = { x: e.clientX, y: e.clientY };
+    const hoverIntensity = (x: number, y: number) => {
+      const mouse = mousePosRef.current;
+      if (!mouse) return 0;
+      const dx = x - mouse.x;
+      const dy = y - mouse.y;
+      const dist = Math.sqrt(dx * dx + dy * dy);
+      if (dist > configRef.current.radius) return 0;
+      return Math.pow(1 - dist / configRef.current.radius, 3.5);
     };
 
-    const handleMouseLeave = () => {
-      mousePosRef.current = null;
+    const getCursorPush = (baseX: number, baseY: number) => {
+      const mouse = mousePosRef.current;
+      if (!mouse) return { x: 0, y: 0 };
+      const mappedRepulsion =
+        configRef.current.repulsionStrength <= 0
+          ? configRef.current.repulsionStrength * 25
+          : configRef.current.repulsionStrength * 90;
+      const dx = baseX - mouse.x;
+      const dy = baseY - mouse.y;
+      const dist = Math.sqrt(dx * dx + dy * dy);
+      if (!dist) return { x: 0, y: 0 };
+      const pushAmount = Math.pow(1 - Math.min(dist / maxDist, 1), 2) * mappedRepulsion;
+      return { x: (dx / dist) * pushAmount, y: (dy / dist) * pushAmount };
     };
 
-    handleResize();
-    window.addEventListener("resize", handleResize);
-    window.addEventListener("mousemove", handleMouseMove, { passive: true });
-    window.addEventListener("mouseleave", handleMouseLeave);
+    const getClickPush = (baseX: number, baseY: number) => {
+      if (!configRef.current.clickInteraction || !isMouseDownRef.current) return { x: 0, y: 0 };
+      const mouse = mousePosRef.current;
+      if (!mouse) return { x: 0, y: 0 };
+      const dx = baseX - mouse.x;
+      const dy = baseY - mouse.y;
+      const dist = Math.sqrt(dx * dx + dy * dy);
+      if (dist === 0) return { x: 0, y: 0 };
+      const normalizedDist = Math.min(dist / maxDist, 1);
+      const pushAmount = Math.pow(1 - normalizedDist, 2) * configRef.current.clickForce * 105;
+      return {
+        x: (dx / dist) * pushAmount,
+        y: (dy / dist) * pushAmount,
+      };
+    };
 
     const draw = () => {
+      const now = performance.now();
+      const config = configRef.current;
+      const bg = parseColor(config.backgroundColor);
+      const grid = parseColor(config.gridColor);
+      const dot = parseColor(config.dotColor);
+      const hover = parseColor(config.hoverColor);
+      const trail = parseColor(config.trailColor);
+      const speed = Math.max(0, Math.min(1, config.motionSpeed));
+      const springStiffness = 0.02 + speed * 0.06;
+      const damping = 0.7 + speed * 0.05;
+
       ctx.clearRect(0, 0, width, height);
+      ctx.fillStyle = `rgba(${bg.r}, ${bg.g}, ${bg.b}, ${bg.a})`;
+      ctx.fillRect(0, 0, width, height);
 
-      // Draw subtle grid lines
-      ctx.strokeStyle = "rgba(255, 255, 255, 0.03)";
-      ctx.lineWidth = 1;
+      dotsRef.current.forEach((point, key) => {
+        const [gxStr, gyStr] = key.split(",");
+        const gx = Number.parseInt(gxStr, 10);
+        const gy = Number.parseInt(gyStr, 10);
+        const rightDot = dotsRef.current.get(`${gx + config.gridSize},${gy}`);
+        const bottomDot = dotsRef.current.get(`${gx},${gy + config.gridSize}`);
+        const intensity = hoverIntensity(point.x, point.y);
 
-      dotsRef.current.forEach((dot, key) => {
-        const [gx, gy] = key.split(",").map(Number);
-        
-        let dx = dot.x - (mousePosRef.current?.x || -1000);
-        let dy = dot.y - (mousePosRef.current?.y || -1000);
-        let dist = Math.sqrt(dx * dx + dy * dy);
-        
-        if (dist < 180 && mousePosRef.current) {
-          const force = (180 - dist) / 180;
-          dot.vx += (dx / dist) * force * 1.2;
-          dot.vy += (dy / dist) * force * 1.2;
-        }
+        [rightDot, bottomDot].forEach((nextDot) => {
+          if (!nextDot) return;
+          const avgHover = (intensity + hoverIntensity(nextDot.x, nextDot.y)) / 2;
+          const r = Math.round(grid.r + (hover.r - grid.r) * avgHover);
+          const g = Math.round(grid.g + (hover.g - grid.g) * avgHover);
+          const b = Math.round(grid.b + (hover.b - grid.b) * avgHover);
+          ctx.beginPath();
+          ctx.moveTo(point.x, point.y);
+          ctx.lineTo(nextDot.x, nextDot.y);
+          ctx.lineWidth = config.gridThickness + avgHover * 2;
+          ctx.strokeStyle = `rgba(${r}, ${g}, ${b}, ${config.baseOpacity + (1 - config.baseOpacity) * avgHover})`;
+          ctx.stroke();
+        });
+      });
 
-        // Spring return to original position
-        dot.vx += (gx - dot.x) * 0.05;
-        dot.vy += (gy - dot.y) * 0.05;
-        dot.vx *= 0.82;
-        dot.vy *= 0.82;
-        dot.x += dot.vx;
-        dot.y += dot.vy;
+      dotsRef.current.forEach((point, key) => {
+        const [gxStr, gyStr] = key.split(",");
+        const gx = Number.parseInt(gxStr, 10);
+        const gy = Number.parseInt(gyStr, 10);
+        const cursorPush = getCursorPush(gx, gy);
+        const clickPush = getClickPush(gx, gy);
+        const forceX = (gx + cursorPush.x + clickPush.x - point.x) * springStiffness;
+        const forceY = (gy + cursorPush.y + clickPush.y - point.y) * springStiffness;
+        point.vx = (point.vx + forceX) * damping;
+        point.vy = (point.vy + forceY) * damping;
+        point.x += point.vx;
+        point.y += point.vy;
 
-        // Draw dot
-        ctx.fillStyle = dist < 180 ? "rgba(16, 185, 129, 0.3)" : "rgba(255, 255, 255, 0.06)";
+        const intensity = hoverIntensity(point.x, point.y);
+        point.size += (config.dotSize + intensity * config.dotSize - point.size) * 0.15;
+        const r = Math.round(dot.r + (hover.r - dot.r) * intensity);
+        const g = Math.round(dot.g + (hover.g - dot.g) * intensity);
+        const b = Math.round(dot.b + (hover.b - dot.b) * intensity);
         ctx.beginPath();
-        ctx.arc(dot.x, dot.y, dist < 180 ? 2 : 1, 0, Math.PI * 2);
+        ctx.arc(point.x, point.y, Math.max(config.dotSize * 0.5, point.size), 0, Math.PI * 2);
+        ctx.fillStyle = `rgba(${r}, ${g}, ${b}, ${config.baseOpacity + (1 - config.baseOpacity) * intensity})`;
         ctx.fill();
       });
+
+      const effectiveTrailLength = Math.max(1, Math.round(config.trailLength * 50));
+      if (config.cursorTrail && trailPointsRef.current.length > 1) {
+        const maxAge = Math.max(200, effectiveTrailLength * 40);
+        ctx.save();
+        ctx.lineCap = "round";
+        ctx.lineJoin = "round";
+        ctx.lineWidth = 2.2;
+        ctx.beginPath();
+
+        const validPoints = trailPointsRef.current.filter((point) => now - point.time <= maxAge);
+
+        if (validPoints.length > 1) {
+          ctx.moveTo(validPoints[0].x, validPoints[0].y);
+          for (let i = 1; i < validPoints.length - 1; i++) {
+            const xc = (validPoints[i].x + validPoints[i + 1].x) / 2;
+            const yc = (validPoints[i].y + validPoints[i + 1].y) / 2;
+            ctx.quadraticCurveTo(validPoints[i].x, validPoints[i].y, xc, yc);
+          }
+          ctx.lineTo(validPoints[validPoints.length - 1].x, validPoints[validPoints.length - 1].y);
+        }
+
+        const last = trailPointsRef.current.at(-1);
+        const alpha = last ? Math.max(0, 1 - (now - last.time) / maxAge) : 0;
+        ctx.strokeStyle = `rgba(${trail.r}, ${trail.g}, ${trail.b}, ${alpha * 0.9 * trail.a})`;
+        ctx.stroke();
+        ctx.restore();
+      }
 
       animationRef.current = requestAnimationFrame(draw);
     };
 
+    const updateMousePosition = (clientX: number, clientY: number) => {
+      const rect = rectRef.current;
+      const x = clientX - rect.left;
+      const y = clientY - rect.top;
+      if (x >= 0 && y >= 0 && x <= rect.width && y <= rect.height) {
+        mousePosRef.current = { x, y };
+        return { x, y };
+      }
+      mousePosRef.current = null;
+      return null;
+    };
+
+    const pushTrailPoint = (x: number, y: number) => {
+      const config = configRef.current;
+      if (!config.cursorTrail || (config.trailMode === "click" && !isMouseDownRef.current)) return;
+      const effectiveLength = Math.max(1, Math.round(config.trailLength * 100));
+      trailPointsRef.current.push({ x, y, time: performance.now() });
+      if (trailPointsRef.current.length > effectiveLength) {
+        trailPointsRef.current.splice(0, trailPointsRef.current.length - effectiveLength);
+      }
+    };
+
+    const handlePointerMove = (event: PointerEvent) => {
+      const point = updateMousePosition(event.clientX, event.clientY);
+      if (point) {
+        pushTrailPoint(point.x, point.y);
+      }
+    };
+
+    const handlePointerDown = (event: PointerEvent) => {
+      isMouseDownRef.current = true;
+      const point = updateMousePosition(event.clientX, event.clientY);
+      if (point) {
+        pushTrailPoint(point.x, point.y);
+      }
+    };
+
+    const handlePointerUp = () => {
+      isMouseDownRef.current = false;
+      if (configRef.current.trailMode === "click") trailPointsRef.current = [];
+    };
+
+    resize();
     animationRef.current = requestAnimationFrame(draw);
+    const resizeObserver = new ResizeObserver(resize);
+    resizeObserver.observe(canvas);
+    window.addEventListener("pointermove", handlePointerMove, { passive: true });
+    window.addEventListener("pointerdown", handlePointerDown, { passive: true });
+    window.addEventListener("pointerup", handlePointerUp, { passive: true });
 
     return () => {
       cancelAnimationFrame(animationRef.current);
-      window.removeEventListener("resize", handleResize);
-      window.removeEventListener("mousemove", handleMouseMove);
-      window.removeEventListener("mouseleave", handleMouseLeave);
+      resizeObserver.disconnect();
+      window.removeEventListener("pointermove", handlePointerMove);
+      window.removeEventListener("pointerdown", handlePointerDown);
+      window.removeEventListener("pointerup", handlePointerUp);
     };
+  }, [mounted]);
+
+  if (!mounted) return null;
+
+  return <canvas ref={canvasRef} className={`interactive-grid ${className}`} aria-hidden="true" />;
+}
+
+export function ClickEffects() {
+  const audioRef = useRef<AudioContext | null>(null);
+
+  useEffect(() => {
+    const playClick = () => {
+      try {
+        const AudioContextClass = window.AudioContext || (window as any).webkitAudioContext;
+        if (!AudioContextClass) return;
+        const ctx = audioRef.current || new AudioContextClass();
+        audioRef.current = ctx;
+        const oscillator = ctx.createOscillator();
+        const gain = ctx.createGain();
+        oscillator.type = "triangle";
+        oscillator.frequency.setValueAtTime(520, ctx.currentTime);
+        oscillator.frequency.exponentialRampToValueAtTime(180, ctx.currentTime + 0.08);
+        gain.gain.setValueAtTime(0.025, ctx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.09);
+        oscillator.connect(gain);
+        gain.connect(ctx.destination);
+        oscillator.start();
+        oscillator.stop(ctx.currentTime + 0.1);
+      } catch {
+        // audio optional
+      }
+    };
+
+    const onPointerDown = (event: PointerEvent) => {
+      document.documentElement.style.setProperty("--click-x", `${event.clientX}px`);
+      document.documentElement.style.setProperty("--click-y", `${event.clientY}px`);
+      document.documentElement.classList.remove("click-pulse-active");
+      window.requestAnimationFrame(() => document.documentElement.classList.add("click-pulse-active"));
+      playClick();
+    };
+
+    window.addEventListener("pointerdown", onPointerDown, { passive: true });
+    return () => window.removeEventListener("pointerdown", onPointerDown);
   }, []);
 
-  return (
-    <canvas
-      ref={canvasRef}
-      className={`interactive-grid fixed inset-0 pointer-events-none z-0 ${className}`}
-      aria-hidden="true"
-    />
-  );
+  return <div className="click-pulse" aria-hidden="true" />;
 }
 
 export function ThemeToggle({ className = "" }: { className?: string }) {
-  const [theme, setTheme] = useState("dark");
+  const [theme, setTheme] = useState(() => {
+    if (typeof window === "undefined") return "dark";
+    return localStorage.getItem("portfolio-theme") || "dark";
+  });
 
   useEffect(() => {
-    document.documentElement.classList.add("dark");
-  }, []);
+    document.documentElement.classList.toggle("dark", theme === "dark");
+    localStorage.setItem("portfolio-theme", theme);
+  }, [theme]);
+
+  const toggleTheme = () => {
+    const nextTheme = theme === "dark" ? "light" : "dark";
+    const apply = () => setTheme(nextTheme);
+
+    if ((document as any).startViewTransition) {
+      (document as any).startViewTransition(apply);
+    } else {
+      apply();
+    }
+  };
 
   return (
-    <button
-      type="button"
-      className={`p-2 rounded-full border border-white/10 bg-white/5 text-gray-300 hover:text-white hover:border-emerald-500/40 transition-colors ${className}`}
-      aria-label="Theme mode"
-    >
-      <span className="w-2 h-2 rounded-full bg-emerald-400 inline-block animate-pulse"></span>
+    <button type="button" className={`theme-toggle ${className}`} onClick={toggleTheme} aria-label="Toggle theme">
+      <span className="theme-toggle-sun" aria-hidden="true" />
+      <span className="theme-toggle-moon" aria-hidden="true" />
     </button>
   );
 }
 
-export function ShimmerText({ children, className = "" }: { children: React.ReactNode; className?: string }) {
+export function FluidGradientText({
+  text,
+  viewBoxWidth = 2200,
+  viewBoxHeight = 300,
+}: {
+  text: string;
+  viewBoxWidth?: number;
+  viewBoxHeight?: number;
+}) {
+  const gradientRef = useRef<SVGLinearGradientElement>(null);
+  const rawXRef = useRef(viewBoxWidth / 2);
+  const currentXRef = useRef(viewBoxWidth / 2);
+  const rafRef = useRef(0);
+
+  useEffect(() => {
+    const tick = () => {
+      currentXRef.current += (rawXRef.current - currentXRef.current) * 0.14;
+      if (gradientRef.current) gradientRef.current.setAttribute("x1", String(currentXRef.current));
+      rafRef.current = requestAnimationFrame(tick);
+    };
+    rafRef.current = requestAnimationFrame(tick);
+    return () => cancelAnimationFrame(rafRef.current);
+  }, []);
+
+  const handlePointerMove = (event: React.PointerEvent<HTMLDivElement>) => {
+    const rect = event.currentTarget.getBoundingClientRect();
+    rawXRef.current = Math.max(0, Math.min(viewBoxWidth, ((event.clientX - rect.left) / rect.width) * viewBoxWidth));
+  };
+
   return (
-    <span className={`bg-gradient-to-r from-emerald-400 via-teal-300 to-cyan-400 bg-clip-text text-transparent font-extrabold ${className}`}>
-      {children}
-    </span>
+    <div
+      className="fluid-gradient-title"
+      onPointerMove={handlePointerMove}
+      onPointerLeave={() => {
+        rawXRef.current = viewBoxWidth / 2;
+      }}
+    >
+      <svg viewBox={`0 0 ${viewBoxWidth} ${viewBoxHeight}`} fill="none" xmlns="http://www.w3.org/2000/svg">
+        <text
+          x="50%"
+          y="50%"
+          textAnchor="middle"
+          dominantBaseline="central"
+          stroke="currentColor"
+          strokeOpacity="0.12"
+          strokeWidth="2"
+          fill="url(#portfolio-fluid-gradient)"
+        >
+          {text}
+        </text>
+        <defs>
+          <linearGradient
+            ref={gradientRef}
+            id="portfolio-fluid-gradient"
+            x1={viewBoxWidth / 2}
+            y1="0"
+            x2={viewBoxWidth / 2}
+            y2={viewBoxHeight}
+            gradientUnits="userSpaceOnUse"
+          >
+            <stop offset="0%" stopColor="#10b981" />
+            <stop offset="35%" stopColor="#14b8a6" />
+            <stop offset="70%" stopColor="#06b6d4" />
+            <stop offset="100%" stopColor="#3b82f6" />
+          </linearGradient>
+        </defs>
+      </svg>
+    </div>
+  );
+}
+
+export function ShimmerText({ children, className = "" }: { children: React.ReactNode; className?: string }) {
+  return <span className={`shimmer-text ${className}`}>{children}</span>;
+}
+
+export function ElectricBorder({
+  children,
+  color = "#10b981",
+  speed = 0.6,
+  borderRadius = 16,
+  borderOffset = 4,
+  className = "",
+}: {
+  children: React.ReactNode;
+  color?: string;
+  speed?: number;
+  borderRadius?: number;
+  borderOffset?: number;
+  className?: string;
+}) {
+  const containerRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const container = containerRef.current;
+    if (!container) return;
+
+    container.style.setProperty("--electric-color", color);
+    container.style.setProperty("--electric-speed", `${speed}s`);
+    container.style.setProperty("--electric-radius", `${borderRadius}px`);
+    container.style.setProperty("--electric-offset", `${borderOffset}px`);
+  }, [color, speed, borderRadius, borderOffset]);
+
+  return (
+    <div ref={containerRef} className={`electric-border-wrapper ${className}`}>
+      <div className="electric-border-fx" aria-hidden="true" />
+      <div className="electric-border-content">{children}</div>
+    </div>
   );
 }
