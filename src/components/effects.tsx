@@ -467,8 +467,8 @@ export function ThemeToggle({ className = "" }: { className?: string }) {
 
 export function FluidGradientText({
   text,
-  viewBoxWidth = 2350,
-  viewBoxHeight = 300,
+  viewBoxWidth = 2400,
+  viewBoxHeight = 280,
 }: {
   text: string;
   viewBoxWidth?: number;
@@ -525,10 +525,8 @@ export function FluidGradientText({
             y2={viewBoxHeight}
             gradientUnits="userSpaceOnUse"
           >
-            <stop offset="0%" stopColor="#10b981" />
-            <stop offset="35%" stopColor="#14b8a6" />
-            <stop offset="70%" stopColor="#06b6d4" />
-            <stop offset="100%" stopColor="#3b82f6" />
+            <stop offset="0.58" stopColor="currentColor" stopOpacity="0" />
+            <stop offset="1" stopColor="currentColor" />
           </linearGradient>
         </defs>
       </svg>
