@@ -449,13 +449,23 @@ a {
 
 .intro-grid {
   display: grid;
-  gap: 1.5rem;
-  padding: 1.5rem 0 0.5rem;
+  grid-template-columns: auto 1fr;
+  align-items: start;
+  gap: 2rem;
+  padding: 0.75rem 0 0.5rem;
+}
+
+@media (max-width: 640px) {
+  .intro-grid {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
 }
 
 .hero-orbit-card {
-  width: min(100%, 13.5rem);
+  width: auto;
   border-radius: 999px;
+  margin-top: -0.25rem;
 }
 
 .hero-orbit-card .electric-content {
@@ -466,6 +476,7 @@ a {
   border-radius: inherit;
   background: transparent;
   overflow: visible;
+  padding: 0.5rem;
 }
 
 .hero-orbit-card .electric-canvas {
@@ -498,18 +509,18 @@ a {
 .profile-avatar {
   position: relative;
   display: grid;
-  width: 4.6rem;
-  height: 4.6rem;
+  width: 7.5rem;
+  height: 7.5rem;
   flex: 0 0 auto;
   place-items: center;
   border: 1px solid var(--line);
   border-radius: 999px;
   background:
     radial-gradient(circle at 30% 25%, rgb(255 255 255 / 0.9), transparent 34%),
-    linear-gradient(135deg, #f9a8d4, #f97316 48%, #facc15);
+    linear-gradient(135deg, #10b981, #06b6d4 48%, #3b82f6);
   box-shadow:
     inset 0 0 0 0.35rem color-mix(in oklch, var(--background) 74%, transparent),
-    0 10px 30px rgb(15 15 15 / 0.08);
+    0 10px 30px rgb(15 15 15 / 0.15);
   overflow: hidden;
 }
 

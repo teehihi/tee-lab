@@ -49,7 +49,7 @@ function Linkedin({ className = "h-4 w-4" }: { className?: string }) {
 const personalInfo = {
   name: "Nguyen Nhat Thien",
   alias: "Tee",
-  title: "Software Engineer | Full-Stack & AI Developer",
+  title: "Software Engineer | Full-Stack Developer",
   location: "Thu Duc, Ho Chi Minh City, Vietnam",
   email: "teeforwork21@gmail.com",
   phone: "(+84) 389 037 546",
@@ -561,7 +561,7 @@ export default function App() {
             <Card className="p-6">
               <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2 mb-4">
                 <div>
-                  <h3 className="text-lg font-bold">Full-Stack & AI Developer</h3>
+                  <h3 className="text-lg font-bold">Full-Stack Developer</h3>
                   <p className="text-sm text-emerald-500 font-medium">Independent & Team Projects</p>
                 </div>
                 <span className="text-xs px-3 py-1 rounded-full bg-muted text-muted-foreground font-mono">

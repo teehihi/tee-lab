@@ -9,7 +9,7 @@ import {
 
 export const personalInfo: PersonalInfo = {
   name: 'Nguyen Nhat Thien',
-  title: 'Software Engineer | Full-Stack & AI Developer',
+  title: 'Software Engineer | Full-Stack Developer',
   location: 'Thu Duc, Ho Chi Minh City, Vietnam',
   email: 'teeforwork21@gmail.com',
   phone: '(+84) 389 037 546',

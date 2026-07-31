@@ -54,7 +54,11 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenResume }) => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between">
         {/* Brand Logo */}
         <a href="#hero" className="flex items-center gap-2 group">
-          
+          <div className="w-9 h-9 rounded-xl bg-gradient-to-tr from-emerald-500 to-teal-400 p-[1px] shadow-lg shadow-emerald-500/20 group-hover:scale-105 transition-transform">
+            <div className="w-full h-full bg-[#090d16] rounded-[11px] flex items-center justify-center font-bold text-emerald-400 text-sm">
+              NNT
+            </div>
+          </div>
           <div className="flex flex-col">
             <span className="font-bold text-white text-sm tracking-tight flex items-center gap-1.5">
               {personalInfo.name}
