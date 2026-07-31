@@ -1,14 +1,14 @@
-import React, { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 export function ScrollProgress() {
   return <div className="scroll-progress" aria-hidden="true" />;
 }
 
 export function MouseGlow() {
-  const glowRef = useRef<HTMLDivElement>(null);
+  const glowRef = useRef(null);
 
   useEffect(() => {
-    const onMove = (event: MouseEvent) => {
+    const onMove = (event) => {
       if (glowRef.current) {
         glowRef.current.style.transform = `translate3d(${event.clientX}px, ${event.clientY}px, 0)`;
       }
@@ -29,7 +29,7 @@ export function MouseGlow() {
   );
 }
 
-function parseColor(color?: string) {
+function parseColor(color) {
   if (!color || color === "transparent") return { r: 0, g: 0, b: 0, a: 0 };
 
   const rgbaMatch = color.match(/rgba\s*\(\s*(\d+)\s*,\s*(\d+)\s*,\s*(\d+)\s*,\s*([\d.]+)/i);
@@ -75,11 +75,11 @@ export function InteractiveGrid({
   cursorTrail = true,
   trailMode = "hover",
   trailLength = 0.16,
-  trailColor = "#10b981",
+  trailColor = "#0073ff",
   backgroundColor = "transparent",
   gridColor,
   dotColor,
-  hoverColor = "#10b981",
+  hoverColor = "#0073ff",
   gridSize = 58,
   repulsionStrength = -0.62,
   radius = 300,
@@ -87,38 +87,26 @@ export function InteractiveGrid({
   gridThickness = 0.52,
   baseOpacity = 0.085,
   className = "",
-}: {
-  clickInteraction?: boolean;
-  clickForce?: number;
-  motionSpeed?: number;
-  cursorTrail?: boolean;
-  trailMode?: string;
-  trailLength?: number;
-  trailColor?: string;
-  backgroundColor?: string;
-  gridColor?: string;
-  dotColor?: string;
-  hoverColor?: string;
-  gridSize?: number;
-  repulsionStrength?: number;
-  radius?: number;
-  dotSize?: number;
-  gridThickness?: number;
-  baseOpacity?: number;
-  className?: string;
 }) {
-  const canvasRef = useRef<HTMLCanvasElement>(null);
-  const animationRef = useRef<number>(0);
-  const dotsRef = useRef<Map<string, { x: number; y: number; vx: number; vy: number; size: number }>>(new Map());
-  const mousePosRef = useRef<{ x: number; y: number } | null>(null);
+  const canvasRef = useRef(null);
+  const animationRef = useRef(0);
+  const dotsRef = useRef(new Map());
+  const mousePosRef = useRef(null);
   const rectRef = useRef({ left: 0, top: 0, width: 1, height: 1 });
-  const trailPointsRef = useRef<{ x: number; y: number; time: number }[]>([]);
+  const trailPointsRef = useRef([]);
   const isMouseDownRef = useRef(false);
-  const configRef = useRef<any>({});
+  const configRef = useRef({});
   const [mounted, setMounted] = useState(false);
+  const [themeKey, setThemeKey] = useState(0);
 
   useEffect(() => {
     setMounted(true);
+  }, []);
+
+  useEffect(() => {
+    const observer = new MutationObserver(() => setThemeKey((key) => key + 1));
+    observer.observe(document.documentElement, { attributes: true, attributeFilter: ["class"] });
+    return () => observer.disconnect();
   }, []);
 
   useEffect(() => {
@@ -160,6 +148,7 @@ export function InteractiveGrid({
     trailMode,
     trailLength,
     trailColor,
+    themeKey,
   ]);
 
   useEffect(() => {
@@ -195,7 +184,7 @@ export function InteractiveGrid({
       initDots();
     };
 
-    const hoverIntensity = (x: number, y: number) => {
+    const hoverIntensity = (x, y) => {
       const mouse = mousePosRef.current;
       if (!mouse) return 0;
       const dx = x - mouse.x;
@@ -205,7 +194,7 @@ export function InteractiveGrid({
       return Math.pow(1 - dist / configRef.current.radius, 3.5);
     };
 
-    const getCursorPush = (baseX: number, baseY: number) => {
+    const getCursorPush = (baseX, baseY) => {
       const mouse = mousePosRef.current;
       if (!mouse) return { x: 0, y: 0 };
       const mappedRepulsion =
@@ -220,7 +209,7 @@ export function InteractiveGrid({
       return { x: (dx / dist) * pushAmount, y: (dy / dist) * pushAmount };
     };
 
-    const getClickPush = (baseX: number, baseY: number) => {
+    const getClickPush = (baseX, baseY) => {
       if (!configRef.current.clickInteraction || !isMouseDownRef.current) return { x: 0, y: 0 };
       const mouse = mousePosRef.current;
       if (!mouse) return { x: 0, y: 0 };
@@ -239,10 +228,9 @@ export function InteractiveGrid({
     const draw = () => {
       const now = performance.now();
       const config = configRef.current;
-      const isDark = document.documentElement.classList.contains("dark");
       const bg = parseColor(config.backgroundColor);
-      const grid = parseColor(config.gridColor || (isDark ? "rgba(255, 255, 255, 0.07)" : "rgba(15, 15, 15, 0.045)"));
-      const dot = parseColor(config.dotColor || (isDark ? "rgba(255, 255, 255, 0.22)" : "rgba(15, 15, 15, 0.18)"));
+      const grid = parseColor(config.gridColor);
+      const dot = parseColor(config.dotColor);
       const hover = parseColor(config.hoverColor);
       const trail = parseColor(config.trailColor);
       const speed = Math.max(0, Math.min(1, config.motionSpeed));
@@ -331,7 +319,7 @@ export function InteractiveGrid({
       animationRef.current = requestAnimationFrame(draw);
     };
 
-    const updateMousePosition = (clientX: number, clientY: number) => {
+    const updateMousePosition = (clientX, clientY) => {
       const rect = rectRef.current;
       const x = clientX - rect.left;
       const y = clientY - rect.top;
@@ -343,7 +331,7 @@ export function InteractiveGrid({
       return null;
     };
 
-    const pushTrailPoint = (x: number, y: number) => {
+    const pushTrailPoint = (x, y) => {
       const config = configRef.current;
       if (!config.cursorTrail || (config.trailMode === "click" && !isMouseDownRef.current)) return;
       const effectiveLength = Math.max(1, Math.round(config.trailLength * 100));
@@ -353,14 +341,14 @@ export function InteractiveGrid({
       }
     };
 
-    const handlePointerMove = (event: PointerEvent) => {
+    const handlePointerMove = (event) => {
       const point = updateMousePosition(event.clientX, event.clientY);
       if (point) {
         pushTrailPoint(point.x, point.y);
       }
     };
 
-    const handlePointerDown = (event: PointerEvent) => {
+    const handlePointerDown = (event) => {
       isMouseDownRef.current = true;
       const point = updateMousePosition(event.clientX, event.clientY);
       if (point) {
@@ -396,14 +384,14 @@ export function InteractiveGrid({
 }
 
 export function ClickEffects() {
-  const audioRef = useRef<AudioContext | null>(null);
+  const audioRef = useRef(null);
 
   useEffect(() => {
     const playClick = () => {
       try {
-        const AudioContextClass = window.AudioContext || (window as any).webkitAudioContext;
-        if (!AudioContextClass) return;
-        const ctx = audioRef.current || new AudioContextClass();
+        const AudioContext = window.AudioContext || window.webkitAudioContext;
+        if (!AudioContext) return;
+        const ctx = audioRef.current || new AudioContext();
         audioRef.current = ctx;
         const oscillator = ctx.createOscillator();
         const gain = ctx.createGain();
@@ -417,11 +405,11 @@ export function ClickEffects() {
         oscillator.start();
         oscillator.stop(ctx.currentTime + 0.1);
       } catch {
-        // audio optional
+        // Audio is a small enhancement; ignore unsupported browsers.
       }
     };
 
-    const onPointerDown = (event: PointerEvent) => {
+    const onPointerDown = (event) => {
       document.documentElement.style.setProperty("--click-x", `${event.clientX}px`);
       document.documentElement.style.setProperty("--click-y", `${event.clientY}px`);
       document.documentElement.classList.remove("click-pulse-active");
@@ -436,10 +424,10 @@ export function ClickEffects() {
   return <div className="click-pulse" aria-hidden="true" />;
 }
 
-export function ThemeToggle({ className = "" }: { className?: string }) {
+export function ThemeToggle({ className = "" }) {
   const [theme, setTheme] = useState(() => {
-    if (typeof window === "undefined") return "dark";
-    return localStorage.getItem("portfolio-theme") || "dark";
+    if (typeof window === "undefined") return "light";
+    return localStorage.getItem("portfolio-theme") || "light";
   });
 
   useEffect(() => {
@@ -451,8 +439,8 @@ export function ThemeToggle({ className = "" }: { className?: string }) {
     const nextTheme = theme === "dark" ? "light" : "dark";
     const apply = () => setTheme(nextTheme);
 
-    if ((document as any).startViewTransition) {
-      (document as any).startViewTransition(apply);
+    if (document.startViewTransition) {
+      document.startViewTransition(apply);
     } else {
       apply();
     }
@@ -466,16 +454,8 @@ export function ThemeToggle({ className = "" }: { className?: string }) {
   );
 }
 
-export function FluidGradientText({
-  text,
-  viewBoxWidth = 1400,
-  viewBoxHeight = 300,
-}: {
-  text: string;
-  viewBoxWidth?: number;
-  viewBoxHeight?: number;
-}) {
-  const gradientRef = useRef<SVGLinearGradientElement>(null);
+export function FluidGradientText({ text, viewBoxWidth = 1400, viewBoxHeight = 300 }) {
+  const gradientRef = useRef(null);
   const rawXRef = useRef(viewBoxWidth / 2);
   const currentXRef = useRef(viewBoxWidth / 2);
   const rafRef = useRef(0);
@@ -483,16 +463,14 @@ export function FluidGradientText({
   useEffect(() => {
     const tick = () => {
       currentXRef.current += (rawXRef.current - currentXRef.current) * 0.14;
-      if (gradientRef.current) {
-        gradientRef.current.setAttribute("x1", String(currentXRef.current));
-      }
+      if (gradientRef.current) gradientRef.current.setAttribute("x1", String(currentXRef.current));
       rafRef.current = requestAnimationFrame(tick);
     };
     rafRef.current = requestAnimationFrame(tick);
     return () => cancelAnimationFrame(rafRef.current);
   }, []);
 
-  const handlePointerMove = (event: React.PointerEvent<HTMLDivElement>) => {
+  const handlePointerMove = (event) => {
     const rect = event.currentTarget.getBoundingClientRect();
     rawXRef.current = Math.max(0, Math.min(viewBoxWidth, ((event.clientX - rect.left) / rect.width) * viewBoxWidth));
   };
@@ -537,41 +515,211 @@ export function FluidGradientText({
   );
 }
 
-export function ShimmerText({ children, className = "" }: { children: React.ReactNode; className?: string }) {
-  return <span className={`shimmer-text ${className}`}>{children}</span>;
-}
-
 export function ElectricBorder({
   children,
-  color = "#10b981",
-  speed = 0.6,
-  borderRadius = 16,
-  borderOffset = 4,
+  color = "#ec4899",
+  speed = 0.75,
+  chaos = 0.08,
+  borderRadius = 100,
   className = "",
-}: {
-  children: React.ReactNode;
-  color?: string;
-  speed?: number;
-  borderRadius?: number;
-  borderOffset?: number;
-  className?: string;
+  displacement = 60,
+  borderOffset = 60,
 }) {
-  const containerRef = useRef<HTMLDivElement>(null);
+  const canvasRef = useRef(null);
+  const containerRef = useRef(null);
+  const timeRef = useRef(0);
+  const lastFrameTimeRef = useRef(0);
 
   useEffect(() => {
+    const canvas = canvasRef.current;
     const container = containerRef.current;
-    if (!container) return;
+    if (!canvas || !container) return undefined;
 
-    container.style.setProperty("--electric-color", color);
-    container.style.setProperty("--electric-speed", `${speed}s`);
-    container.style.setProperty("--electric-radius", `${borderRadius}px`);
-    container.style.setProperty("--electric-offset", `${borderOffset}px`);
-  }, [color, speed, borderRadius, borderOffset]);
+    const ctx = canvas.getContext("2d");
+    if (!ctx) return undefined;
+    let raf = 0;
+    let width = 1;
+    let height = 1;
+
+    const random = (x) => (Math.sin(x * 12.9898) * 43758.5453) % 1;
+    const noise2D = (x, y) => {
+      const i = Math.floor(x);
+      const j = Math.floor(y);
+      const fx = x - i;
+      const fy = y - j;
+      const a = random(i + j * 57);
+      const b = random(i + 1 + j * 57);
+      const c = random(i + (j + 1) * 57);
+      const d = random(i + 1 + (j + 1) * 57);
+      const ux = fx * fx * (3 - 2 * fx);
+      const uy = fy * fy * (3 - 2 * fy);
+      return a * (1 - ux) * (1 - uy) + b * ux * (1 - uy) + c * (1 - ux) * uy + d * ux * uy;
+    };
+    const octavedNoise = (x, time, seed) => {
+      let y = 0;
+      let amplitude = 0.08;
+      let frequency = 10;
+      for (let i = 0; i < 10; i += 1) {
+        y += amplitude * noise2D(frequency * x + seed * 100, time * frequency * 0.3);
+        frequency *= 1.6;
+        amplitude *= 0.7;
+      }
+      return y;
+    };
+
+    const getCornerPoint = (centerX, centerY, radius, startAngle, progress) => {
+      const angle = startAngle + progress * (Math.PI / 2);
+      return {
+        x: centerX + radius * Math.cos(angle),
+        y: centerY + radius * Math.sin(angle),
+      };
+    };
+
+    const getRoundedRectPoint = (t, left, top, rectWidth, rectHeight, radius) => {
+      const straightWidth = Math.max(0, rectWidth - 2 * radius);
+      const straightHeight = Math.max(0, rectHeight - 2 * radius);
+      const cornerArc = (Math.PI * radius) / 2;
+      const totalPerimeter = 2 * straightWidth + 2 * straightHeight + 4 * cornerArc;
+      const distance = t * totalPerimeter;
+      let accumulated = 0;
+
+      if (distance <= accumulated + straightWidth) {
+        return { x: left + radius + distance - accumulated, y: top };
+      }
+      accumulated += straightWidth;
+
+      if (distance <= accumulated + cornerArc) {
+        return getCornerPoint(left + rectWidth - radius, top + radius, radius, -Math.PI / 2, (distance - accumulated) / cornerArc);
+      }
+      accumulated += cornerArc;
+
+      if (distance <= accumulated + straightHeight) {
+        return { x: left + rectWidth, y: top + radius + distance - accumulated };
+      }
+      accumulated += straightHeight;
+
+      if (distance <= accumulated + cornerArc) {
+        return getCornerPoint(left + rectWidth - radius, top + rectHeight - radius, radius, 0, (distance - accumulated) / cornerArc);
+      }
+      accumulated += cornerArc;
+
+      if (distance <= accumulated + straightWidth) {
+        return { x: left + rectWidth - radius - (distance - accumulated), y: top + rectHeight };
+      }
+      accumulated += straightWidth;
+
+      if (distance <= accumulated + cornerArc) {
+        return getCornerPoint(left + radius, top + rectHeight - radius, radius, Math.PI / 2, (distance - accumulated) / cornerArc);
+      }
+      accumulated += cornerArc;
+
+      if (distance <= accumulated + straightHeight) {
+        return { x: left, y: top + rectHeight - radius - (distance - accumulated) };
+      }
+      accumulated += straightHeight;
+
+      return getCornerPoint(left + radius, top + radius, radius, Math.PI, (distance - accumulated) / cornerArc);
+    };
+
+    const updateSize = () => {
+      const rect = container.getBoundingClientRect();
+      const dpr = Math.min(window.devicePixelRatio || 1, 2);
+      width = Math.max(1, rect.width + borderOffset * 2);
+      height = Math.max(1, rect.height + borderOffset * 2);
+
+      canvas.width = width * dpr;
+      canvas.height = height * dpr;
+      canvas.style.width = `${width}px`;
+      canvas.style.height = `${height}px`;
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    };
+
+    const draw = (currentTime) => {
+      const deltaTime = (currentTime - lastFrameTimeRef.current) / 1000;
+      timeRef.current += deltaTime * speed;
+      lastFrameTimeRef.current = currentTime;
+
+      const dpr = Math.min(window.devicePixelRatio || 1, 2);
+      ctx.setTransform(1, 0, 0, 1, 0, 0);
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      ctx.strokeStyle = color;
+      ctx.lineWidth = 1;
+      ctx.lineCap = "round";
+      ctx.lineJoin = "round";
+
+      const left = borderOffset;
+      const top = borderOffset;
+      const borderWidth = width - 2 * borderOffset;
+      const borderHeight = height - 2 * borderOffset;
+      const radius = Math.min(borderRadius, Math.min(borderWidth, borderHeight) / 2);
+      const sampleCount = Math.max(120, Math.floor((2 * (borderWidth + borderHeight) + 2 * Math.PI * radius) / 2));
+
+      ctx.beginPath();
+      for (let i = 0; i <= sampleCount; i += 1) {
+        const progress = i / sampleCount;
+        const point = getRoundedRectPoint(progress, left, top, borderWidth, borderHeight, radius);
+        const displacedX = point.x + octavedNoise(progress * 8, timeRef.current, 0) * displacement;
+        const displacedY = point.y + octavedNoise(progress * 8, timeRef.current, 1) * displacement;
+
+        if (i === 0) ctx.moveTo(displacedX, displacedY);
+        else ctx.lineTo(displacedX, displacedY);
+      }
+
+      ctx.closePath();
+      ctx.stroke();
+
+      raf = requestAnimationFrame(draw);
+    };
+
+    updateSize();
+    const resizeObserver = new ResizeObserver(updateSize);
+    resizeObserver.observe(container);
+    raf = requestAnimationFrame(draw);
+    return () => {
+      cancelAnimationFrame(raf);
+      resizeObserver.disconnect();
+    };
+  }, [borderRadius, chaos, color, speed, displacement, borderOffset]);
 
   return (
-    <div ref={containerRef} className={`electric-border-wrapper ${className}`}>
-      <div className="electric-border-fx" aria-hidden="true" />
-      <div className="electric-border-content">{children}</div>
+    <div
+      ref={containerRef}
+      className={`electric-wrap ${className}`}
+      style={{ "--electric-color": color, borderRadius }}
+      data-slot="electric-border"
+    >
+      <canvas ref={canvasRef} className="electric-canvas" aria-hidden="true" />
+      <div className="electric-glow" aria-hidden="true" />
+      <div className="electric-content">{children}</div>
+    </div>
+  );
+}
+
+export function ShimmerText({ children, className = "" }) {
+  const text = typeof children === "string" ? children : null;
+  if (!text) return <span className={`shimmer-text ${className}`}>{children}</span>;
+
+  return (
+    <span className={`shimmering-letters ${className}`} aria-label={text}>
+      {text.split("").map((char, index) => (
+        <span key={`${char}-${index}`} style={{ animationDelay: `${(index / text.length) * 1.4}s` }} aria-hidden="true">
+          {char}
+        </span>
+      ))}
+    </span>
+  );
+}
+
+export function CircularStamp({ text = "BUILD PLAY INSPIRE" }) {
+  const chars = `${text} • `.split("");
+  return (
+    <div className="circular-stamp" aria-hidden="true">
+      {chars.map((char, index) => (
+        <span key={`${char}-${index}`} style={{ transform: `rotate(${(360 / chars.length) * index}deg)` }}>
+          {char}
+        </span>
+      ))}
     </div>
   );
 }

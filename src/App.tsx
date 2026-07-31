@@ -1,71 +1,200 @@
 import React, { useState } from "react";
 import {
-  ArrowRight,
   ArrowUpRight,
-  Award,
   Bot,
   Briefcase,
-  CheckCircle2,
   Code2,
   Cpu,
-  Database,
-  Download,
-  ExternalLink as ExternalIcon,
-  FileText,
-  Flame,
-  FolderGit2,
+  FileDown,
   GraduationCap,
-  Layers,
-  Layout,
   Mail,
-  MapPin,
   Phone,
+  Puzzle,
   Rocket,
   ShieldCheck,
   Sparkles,
-  Target,
-  Terminal,
   Trophy,
   Users,
-  Zap,
+  Check,
+  Copy,
+  ExternalLink as ExternalIcon
 } from "lucide-react";
-import {
-  achievementsData,
-  experienceData,
-  featuredProjects,
-  personalInfo,
-  secondaryProjects,
-  skillGroups,
-} from "./data/portfolioData";
-import { FeaturedProject } from "./types/portfolio";
 import {
   ClickEffects,
   ElectricBorder,
   FluidGradientText,
   InteractiveGrid,
-  MouseGlow,
   ScrollProgress,
   ShimmerText,
   ThemeToggle,
 } from "./components/effects";
-import { Badge, Button, Card, SectionHeader, Stat } from "./components/ui";
-import { ProjectCaseStudyModal } from "./components/ProjectCaseStudyModal";
-import { ResumeModal } from "./components/ResumeModal";
-import { GithubIcon, LinkedinIcon } from "./components/SocialIcons";
+import { Button, Card, SectionHeader, Stat } from "./components/ui";
 
-/* Aceternity UI 3D & Glowing Components from Adrian Hajdin Portfolio */
-import { Spotlight } from "./components/ui/Spotlight";
-import { MagicButton } from "./components/ui/MagicButton";
-import { PinContainer } from "./components/ui/Pin";
-import { MovingBorderCard } from "./components/ui/MovingBorders";
+function Github({ className = "h-4 w-4" }: { className?: string }) {
+  return (
+    <svg className={className} fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+      <path fillRule="evenodd" clipRule="evenodd" d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.53 1.032 1.53 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z" />
+    </svg>
+  );
+}
+
+function Linkedin({ className = "h-4 w-4" }: { className?: string }) {
+  return (
+    <svg className={className} fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+      <path d="M19 3a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h14m-.5 15.5v-5.3a3.26 3.26 0 0 0-3.26-3.26c-.85 0-1.84.52-2.28 1.3v-1.11h-2.79v8.37h2.79v-4.93c0-.77.62-1.4 1.39-1.4a1.4 1.4 0 0 1 1.4 1.4v4.93h2.75M6.88 8.56a1.68 1.68 0 0 0 1.68-1.68c0-.93-.75-1.69-1.68-1.69a1.69 1.69 0 0 0-1.69 1.69c0 .93.76 1.68 1.69 1.68m1.39 9.94v-8.37H5.5v8.37h2.77z" />
+    </svg>
+  );
+}
+
+const personalInfo = {
+  name: "Nguyen Nhat Thien",
+  alias: "Tee",
+  title: "Software Engineer | Full-Stack & AI Developer",
+  location: "Thu Duc, Ho Chi Minh City, Vietnam",
+  email: "teeforwork21@gmail.com",
+  phone: "(+84) 389 037 546",
+  gpa: "3.24 / 4.00",
+  school: "HCMUTE - Information Technology",
+  expectedGrad: "2027",
+  github: "https://github.com/teehihi",
+  linkedin: "https://www.linkedin.com/in/tee21/",
+  tagline: "Building AI-powered software products for real users.",
+};
+
+const projects = [
+  {
+    id: "maze",
+    title: "ChayNgayDi MazeHunter",
+    subtitle: "Core game project / pathfinding puzzle",
+    variant: "maze",
+    featured: true,
+    tags: ["Pygame", "Pathfinding", "Pixel art", "Maze logic"],
+    description:
+      "A pixel-art maze game with pathfinding logic, animated characters, collectible objectives, and multiple environment styles. This is the clearest proof of puzzle/gameplay thinking.",
+    links: [
+      { label: "GitHub", href: "https://github.com/teehihi/ChayNgayDi_MazeHunter" }
+    ],
+  },
+  {
+    id: "apex",
+    title: "APEX-CHAOS",
+    subtitle: "Core game project / 1v1 autobattler",
+    variant: "apex",
+    featured: true,
+    tags: ["React", "Vite", "Canvas", "Co-developed", "Combat balance"],
+    description:
+      "A co-developed browser autobattler with combat rules, eight distinct champions, fighter selection UI, animated asset sets, and a production loop shaped through GDDs, Codex specs, playtesting, and balance tuning. Deployed on Vercel.",
+    links: [
+      { label: "Live demo", href: "https://apexchaos.vercel.app/" },
+      { label: "GitHub", href: "https://github.com/Khanh-glitch/APEX-CHAOS" },
+    ],
+  },
+  {
+    id: "daiduongsanca",
+    title: "Đại Dương Săn Cá",
+    subtitle: "Core game project / browser arcade fish shooter",
+    variant: "daiduongsanca",
+    featured: true,
+    tags: ["HTML5 Canvas", "Vanilla JS", "Arcade Shooter", "Collision Physics"],
+    description:
+      "A browser arcade-style fish shooting game featuring multiple fish types, smooth bullet physics, dynamic scoring, audio effects, and responsive controls. Built with canvas and vanilla Javascript.",
+    links: [
+      { label: "Live demo", href: "https://daiduongsanca.vercel.app/" },
+      { label: "GitHub", href: "https://github.com/teehihi/dai-duong-san-ca" },
+    ],
+  },
+  {
+    id: "uniquizz",
+    title: "UniQuizz",
+    subtitle: "Supporting project / battle quiz + Qbit wardrobe",
+    variant: "uniquizz",
+    featured: false,
+    tags: ["React", "NodeJS", "MongoDB", "Socket room", "Avatar system"],
+    description:
+      "A quiz platform with multiplayer rooms, answer flow, generated learning content, and a polished Qbit dressing system for the battle room.",
+    links: [
+      { label: "Live demo", href: "https://uniquizzdom.vercel.app/" },
+      { label: "Frontend", href: "https://github.com/teehihi/UniQuizzFE" },
+    ],
+  },
+  {
+    id: "xenow",
+    title: "XeNow",
+    subtitle: "Supporting project / full-stack delivery",
+    variant: "xenow",
+    featured: false,
+    tags: ["React", "NodeJS", "REST API", "MySQL", "Booking flow"],
+    description:
+      "A full-stack vehicle rental product showing auth, search, booking, upload, API integration, loading/error states, data models, and deployment discipline.",
+    links: [
+      { label: "Live demo", href: "https://xenow.vercel.app/" },
+      { label: "GitHub", href: "https://github.com/teehihi/xe-now-ui" },
+    ],
+  },
+  {
+    id: "phoenixvision",
+    title: "PhoenixVision AI",
+    subtitle: "Computer Vision & Defect Detection",
+    variant: "archaeologist",
+    featured: false,
+    tags: ["Python", "YOLOv11", "PyTorch", "FastAPI", "React"],
+    description:
+      "Real-time industrial anomaly detection system powered by YOLOv11 and PyTorch, featuring web dashboard monitoring, edge deployment support, and instant quality inspection reports.",
+    links: [
+      { label: "GitHub Repo", href: "https://github.com/teehihi" }
+    ],
+  },
+];
+
+const strengths = [
+  {
+    icon: Code2,
+    title: "Full-Stack Web Architecture",
+    body: "Designing scalable REST APIs, responsive React interfaces, and clean state management.",
+  },
+  {
+    icon: Bot,
+    title: "AI Integration & Computer Vision",
+    body: "Deploying YOLOv11 models, RAG pipelines, and automated AI evaluation workflows.",
+  },
+  {
+    icon: Puzzle,
+    title: "Interactive Gameplay & Canvas",
+    body: "Building smooth 60fps Canvas physics, particle systems, and pathfinding puzzles.",
+  },
+  {
+    icon: ShieldCheck,
+    title: "Production Discipline & Testing",
+    body: "Checking edge cases, optimizing build bundles, and maintaining CI/CD deployment pipelines.",
+  },
+];
 
 const navItems = [
   ["about", "About"],
   ["skills", "Skills"],
-  ["showcase", "Projects"],
+  ["projects", "Projects"],
   ["experience", "Experience"],
-  ["achievements", "Honors"],
+  ["honors", "Honors"],
   ["contact", "Contact"],
+];
+
+const mazeDemoGifs = [
+  {
+    label: "Hunter chase",
+    src: "https://media4.giphy.com/media/AoliG8SixDEgCZe3Hi/giphy.gif",
+  },
+  {
+    label: "Gameplay",
+    src: "https://media3.giphy.com/media/v1.Y2lkPTc5MGI3NjExOGQ3NjU3dHplYWlxcTV1ZGw0aDYzdzUxZXVseHE3bGhweTVhMG1tdSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/CTF3ctDQNVei069FBQ/giphy.gif",
+  },
+  {
+    label: "Quiz gate",
+    src: "https://media4.giphy.com/media/r5CpASYBt3VdaFHhLM/giphy.gif",
+  },
+  {
+    label: "AI path",
+    src: "https://media3.giphy.com/media/1WuKxMJwcY1Gecpo08/giphy.gif",
+  },
 ];
 
 function ExternalLink({ href, children }: { href: string; children: React.ReactNode }) {
@@ -77,30 +206,215 @@ function ExternalLink({ href, children }: { href: string; children: React.ReactN
   );
 }
 
-export function App() {
-  const [selectedProject, setSelectedProject] = useState<FeaturedProject | null>(null);
-  const [resumeOpen, setResumeOpen] = useState(false);
-  const [copiedEmail, setCopiedEmail] = useState(false);
-  const [messageSent, setMessageSent] = useState(false);
+function ProfileAvatar() {
+  return (
+    <div className="profile-avatar" aria-hidden="true">
+      <img src="/team/tee.webp" alt="Nguyen Nhat Thien" onError={(e) => {
+        (e.target as HTMLElement).style.display = 'none';
+      }} />
+      <span>NNT</span>
+    </div>
+  );
+}
+
+function ProjectCard({ project }: { project: typeof projects[0] }) {
+  return (
+    <Card className={`project-card ${project.featured ? "featured" : ""}`}>
+      <div className="project-head">
+        <div>
+          <span className="project-subtitle">{project.subtitle}</span>
+          <h3>{project.title}</h3>
+        </div>
+      </div>
+      <p className="project-description">{project.description}</p>
+      <ProjectVisual variant={project.variant} />
+      <div className="chip-list">
+        {project.tags.map((tag) => (
+          <span key={tag}>{tag}</span>
+        ))}
+      </div>
+      <div className="link-row">
+        {project.links.map((link) => (
+          <ExternalLink key={link.href} href={link.href}>
+            {link.label}
+          </ExternalLink>
+        ))}
+      </div>
+    </Card>
+  );
+}
+
+function ProjectVisual({ variant }: { variant: string }) {
+  if (variant === "apex") return <ApexVisual />;
+  if (variant === "uniquizz") return <UniQuizzVisual />;
+  if (variant === "xenow") return <XeNowVisual />;
+  if (variant === "daiduongsanca") return <DaiduongsancaVisual />;
+  return <MazeVisual />;
+}
+
+function MazeVisual() {
+  return (
+    <div className="maze-visual">
+      <div className="maze-demo-main">
+        <img src={mazeDemoGifs[0].src} alt={`MazeHunter ${mazeDemoGifs[0].label} demo`} loading="lazy" />
+        <span>{mazeDemoGifs[0].label}</span>
+      </div>
+      <div className="maze-demo-strip">
+        {mazeDemoGifs.slice(1).map((gif) => (
+          <div key={gif.label} className="maze-demo-tile">
+            <img src={gif.src} alt={`MazeHunter ${gif.label} demo`} loading="lazy" />
+            <span>{gif.label}</span>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+function Qbit({ className = "", shirt = "shirt-aiute.svg", pants = "pants-cargo.svg", hat = "hat-frog.svg" }: { className?: string; shirt?: string; pants?: string; hat?: string }) {
+  return (
+    <div className={`qbit ${className}`} aria-hidden="true">
+      <img src="/showcase/uniquizz/body.svg" alt="" className="qbit-layer qbit-body" />
+      <img src={`/showcase/uniquizz/${pants}`} alt="" className="qbit-layer qbit-pants" />
+      <img src="/showcase/uniquizz/shoes-jordans.svg" alt="" className="qbit-layer qbit-shoes" />
+      <img src={`/showcase/uniquizz/${shirt}`} alt="" className="qbit-layer qbit-shirt" />
+      <img src="/showcase/uniquizz/head.svg" alt="" className="qbit-layer qbit-head" />
+      <img src={`/showcase/uniquizz/${hat}`} alt="" className="qbit-layer qbit-hat" />
+    </div>
+  );
+}
+
+function UniQuizzVisual() {
+  const closetItems = [
+    "shirt-mu.svg",
+    "shirt-ueh.svg",
+    "shirt-aiute.svg",
+    "shirt-asn.svg",
+    "shirt-brazil.svg",
+    "shirt-aohub.svg",
+    "pants-dino.svg",
+    "pants-cargo.svg",
+    "hat-frog.svg",
+    "shoes-jordans.svg",
+  ];
+
+  return (
+    <div className="uniquizz-visual">
+      <div className="uniquizz-stage">
+        <Qbit shirt="shirt-aiute.svg" pants="pants-cargo.svg" hat="hat-frog.svg" />
+      </div>
+      <div className="uniquizz-closet">
+        {closetItems.map((item) => (
+          <div key={item} className="closet-tile">
+            <img src={`/showcase/uniquizz/${item}`} alt={item} />
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+function ApexVisual() {
+  const fighters = [
+    ["Vex", "autobattler-fighter-1.png"],
+    ["Sylas", "autobattler-fighter-2.png"],
+    ["Akali", "autobattler-fighter-3.png"],
+    ["Darius", "autobattler-fighter-4.png"],
+    ["Sett", "autobattler-fighter-5.png"],
+    ["Lux", "autobattler-fighter-6.png"],
+    ["Ahri", "autobattler-fighter-7.png"],
+    ["Jinx", "autobattler-fighter-8.png"],
+  ];
+
+  return (
+    <div className="apex-visual">
+      <div className="apex-roster">
+        {fighters.map(([name, file]) => (
+          <div key={name} className="fighter-tile">
+            <img src={`/showcase/apexchaos/${file}`} alt={name} loading="lazy" />
+            <span>{name}</span>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+function XeNowVisual() {
+  return (
+    <div className="xenow-visual">
+      <div className="xenow-mockup">
+        <div className="xenow-header">
+          <span className="xenow-dot red" />
+          <span className="xenow-dot yellow" />
+          <span className="xenow-dot green" />
+          <span className="xenow-title">XeNow Mobility Platform</span>
+        </div>
+        <div className="xenow-grid">
+          <div className="xenow-card">
+            <h4>EV Scooter Sedan</h4>
+            <p>120 km/h • Electric</p>
+            <span className="xenow-badge">Available</span>
+          </div>
+          <div className="xenow-card">
+            <h4>City Cruiser SUV</h4>
+            <p>Automatic • 5 Seats</p>
+            <span className="xenow-badge">Booked</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function DaiduongsancaVisual() {
+  const demos = [
+    [
+      "Gameplay",
+      "https://media4.giphy.com/media/v1.Y2lkPTc5MGI3NjExOHYxcXV1bTV6ZXljZWQ3ZXdwcjZqMXE0NWtpaXV5eDlndjJ3dXNpdCZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/VlTspk3l4xQzW6y99t/giphy.gif",
+    ],
+    [
+      "Boss Battle",
+      "https://media2.giphy.com/media/v1.Y2lkPTc5MGI3NjExZjkxdW9reDh5MThnZzU1eXR2d2ZuN2lsZmQ0OWtyd24xMXJqa3lhbSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/IsEJWcJEOwyWTyDQ2k/giphy.gif",
+    ],
+    [
+      "Start Menu",
+      "https://media0.giphy.com/media/v1.Y2lkPTc5MGI3NjExZ2huMG1ncWZycXprbG91MjRvcXc5amVxcHkyanpnYTh2djBjaTZheiZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/KNWv19m2kr2XwP3OHc/giphy.gif",
+    ],
+  ];
+
+  return (
+    <div className="daiduongsanca-visual">
+      <div className="daiduongsanca-demo-main">
+        <img src={demos[0][1]} alt="Daiduongsanca gameplay demo" loading="lazy" />
+        <span>{demos[0][0]}</span>
+      </div>
+      <div className="daiduongsanca-demo-strip">
+        {demos.slice(1).map(([label, src]) => (
+          <div key={label} className="daiduongsanca-demo-tile">
+            <img src={src} alt={`Daiduongsanca ${label} demo`} loading="lazy" />
+            <span>{label}</span>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+export default function App() {
+  const [copied, setCopied] = useState(false);
+  const featuredProjects = projects.filter((project) => project.featured);
+  const supportingProjects = projects.filter((project) => !project.featured);
 
   const handleCopyEmail = () => {
     navigator.clipboard.writeText(personalInfo.email);
-    setCopiedEmail(true);
-    setTimeout(() => setCopiedEmail(false), 2500);
-  };
-
-  const handleSendMessage = (e: React.FormEvent) => {
-    e.preventDefault();
-    setMessageSent(true);
-    setTimeout(() => setMessageSent(false), 4000);
+    setCopied(true);
+    setTimeout(() => setCopied(false), 2000);
   };
 
   return (
-    <main className="page-grid-shell relative min-h-screen bg-[#070b14] text-gray-100 selection:bg-emerald-500 selection:text-slate-950 font-sans overflow-x-hidden">
-      {/* Scroll Progress Bar */}
+    <main className="page-grid-shell">
       <ScrollProgress />
-
-      {/* Interactive Grid Canvas Background ("Cái nền quẹt quẹt") */}
       <InteractiveGrid
         clickInteraction
         clickForce={0.8}
@@ -113,22 +427,13 @@ export function App() {
         repulsionStrength={-0.66}
         motionSpeed={0.68}
       />
-
-      {/* Click Audio Synthesis & Ripple Effects */}
       <ClickEffects />
 
-      {/* Mouse Radial Glow */}
-      <MouseGlow />
-
-      {/* Adrian Hajdin Portfolio Spotlights */}
-      <div className="pointer-events-none overflow-hidden">
-        <Spotlight className="-top-40 -left-10 md:-left-32 md:-top-20 h-screen" fill="#10b981" />
-        <Spotlight className="h-[80vh] w-[50vw] top-10 left-full" fill="#06b6d4" />
-        <Spotlight className="left-80 top-28 h-[80vh] w-[50vw]" fill="#3b82f6" />
-      </div>
-
-      {/* Floating Section Navigation Bar */}
+      {/* FLOATING NAVBAR */}
       <nav className="section-nav" aria-label="Portfolio navigation">
+        <a href="#about" className="nav-signature" aria-label="Back to top">
+          NNT
+        </a>
         <div className="nav-links">
           {navItems.map(([id, label]) => (
             <a key={id} href={`#${id}`}>
@@ -138,383 +443,255 @@ export function App() {
         </div>
         <div className="nav-actions">
           <ThemeToggle />
-          <button
-            onClick={() => setResumeOpen(true)}
-            className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-mono bg-emerald-500/20 text-emerald-300 border border-emerald-500/40 hover:bg-emerald-500/30 transition-colors"
-          >
-            <FileText className="h-3.5 w-3.5" />
-            Resume
-          </button>
           <a href={personalInfo.github} target="_blank" rel="noreferrer" aria-label="GitHub">
-            <GithubIcon className="h-4 w-4" />
+            <Github className="h-4 w-4" />
           </a>
           <a href={personalInfo.linkedin} target="_blank" rel="noreferrer" aria-label="LinkedIn">
-            <LinkedinIcon className="h-4 w-4" />
+            <Linkedin className="h-4 w-4" />
           </a>
         </div>
       </nav>
 
-      {/* MAIN CONTENT SHELL */}
-      <div className="page-reveal mx-auto flex min-h-screen w-full max-w-5xl flex-col px-3 py-4 text-sm leading-loose sm:px-6 lg:px-8 relative z-10">
+      <div className="page-reveal mx-auto flex min-h-screen w-full max-w-5xl flex-col px-3 py-4 text-sm leading-loose sm:px-6 lg:px-8">
         
-        {/* HERO SECTION WITH FLUID GRADIENT NAME BANNER */}
-        <section id="about" className="scroll-mt-24 pt-6">
-          {/* Giant Interactive Name Banner ("Banner Chính") */}
+        {/* HERO SECTION */}
+        <section id="about" className="scroll-mt-24">
           <div className="hero-title">
             <FluidGradientText text="NHAT THIEN" />
           </div>
 
           <div className="intro-grid">
             <ElectricBorder color="#10b981" speed={0.75} chaos={0.08} borderRadius={999} className="hero-orbit-card">
-              <div className="profile-avatar">
-                <span>NNT</span>
-              </div>
+              <ProfileAvatar />
             </ElectricBorder>
-
-            <div className="intro-copy space-y-4">
+            <div className="intro-copy">
               <p className="eyebrow">{personalInfo.title} • {personalInfo.location}</p>
-              <h1 className="text-3xl sm:text-5xl font-extrabold text-foreground dark:text-white tracking-tight">
+              <h1>
                 Building <ShimmerText>AI-powered</ShimmerText> software products for real users.
               </h1>
-              <p className="text-muted-foreground text-sm leading-relaxed font-light">
-                Senior Information Technology student at <strong className="text-foreground dark:text-white">HCMUTE</strong> (GPA {personalInfo.gpa}). Specializing in Full-Stack Web architecture, Computer Vision (YOLOv11), and Retrieval-Augmented Generation (RAG).
+              <p>
+                Senior Information Technology student at <strong>HCMUTE</strong> (GPA {personalInfo.gpa}).
+                Specializing in Full-Stack Web architecture, Computer Vision (YOLOv11), and Retrieval-Augmented Generation (RAG).
               </p>
-
-              {/* Moving Border Card for Stats */}
-              <MovingBorderCard borderRadius="1rem" className="p-4 bg-card/90 text-foreground">
-                <div className="grid grid-cols-3 gap-3 w-full">
-                  <Stat value="3.24" label="HCMUTE GPA" />
-                  <Stat value="500+" label="AI Questions Generated" />
-                  <Stat value="2027" label="Expected Grad" />
-                </div>
-              </MovingBorderCard>
-
-              {/* Aceternity UI Magic Buttons (Adrian Hajdin Style) */}
-              <div className="flex flex-wrap items-center gap-4 pt-2">
-                <MagicButton
-                  title="Showcase & Case Studies"
-                  icon={<Rocket className="h-4 w-4" />}
-                  position="right"
-                  handleClick={() => {
-                    const el = document.getElementById("showcase");
-                    el?.scrollIntoView({ behavior: "smooth" });
-                  }}
-                />
-
-                <MagicButton
-                  title="View Resume"
-                  icon={<FileText className="h-4 w-4" />}
-                  position="left"
-                  handleClick={() => setResumeOpen(true)}
-                  otherClasses="bg-slate-900 border border-slate-700"
-                />
-
-                <div className="flex items-center gap-2 pl-2">
-                  <a href={personalInfo.github} target="_blank" rel="noreferrer" className="p-2.5 rounded-xl border border-white/10 bg-white/5 text-gray-300 hover:text-white hover:border-emerald-500/40 transition-colors">
-                    <GithubIcon className="h-4 w-4" />
-                  </a>
-                  <a href={personalInfo.linkedin} target="_blank" rel="noreferrer" className="p-2.5 rounded-xl border border-white/10 bg-white/5 text-gray-300 hover:text-white hover:border-emerald-500/40 transition-colors">
-                    <LinkedinIcon className="h-4 w-4" />
-                  </a>
-                </div>
+              <div className="stat-strip">
+                <Stat value="3.24" label="HCMUTE GPA" />
+                <Stat value="500+" label="AI Questions Generated" />
+                <Stat value="2027" label="Expected Grad" />
+              </div>
+              <div className="hero-actions">
+                <Button href="#projects">Showcase & Case Studies</Button>
+                <Button href="#contact" variant="secondary">Get In Touch</Button>
               </div>
             </div>
           </div>
         </section>
 
         {/* SKILLS SECTION */}
-        <section id="skills" className="content-section">
+        <section id="skills" className="scroll-mt-24 py-16">
           <SectionHeader
-            eyebrow="Capabilities"
-            title="Technical Stack & Expertise"
-            description="Modern full-stack web architecture, backend APIs, relational & vector databases, and AI tooling."
+            eyebrow="CAPABILITIES"
+            title="Technical Stack & Engineering Mindset"
+            description="Proven tools and design philosophies honed through shipping production web apps and AI systems."
           />
-          <div className="profile-grid">
-            {skillGroups.map((group) => (
-              <Card key={group.category} className="profile-card">
-                <div className="profile-card-head">
-                  <div className="p-2.5 rounded-xl bg-emerald-500/10 border border-emerald-500/30 text-emerald-400">
-                    <Code2 className="h-5 w-5" />
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-8">
+            {strengths.map((item) => {
+              const Icon = item.icon;
+              return (
+                <Card key={item.title} className="p-6">
+                  <div className="flex items-center gap-3 mb-3">
+                    <div className="p-2 rounded-lg bg-emerald-500/10 text-emerald-500">
+                      <Icon className="h-5 w-5" />
+                    </div>
+                    <h3 className="text-base font-bold">{item.title}</h3>
                   </div>
-                  <div>
-                    <h3>{group.category}</h3>
-                    <p className="profile-role">{group.skills.length} core technologies</p>
-                  </div>
-                </div>
-
-                <div className="chip-list mt-4">
-                  {group.skills.map((skill) => (
-                    <span
-                      key={skill.name}
-                      className={
-                        skill.level === "Advanced"
-                          ? "border-emerald-500/40 text-emerald-300 bg-emerald-500/10 font-bold"
-                          : ""
-                      }
-                    >
-                      {skill.name}
-                    </span>
-                  ))}
-                </div>
-              </Card>
-            ))}
+                  <p className="text-muted-foreground">{item.body}</p>
+                </Card>
+              );
+            })}
           </div>
         </section>
 
-        {/* FEATURED PROJECTS WITH 3D PIN CONTAINERS (ADRIAN HAJDIN PORTFOLIO STYLE) */}
-        <section id="showcase" className="content-section space-y-8">
+        {/* PROJECTS SECTION */}
+        <section id="projects" className="scroll-mt-24 py-16">
           <SectionHeader
-            eyebrow="3D Case Studies & Products"
-            title="Featured Projects"
-            description="3D Perspective cards powered by Aceternity PinContainer. Click any project to open the full interactive Case Study."
+            eyebrow="PORTFOLIO SHOWCASE"
+            title="Featured Projects & Playable Demos"
+            description="Core software applications, browser games, and AI platforms built with high performance discipline."
           />
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12 pt-8">
+          <div className="featured-projects mt-8 space-y-8">
             {featuredProjects.map((project) => (
-              <div key={project.id} className="h-[26rem] flex items-center justify-center w-full">
-                <PinContainer
-                  title={project.title}
-                  href={project.githubUrl}
-                  containerClassName="w-full h-full"
-                >
-                  <div
-                    onClick={() => setSelectedProject(project)}
-                    className="flex flex-col p-4 tracking-tight text-slate-100/50 sm:basis-1/2 w-[20rem] sm:w-[22rem] h-[22rem] justify-between cursor-pointer"
-                  >
-                    <div className="space-y-2">
-                      <div className="flex justify-between items-center">
-                        <Badge className="bg-emerald-500/20 text-emerald-300 border-emerald-500/40">
-                          {project.status}
-                        </Badge>
-                        <span className="text-[11px] font-mono text-gray-400">{project.category}</span>
-                      </div>
-
-                      <h3 className="text-xl font-bold text-white tracking-tight">{project.title}</h3>
-                      <p className="text-emerald-400 text-xs font-mono">{project.tagline}</p>
-                      <p className="text-xs text-gray-300 leading-relaxed font-light line-clamp-3">
-                        {project.summary}
-                      </p>
-                    </div>
-
-                    <div className="space-y-3 pt-3 border-t border-white/10">
-                      <div className="flex flex-wrap gap-1">
-                        {project.techStack.flatMap((ts) => ts.technologies).slice(0, 4).map((tag) => (
-                          <span key={tag} className="px-2 py-0.5 rounded text-[10px] font-mono bg-white/5 border border-white/10 text-gray-300">
-                            {tag}
-                          </span>
-                        ))}
-                      </div>
-
-                      <div className="flex items-center justify-between pt-1">
-                        <span className="text-xs font-mono text-emerald-400 flex items-center gap-1 font-bold">
-                          <Sparkles className="h-3.5 w-3.5" />
-                          View Case Study →
-                        </span>
-                        <ExternalLink href={project.githubUrl}>Code</ExternalLink>
-                      </div>
-                    </div>
-                  </div>
-                </PinContainer>
-              </div>
+              <ProjectCard key={project.id} project={project} />
             ))}
           </div>
 
-          {/* SECONDARY / ARCHIVED PROJECTS */}
-          <div className="mt-16 space-y-4">
-            <h3 className="text-xl font-bold text-white flex items-center gap-2">
-              <Layers className="h-5 w-5 text-emerald-400" />
-              <span>More Projects & Prototypes</span>
-            </h3>
-
-            <div className="supporting-projects">
-              {secondaryProjects.map((project) => (
-                <Card key={project.id} className="project-card">
-                  <div className="project-head">
-                    <div>
-                      <p>{project.category}</p>
-                      <h3>{project.title}</h3>
-                    </div>
-                    <Badge>{project.status}</Badge>
-                  </div>
-                  <p className="card-copy">{project.description}</p>
-
-                  <div className="note-list project-note-list mt-3">
-                    {project.myContributions.map((contrib, idx) => (
-                      <p key={idx}>
-                        <strong>• {contrib}</strong>
-                      </p>
-                    ))}
-                  </div>
-
-                  <div className="chip-list">
-                    {project.techStack.map((tag) => (
-                      <span key={tag}>{tag}</span>
-                    ))}
-                  </div>
-
-                  <div className="link-row mt-3">
-                    {project.githubUrl && <ExternalLink href={project.githubUrl}>GitHub</ExternalLink>}
-                    {project.demoUrl && <ExternalLink href={project.demoUrl}>Demo</ExternalLink>}
-                  </div>
-                </Card>
+          <div className="supporting-projects mt-12">
+            <h3 className="text-lg font-bold mb-6">Additional Web & AI Platforms</h3>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              {supportingProjects.map((project) => (
+                <ProjectCard key={project.id} project={project} />
               ))}
             </div>
           </div>
         </section>
 
-        {/* WORK EXPERIENCE SECTION */}
-        <section id="experience" className="content-section">
+        {/* EXPERIENCE & EDUCATION SECTION */}
+        <section id="experience" className="scroll-mt-24 py-16">
           <SectionHeader
-            eyebrow="Work Experience"
-            title="AI Quality Evaluation & Prompt Iteration"
-            description="Evaluating machine learning outputs, multilingual prompt tuning, and RLHF workflows."
+            eyebrow="BACKGROUND"
+            title="Education & Technical Journey"
+            description="Academic milestones and hands-on software development experience."
           />
-          <div className="space-y-4">
-            {experienceData.map((exp) => (
-              <Card key={exp.company} className="profile-card">
-                <div className="flex items-center justify-between border-b border-[var(--line)] pb-3">
-                  <div>
-                    <h3 className="text-lg font-bold text-white">{exp.role} @ {exp.company}</h3>
-                    <p className="text-xs text-emerald-400 font-mono">{exp.type} • {exp.period}</p>
-                  </div>
-                  <Badge className="bg-emerald-500/20 text-emerald-300 border-emerald-500/40">Active</Badge>
+          <div className="mt-8 space-y-6">
+            <Card className="p-6">
+              <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2 mb-4">
+                <div>
+                  <h3 className="text-lg font-bold">{personalInfo.school}</h3>
+                  <p className="text-sm text-emerald-500 font-medium">Bachelor of Science in Information Technology</p>
                 </div>
-
-                <div className="note-list project-note-list mt-4">
-                  {exp.responsibilities.map((r, i) => (
-                    <p key={i}>
-                      <span className="text-gray-200">✓ {r}</span>
-                    </p>
-                  ))}
-                </div>
-
-                <div className="chip-list mt-4">
-                  {exp.skills.map((s) => (
-                    <span key={s}>{s}</span>
-                  ))}
-                </div>
-              </Card>
-            ))}
-          </div>
-        </section>
-
-        {/* ACHIEVEMENTS SECTION */}
-        <section id="achievements" className="content-section">
-          <SectionHeader
-            eyebrow="Honors & Certifications"
-            title="Hackathon Awards & Cloud Badges"
-          />
-          <div className="strength-grid">
-            {achievementsData.map((ach) => (
-              <Card key={ach.title + ach.event} className="strength-card">
-                <Trophy className="h-5 w-5 text-emerald-400" />
-                <h3>{ach.title}</h3>
-                <p className="text-xs text-emerald-400 font-mono">{ach.event} ({ach.year})</p>
-                <p>{ach.description}</p>
-              </Card>
-            ))}
-          </div>
-        </section>
-
-        {/* PHILOSOPHY QUOTE CARD */}
-        <section className="content-section">
-          <Card className="p-8 text-center space-y-4 border-emerald-500/30 bg-emerald-950/20">
-            <p className="text-xs font-mono text-emerald-400 uppercase tracking-wider">Engineering Philosophy</p>
-            <blockquote className="text-xl sm:text-2xl font-bold text-white italic">
-              "{personalInfo.quote}"
-            </blockquote>
-            <p className="text-xs text-gray-400 font-mono">— {personalInfo.name}</p>
-          </Card>
-        </section>
-
-        {/* CONTACT & FOOTER SECTION */}
-        <section id="contact" className="content-section pb-12">
-          <SectionHeader
-            eyebrow="Contact & Collaboration"
-            title="Let's build together"
-            description="Available for Software Engineer, Full-Stack, and AI Developer opportunities."
-          />
-
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <Card className="p-6 space-y-4">
-              <h3 className="text-lg font-bold text-white">Direct Contact</h3>
-
-              <div className="space-y-3 text-xs">
-                <div className="flex items-center justify-between p-3 rounded-xl bg-white/5 border border-white/10">
-                  <div className="flex items-center gap-2">
-                    <Mail className="h-4 w-4 text-emerald-400" />
-                    <span>{personalInfo.email}</span>
-                  </div>
-                  <button
-                    onClick={handleCopyEmail}
-                    className="px-2.5 py-1 rounded bg-emerald-500/20 text-emerald-300 border border-emerald-500/40 text-[11px]"
-                  >
-                    {copiedEmail ? "Copied!" : "Copy"}
-                  </button>
-                </div>
-
-                <div className="flex items-center gap-2 p-3 rounded-xl bg-white/5 border border-white/10">
-                  <Phone className="h-4 w-4 text-teal-400" />
-                  <span>{personalInfo.phone}</span>
-                </div>
-
-                <div className="flex items-center gap-2 p-3 rounded-xl bg-white/5 border border-white/10">
-                  <MapPin className="h-4 w-4 text-emerald-400" />
-                  <span>{personalInfo.location}</span>
-                </div>
+                <span className="text-xs px-3 py-1 rounded-full bg-muted text-muted-foreground font-mono">
+                  2023 - 2027 (Expected)
+                </span>
               </div>
-
-              <div className="flex gap-3 pt-2">
-                <ExternalLink href={personalInfo.github}>GitHub</ExternalLink>
-                <ExternalLink href={personalInfo.linkedin}>LinkedIn</ExternalLink>
-              </div>
+              <p className="text-sm text-muted-foreground leading-relaxed">
+                Currently maintaining a cumulative <strong>GPA of {personalInfo.gpa}</strong>. Specialized coursework in Data Structures & Algorithms, Database Management Systems, Software Architecture, Machine Learning, and Computer Vision.
+              </p>
             </Card>
 
             <Card className="p-6">
-              <form onSubmit={handleSendMessage} className="space-y-3">
-                <h3 className="text-lg font-bold text-white">Send Message</h3>
-                <input
-                  type="text"
-                  required
-                  placeholder="Your Name"
-                  className="w-full px-3 py-2 rounded-xl bg-black/40 border border-white/10 text-xs text-white placeholder-gray-500 focus:outline-none focus:border-emerald-500"
-                />
-                <input
-                  type="email"
-                  required
-                  placeholder="Your Email"
-                  className="w-full px-3 py-2 rounded-xl bg-black/40 border border-white/10 text-xs text-white placeholder-gray-500 focus:outline-none focus:border-emerald-500"
-                />
-                <textarea
-                  rows={3}
-                  required
-                  placeholder="Your Message..."
-                  className="w-full px-3 py-2 rounded-xl bg-black/40 border border-white/10 text-xs text-white placeholder-gray-500 focus:outline-none focus:border-emerald-500 resize-none"
-                />
-                <Button type="submit" className="w-full">
-                  {messageSent ? "Message Sent!" : "Send Message"}
-                </Button>
-              </form>
+              <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2 mb-4">
+                <div>
+                  <h3 className="text-lg font-bold">Full-Stack & AI Developer</h3>
+                  <p className="text-sm text-emerald-500 font-medium">Independent & Team Projects</p>
+                </div>
+                <span className="text-xs px-3 py-1 rounded-full bg-muted text-muted-foreground font-mono">
+                  2023 - Present
+                </span>
+              </div>
+              <ul className="text-sm text-muted-foreground space-y-2 list-disc list-inside">
+                <li>Architected full-stack React + Node.js web applications with RESTful APIs and real-time Socket rooms.</li>
+                <li>Trained and integrated computer vision models (YOLOv11) for real-time industrial anomaly inspection.</li>
+                <li>Co-developed browser gameplay engines, 60fps HTML5 Canvas physics, and interactive puzzle UI loops.</li>
+              </ul>
             </Card>
           </div>
-
-          <footer className="footer-note mt-12">
-            <p>Built with care by {personalInfo.name}. Featuring Aceternity UI 3D Effects from Adrian Hajdin Portfolio.</p>
-            <p>© {new Date().getFullYear()} {personalInfo.name} • {personalInfo.university}</p>
-          </footer>
         </section>
+
+        {/* HONORS & ACHIEVEMENTS SECTION */}
+        <section id="honors" className="scroll-mt-24 py-16">
+          <SectionHeader
+            eyebrow="MILESTONES"
+            title="Honors & Achievements"
+            description="Recognition and key milestones achieved during university and personal projects."
+          />
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-8">
+            <Card className="p-6">
+              <div className="flex items-center gap-3 mb-3">
+                <Trophy className="h-6 w-6 text-yellow-500" />
+                <h3 className="text-base font-bold">High Academic Standing</h3>
+              </div>
+              <p className="text-sm text-muted-foreground">
+                Consistently maintained a <strong>3.24 / 4.00 GPA</strong> in Information Technology at HCMUTE.
+              </p>
+            </Card>
+
+            <Card className="p-6">
+              <div className="flex items-center gap-3 mb-3">
+                <Rocket className="h-6 w-6 text-emerald-500" />
+                <h3 className="text-base font-bold">6+ Shipped Web & AI Products</h3>
+              </div>
+              <p className="text-sm text-muted-foreground">
+                Successfully deployed production projects across Vercel, Netlify, and GitHub pages serving live users.
+              </p>
+            </Card>
+          </div>
+        </section>
+
+        {/* CONTACT SECTION */}
+        <section id="contact" className="scroll-mt-24 py-16">
+          <SectionHeader
+            eyebrow="GET IN TOUCH"
+            title="Let's Build Something Together"
+            description="Open for software engineering opportunities, AI projects, and technical collaborations."
+          />
+          <div className="mt-8 grid grid-cols-1 md:grid-cols-2 gap-8">
+            <Card className="p-6 space-y-4">
+              <h3 className="text-lg font-bold">Contact Details</h3>
+              <div className="space-y-3">
+                <div className="flex items-center gap-3 text-muted-foreground">
+                  <Mail className="h-4 w-4 text-emerald-500" />
+                  <span>{personalInfo.email}</span>
+                </div>
+                <div className="flex items-center gap-3 text-muted-foreground">
+                  <Phone className="h-4 w-4 text-emerald-500" />
+                  <span>{personalInfo.phone}</span>
+                </div>
+                <div className="flex items-center gap-3 text-muted-foreground">
+                  <GraduationCap className="h-4 w-4 text-emerald-500" />
+                  <span>{personalInfo.school}</span>
+                </div>
+              </div>
+
+              <div className="pt-4 flex gap-3">
+                <button
+                  onClick={handleCopyEmail}
+                  className="flex items-center gap-2 px-4 py-2 rounded-lg bg-emerald-500 text-black font-semibold text-xs hover:bg-emerald-400 transition"
+                >
+                  {copied ? <Check className="h-4 w-4" /> : <Copy className="h-4 w-4" />}
+                  {copied ? "Email Copied!" : "Copy Email"}
+                </button>
+                <a
+                  href={`mailto:${personalInfo.email}`}
+                  className="flex items-center gap-2 px-4 py-2 rounded-lg border border-line text-xs font-semibold hover:bg-muted transition"
+                >
+                  Send Direct Email
+                </a>
+              </div>
+            </Card>
+
+            <Card className="p-6 space-y-4">
+              <h3 className="text-lg font-bold">Connect Online</h3>
+              <p className="text-sm text-muted-foreground">
+                Check out my open source repositories, live project demos, and professional career profile:
+              </p>
+              <div className="space-y-3 pt-2">
+                <a
+                  href={personalInfo.github}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="flex items-center justify-between p-3 rounded-lg border border-line hover:border-emerald-500 transition"
+                >
+                  <div className="flex items-center gap-3">
+                    <Github className="h-5 w-5 text-emerald-500" />
+                    <span className="font-medium text-xs">GitHub Repository</span>
+                  </div>
+                  <ExternalIcon className="h-4 w-4 text-muted-foreground" />
+                </a>
+
+                <a
+                  href={personalInfo.linkedin}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="flex items-center justify-between p-3 rounded-lg border border-line hover:border-emerald-500 transition"
+                >
+                  <div className="flex items-center gap-3">
+                    <Linkedin className="h-5 w-5 text-emerald-500" />
+                    <span className="font-medium text-xs">LinkedIn Profile</span>
+                  </div>
+                  <ExternalIcon className="h-4 w-4 text-muted-foreground" />
+                </a>
+              </div>
+            </Card>
+          </div>
+        </section>
+
+        {/* FOOTER */}
+        <footer className="py-8 border-t border-line text-center text-xs text-muted-foreground">
+          <p>© {new Date().getFullYear()} {personalInfo.name}. All rights reserved.</p>
+          <p className="mt-1">Engineered with React, Vite & Tailwind CSS • Powered by prompt-to-play architecture.</p>
+        </footer>
+
       </div>
-
-      {/* Detailed Case Study Modal */}
-      <ProjectCaseStudyModal
-        project={selectedProject}
-        onClose={() => setSelectedProject(null)}
-      />
-
-      {/* Printable Resume Modal */}
-      <ResumeModal isOpen={resumeOpen} onClose={() => setResumeOpen(false)} />
     </main>
   );
 }
-
-export default App;
