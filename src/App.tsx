@@ -173,15 +173,15 @@ export function App() {
 
             <div className="intro-copy space-y-4">
               <p className="eyebrow">{personalInfo.title} • {personalInfo.location}</p>
-              <h1 className="text-3xl sm:text-5xl font-extrabold text-white tracking-tight">
+              <h1 className="text-3xl sm:text-5xl font-extrabold text-foreground dark:text-white tracking-tight">
                 Building <ShimmerText>AI-powered</ShimmerText> software products for real users.
               </h1>
-              <p className="text-gray-300 text-sm leading-relaxed font-light">
-                Senior Information Technology student at <strong>HCMUTE</strong> (GPA {personalInfo.gpa}). Specializing in Full-Stack Web architecture, Computer Vision (YOLOv11), and Retrieval-Augmented Generation (RAG).
+              <p className="text-muted-foreground text-sm leading-relaxed font-light">
+                Senior Information Technology student at <strong className="text-foreground dark:text-white">HCMUTE</strong> (GPA {personalInfo.gpa}). Specializing in Full-Stack Web architecture, Computer Vision (YOLOv11), and Retrieval-Augmented Generation (RAG).
               </p>
 
               {/* Moving Border Card for Stats */}
-              <MovingBorderCard borderRadius="1rem" className="p-4 bg-[#090e17]/90">
+              <MovingBorderCard borderRadius="1rem" className="p-4 bg-card/90 text-foreground">
                 <div className="grid grid-cols-3 gap-3 w-full">
                   <Stat value="3.24" label="HCMUTE GPA" />
                   <Stat value="500+" label="AI Questions Generated" />

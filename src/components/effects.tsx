@@ -239,9 +239,10 @@ export function InteractiveGrid({
     const draw = () => {
       const now = performance.now();
       const config = configRef.current;
+      const isDark = document.documentElement.classList.contains("dark");
       const bg = parseColor(config.backgroundColor);
-      const grid = parseColor(config.gridColor);
-      const dot = parseColor(config.dotColor);
+      const grid = parseColor(config.gridColor || (isDark ? "rgba(255, 255, 255, 0.07)" : "rgba(15, 15, 15, 0.045)"));
+      const dot = parseColor(config.dotColor || (isDark ? "rgba(255, 255, 255, 0.22)" : "rgba(15, 15, 15, 0.18)"));
       const hover = parseColor(config.hoverColor);
       const trail = parseColor(config.trailColor);
       const speed = Math.max(0, Math.min(1, config.motionSpeed));
@@ -474,6 +475,7 @@ export function FluidGradientText({
   viewBoxWidth?: number;
   viewBoxHeight?: number;
 }) {
+  const [isHovered, setIsHovered] = useState(false);
   const gradientRef = useRef<SVGLinearGradientElement>(null);
   const rawXRef = useRef(viewBoxWidth / 2);
   const currentXRef = useRef(viewBoxWidth / 2);
@@ -495,13 +497,16 @@ export function FluidGradientText({
   const handlePointerMove = (event: React.PointerEvent<HTMLDivElement>) => {
     const rect = event.currentTarget.getBoundingClientRect();
     rawXRef.current = Math.max(0, Math.min(viewBoxWidth, ((event.clientX - rect.left) / rect.width) * viewBoxWidth));
+    if (!isHovered) setIsHovered(true);
   };
 
   return (
     <div
-      className="fluid-gradient-title"
+      className={`fluid-gradient-title ${isHovered ? "is-hovered" : ""}`}
       onPointerMove={handlePointerMove}
+      onPointerEnter={() => setIsHovered(true)}
       onPointerLeave={() => {
+        setIsHovered(false);
         rawXRef.current = viewBoxWidth / 2;
       }}
     >
@@ -511,9 +516,7 @@ export function FluidGradientText({
           y="50%"
           textAnchor="middle"
           dominantBaseline="central"
-          stroke="rgba(255,255,255,0.15)"
-          strokeWidth="2"
-          fill="url(#portfolio-fluid-gradient)"
+          className="fluid-text-element"
         >
           {text}
         </text>

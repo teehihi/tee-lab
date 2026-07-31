@@ -1,16 +1,16 @@
 @import "tailwindcss";
 
 :root {
-  color-scheme: dark;
-  --background: oklch(0.147 0.004 49.25);
-  --foreground: oklch(0.985 0.001 106.423);
-  --card: oklch(0.216 0.006 56.043);
-  --muted: oklch(0.268 0.007 34.298);
-  --muted-foreground: oklch(0.709 0.01 56.259);
-  --line: rgb(255 255 255 / 0.12);
-  --ring: oklch(0.709 0.01 56.259);
-  --page-grid-base: #0f0f10;
-  --page-grid-line: rgb(255 255 255 / 0.06);
+  color-scheme: light;
+  --background: #faf8f2;
+  --foreground: #121212;
+  --card: #ffffff;
+  --muted: #f1efea;
+  --muted-foreground: #666666;
+  --line: rgb(15 15 15 / 0.12);
+  --ring: #10b981;
+  --page-grid-base: #faf8f2;
+  --page-grid-line: rgb(15 15 15 / 0.045);
   --mouse-x: 50vw;
   --mouse-y: 20vh;
   --click-x: 50vw;
@@ -24,13 +24,13 @@
 
 .dark {
   color-scheme: dark;
-  --background: oklch(0.147 0.004 49.25);
-  --foreground: oklch(0.985 0.001 106.423);
-  --card: oklch(0.216 0.006 56.043);
-  --muted: oklch(0.268 0.007 34.298);
-  --muted-foreground: oklch(0.709 0.01 56.259);
+  --background: #070b14;
+  --foreground: #f3f4f6;
+  --card: #0c121e;
+  --muted: #1e293b;
+  --muted-foreground: #94a3b8;
   --line: rgb(255 255 255 / 0.12);
-  --page-grid-base: #0f0f10;
+  --page-grid-base: #070b14;
   --page-grid-line: rgb(255 255 255 / 0.06);
 }
 
@@ -342,6 +342,25 @@ a {
   font-size: 270px;
   font-weight: 900;
   letter-spacing: -0.01em;
+  stroke: rgba(15, 15, 15, 0.25);
+  stroke-width: 3px;
+  fill: transparent;
+  transition: fill 0.35s ease, stroke 0.35s ease;
+}
+
+.dark .fluid-gradient-title text,
+.dark .fluid-text-element {
+  stroke: rgba(255, 255, 255, 0.22);
+  stroke-width: 3px;
+  fill: transparent;
+}
+
+.fluid-gradient-title.is-hovered text,
+.fluid-gradient-title.is-hovered .fluid-text-element,
+.fluid-gradient-title:hover text,
+.fluid-gradient-title:hover .fluid-text-element {
+  fill: url(#portfolio-fluid-gradient);
+  stroke: rgba(16, 185, 129, 0.35);
 }
 
 .intro-grid {
