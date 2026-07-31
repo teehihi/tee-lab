@@ -304,7 +304,7 @@ a {
 }
 
 .hero-title {
-  height: clamp(7rem, 18vw, 11rem);
+  height: clamp(7.5rem, 19vw, 12rem);
   width: 100%;
   overflow: visible;
   border-bottom: 1px solid var(--line);
@@ -331,7 +331,7 @@ a {
   display: block;
   width: 100%;
   height: 100%;
-  transform: translateY(32%);
+  transform: translateY(37%);
   color: var(--foreground);
   user-select: none;
 }
@@ -339,7 +339,7 @@ a {
 .fluid-gradient-title text,
 .fluid-text-element {
   font-family: Helvetica, Arial, sans-serif;
-  font-size: 215px;
+  font-size: 270px;
   font-weight: 900;
   letter-spacing: -0.01em;
 }

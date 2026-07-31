@@ -467,8 +467,8 @@ export function ThemeToggle({ className = "" }: { className?: string }) {
 
 export function FluidGradientText({
   text,
-  viewBoxWidth = 2400,
-  viewBoxHeight = 280,
+  viewBoxWidth = 1800,
+  viewBoxHeight = 270,
 }: {
   text: string;
   viewBoxWidth?: number;
@@ -482,7 +482,10 @@ export function FluidGradientText({
   useEffect(() => {
     const tick = () => {
       currentXRef.current += (rawXRef.current - currentXRef.current) * 0.14;
-      if (gradientRef.current) gradientRef.current.setAttribute("x1", String(currentXRef.current));
+      if (gradientRef.current) {
+        gradientRef.current.setAttribute("x1", String(currentXRef.current - 400));
+        gradientRef.current.setAttribute("x2", String(currentXRef.current + 400));
+      }
       rafRef.current = requestAnimationFrame(tick);
     };
     rafRef.current = requestAnimationFrame(tick);
@@ -508,8 +511,7 @@ export function FluidGradientText({
           y="50%"
           textAnchor="middle"
           dominantBaseline="central"
-          stroke="currentColor"
-          strokeOpacity="0.12"
+          stroke="rgba(255,255,255,0.15)"
           strokeWidth="2"
           fill="url(#portfolio-fluid-gradient)"
         >
@@ -519,14 +521,16 @@ export function FluidGradientText({
           <linearGradient
             ref={gradientRef}
             id="portfolio-fluid-gradient"
-            x1={viewBoxWidth / 2}
+            x1={viewBoxWidth / 2 - 400}
             y1="0"
-            x2={viewBoxWidth / 2}
-            y2={viewBoxHeight}
+            x2={viewBoxWidth / 2 + 400}
+            y2="0"
             gradientUnits="userSpaceOnUse"
           >
-            <stop offset="0.58" stopColor="currentColor" stopOpacity="0" />
-            <stop offset="1" stopColor="currentColor" />
+            <stop offset="0%" stopColor="#10b981" />
+            <stop offset="35%" stopColor="#06b6d4" />
+            <stop offset="70%" stopColor="#3b82f6" />
+            <stop offset="100%" stopColor="#10b981" />
           </linearGradient>
         </defs>
       </svg>

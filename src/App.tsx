@@ -129,9 +129,6 @@ export function App() {
 
       {/* Floating Section Navigation Bar */}
       <nav className="section-nav" aria-label="Portfolio navigation">
-        <a href="#about" className="nav-signature" aria-label="Back to top">
-          NNT
-        </a>
         <div className="nav-links">
           {navItems.map(([id, label]) => (
             <a key={id} href={`#${id}`}>
@@ -164,7 +161,7 @@ export function App() {
         <section id="about" className="scroll-mt-24 pt-6">
           {/* Giant Interactive Name Banner ("Banner Chính") */}
           <div className="hero-title">
-            <FluidGradientText text="NGUYEN NHAT THIEN" viewBoxWidth={2100} viewBoxHeight={240} />
+            <FluidGradientText text="NHAT THIEN" />
           </div>
 
           <div className="intro-grid">
@@ -180,7 +177,7 @@ export function App() {
                 Building <ShimmerText>AI-powered</ShimmerText> software products for real users.
               </h1>
               <p className="text-gray-300 text-sm leading-relaxed font-light">
-                Senior Information Technology student at <strong>HCMUTE</strong> (GPA {personalInfo.gpa}). Specializing in Full-Stack Web architecture, Computer Vision (YOLOv8), and Retrieval-Augmented Generation (RAG).
+                Senior Information Technology student at <strong>HCMUTE</strong> (GPA {personalInfo.gpa}). Specializing in Full-Stack Web architecture, Computer Vision (YOLOv11), and Retrieval-Augmented Generation (RAG).
               </p>
 
               {/* Moving Border Card for Stats */}
