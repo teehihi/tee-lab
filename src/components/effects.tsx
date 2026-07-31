@@ -468,14 +468,13 @@ export function ThemeToggle({ className = "" }: { className?: string }) {
 
 export function FluidGradientText({
   text,
-  viewBoxWidth = 1800,
-  viewBoxHeight = 270,
+  viewBoxWidth = 1400,
+  viewBoxHeight = 300,
 }: {
   text: string;
   viewBoxWidth?: number;
   viewBoxHeight?: number;
 }) {
-  const [isHovered, setIsHovered] = useState(false);
   const gradientRef = useRef<SVGLinearGradientElement>(null);
   const rawXRef = useRef(viewBoxWidth / 2);
   const currentXRef = useRef(viewBoxWidth / 2);
@@ -485,8 +484,7 @@ export function FluidGradientText({
     const tick = () => {
       currentXRef.current += (rawXRef.current - currentXRef.current) * 0.14;
       if (gradientRef.current) {
-        gradientRef.current.setAttribute("x1", String(currentXRef.current - 400));
-        gradientRef.current.setAttribute("x2", String(currentXRef.current + 400));
+        gradientRef.current.setAttribute("x1", String(currentXRef.current));
       }
       rafRef.current = requestAnimationFrame(tick);
     };
@@ -497,16 +495,13 @@ export function FluidGradientText({
   const handlePointerMove = (event: React.PointerEvent<HTMLDivElement>) => {
     const rect = event.currentTarget.getBoundingClientRect();
     rawXRef.current = Math.max(0, Math.min(viewBoxWidth, ((event.clientX - rect.left) / rect.width) * viewBoxWidth));
-    if (!isHovered) setIsHovered(true);
   };
 
   return (
     <div
-      className={`fluid-gradient-title ${isHovered ? "is-hovered" : ""}`}
+      className="fluid-gradient-title"
       onPointerMove={handlePointerMove}
-      onPointerEnter={() => setIsHovered(true)}
       onPointerLeave={() => {
-        setIsHovered(false);
         rawXRef.current = viewBoxWidth / 2;
       }}
     >
@@ -516,7 +511,10 @@ export function FluidGradientText({
           y="50%"
           textAnchor="middle"
           dominantBaseline="central"
-          className="fluid-text-element"
+          stroke="currentColor"
+          strokeOpacity="0.12"
+          strokeWidth="2"
+          fill="url(#portfolio-fluid-gradient)"
         >
           {text}
         </text>
@@ -524,16 +522,14 @@ export function FluidGradientText({
           <linearGradient
             ref={gradientRef}
             id="portfolio-fluid-gradient"
-            x1={viewBoxWidth / 2 - 400}
+            x1={viewBoxWidth / 2}
             y1="0"
-            x2={viewBoxWidth / 2 + 400}
-            y2="0"
+            x2={viewBoxWidth / 2}
+            y2={viewBoxHeight}
             gradientUnits="userSpaceOnUse"
           >
-            <stop offset="0%" stopColor="#10b981" />
-            <stop offset="35%" stopColor="#06b6d4" />
-            <stop offset="70%" stopColor="#3b82f6" />
-            <stop offset="100%" stopColor="#10b981" />
+            <stop offset="0.58" stopColor="currentColor" stopOpacity="0" />
+            <stop offset="1" stopColor="currentColor" />
           </linearGradient>
         </defs>
       </svg>

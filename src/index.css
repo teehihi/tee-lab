@@ -304,7 +304,7 @@ a {
 }
 
 .hero-title {
-  height: clamp(7.5rem, 19vw, 12rem);
+  height: clamp(7rem, 18vw, 11rem);
   width: 100%;
   overflow: visible;
   border-bottom: 1px solid var(--line);
@@ -331,36 +331,15 @@ a {
   display: block;
   width: 100%;
   height: 100%;
-  transform: translateY(37%);
+  transform: translateY(37.5%);
   color: var(--foreground);
   user-select: none;
 }
 
-.fluid-gradient-title text,
-.fluid-text-element {
+.fluid-gradient-title text {
   font-family: Helvetica, Arial, sans-serif;
-  font-size: 270px;
+  font-size: 300px;
   font-weight: 900;
-  letter-spacing: -0.01em;
-  stroke: rgba(15, 15, 15, 0.25);
-  stroke-width: 3px;
-  fill: transparent;
-  transition: fill 0.35s ease, stroke 0.35s ease;
-}
-
-.dark .fluid-gradient-title text,
-.dark .fluid-text-element {
-  stroke: rgba(255, 255, 255, 0.22);
-  stroke-width: 3px;
-  fill: transparent;
-}
-
-.fluid-gradient-title.is-hovered text,
-.fluid-gradient-title.is-hovered .fluid-text-element,
-.fluid-gradient-title:hover text,
-.fluid-gradient-title:hover .fluid-text-element {
-  fill: url(#portfolio-fluid-gradient);
-  stroke: rgba(16, 185, 129, 0.35);
 }
 
 .intro-grid {
