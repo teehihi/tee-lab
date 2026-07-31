@@ -448,24 +448,14 @@ a {
 }
 
 .intro-grid {
-  display: grid;
-  grid-template-columns: auto 1fr;
-  align-items: start;
-  gap: 2rem;
-  padding: 0.75rem 0 0.5rem;
-}
-
-@media (max-width: 640px) {
-  .intro-grid {
-    grid-template-columns: 1fr;
-    gap: 1.5rem;
-  }
+  display: block;
+  padding: 1rem 0 0.5rem;
 }
 
 .hero-orbit-card {
   width: auto;
   border-radius: 999px;
-  margin-top: -0.25rem;
+  margin-top: 0;
 }
 
 .hero-orbit-card .electric-content {

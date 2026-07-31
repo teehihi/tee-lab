@@ -461,11 +461,15 @@ export default function App() {
           </div>
 
           <div className="intro-grid">
-            <ElectricBorder color="#10b981" speed={0.75} chaos={0.08} borderRadius={999} className="hero-orbit-card">
-              <ProfileAvatar />
-            </ElectricBorder>
             <div className="intro-copy">
-              <p className="eyebrow">{personalInfo.title} • {personalInfo.location}</p>
+              <div className="flex items-center gap-5 mb-1">
+                <ElectricBorder color="#10b981" speed={0.75} chaos={0.08} borderRadius={999} className="hero-orbit-card">
+                  <ProfileAvatar />
+                </ElectricBorder>
+                <div>
+                  <p className="eyebrow">{personalInfo.title} • {personalInfo.location}</p>
+                </div>
+              </div>
               <h1>
                 Building <ShimmerText>AI-powered</ShimmerText> software products for real users.
               </h1>
