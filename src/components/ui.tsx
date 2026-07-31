@@ -1,13 +1,14 @@
 import { cn } from "../lib/utils";
 
-export function Button({ as: Comp = "button", className, variant = "primary", ...props }) {
+export function Button({ as, className, variant = "primary", ...props }: { as?: React.ElementType; className?: string; variant?: string; [key: string]: any }) {
+  const Comp = as || (props.href ? "a" : "button");
   return (
     <Comp
       className={cn(
-        "inline-flex h-9 items-center justify-center gap-2 rounded-full px-4 text-xs font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--ring)] disabled:pointer-events-none disabled:opacity-50",
-        variant === "primary" && "bg-[var(--foreground)] text-[var(--background)] hover:opacity-85",
-        variant === "outline" &&
-          "border border-[var(--line)] bg-[var(--card)] text-[var(--foreground)] hover:bg-[var(--muted)]",
+        "inline-flex h-9 items-center justify-center gap-2 rounded-full px-5 text-xs font-semibold transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--ring)] disabled:pointer-events-none disabled:opacity-50 cursor-pointer relative z-10",
+        variant === "primary" && "bg-[var(--foreground)] text-[var(--background)] hover:opacity-85 shadow-sm",
+        (variant === "secondary" || variant === "outline") &&
+          "border border-[var(--line)] bg-[var(--card)] text-[var(--foreground)] hover:bg-[var(--muted)] hover:border-emerald-500/50",
         variant === "ghost" && "text-[var(--muted-foreground)] hover:text-[var(--foreground)]",
         className,
       )}
