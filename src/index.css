@@ -499,8 +499,8 @@ a {
 .profile-avatar {
   position: relative;
   display: grid;
-  width: 7.5rem;
-  height: 7.5rem;
+  width: 9rem;
+  height: 9rem;
   flex: 0 0 auto;
   place-items: center;
   border: 1px solid var(--line);

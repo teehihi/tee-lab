@@ -461,30 +461,28 @@ export default function App() {
           </div>
 
           <div className="intro-grid">
-            <div className="intro-copy">
-              <div className="flex items-center gap-5 mb-1">
-                <ElectricBorder color="#10b981" speed={0.75} chaos={0.08} borderRadius={999} className="hero-orbit-card">
-                  <ProfileAvatar />
-                </ElectricBorder>
-                <div>
-                  <p className="eyebrow">{personalInfo.title} • {personalInfo.location}</p>
+            <p className="eyebrow mb-4">{personalInfo.title} • {personalInfo.location}</p>
+            <div className="flex flex-col md:flex-row items-start gap-6 lg:gap-8">
+              <ElectricBorder color="#10b981" speed={0.75} chaos={0.08} borderRadius={999} className="hero-orbit-card flex-shrink-0 mt-1">
+                <ProfileAvatar />
+              </ElectricBorder>
+              <div className="intro-copy flex-1">
+                <h1>
+                  Building <ShimmerText>AI-powered</ShimmerText> software products for real users.
+                </h1>
+                <p>
+                  Senior Information Technology student at <strong>HCMUTE</strong> (GPA {personalInfo.gpa}).
+                  Specializing in Full-Stack Web architecture, Computer Vision (YOLOv11), and Retrieval-Augmented Generation (RAG).
+                </p>
+                <div className="stat-strip">
+                  <Stat value="3.24" label="HCMUTE GPA" />
+                  <Stat value="500+" label="AI Questions Generated" />
+                  <Stat value="2027" label="Expected Grad" />
                 </div>
-              </div>
-              <h1>
-                Building <ShimmerText>AI-powered</ShimmerText> software products for real users.
-              </h1>
-              <p>
-                Senior Information Technology student at <strong>HCMUTE</strong> (GPA {personalInfo.gpa}).
-                Specializing in Full-Stack Web architecture, Computer Vision (YOLOv11), and Retrieval-Augmented Generation (RAG).
-              </p>
-              <div className="stat-strip">
-                <Stat value="3.24" label="HCMUTE GPA" />
-                <Stat value="500+" label="AI Questions Generated" />
-                <Stat value="2027" label="Expected Grad" />
-              </div>
-              <div className="hero-actions">
-                <Button href="#projects">Showcase & Case Studies</Button>
-                <Button href="#contact" variant="secondary">Get In Touch</Button>
+                <div className="hero-actions">
+                  <Button href="#projects">Showcase & Case Studies</Button>
+                  <Button href="#contact" variant="secondary">Get In Touch</Button>
+                </div>
               </div>
             </div>
           </div>
