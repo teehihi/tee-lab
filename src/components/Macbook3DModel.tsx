@@ -34,8 +34,8 @@ export function Macbook3DModel({ screenImage, className = "" }: Macbook3DModelPr
 
     // 1. Scene, Camera, Renderer
     const scene = new THREE.Scene();
-    const camera = new THREE.PerspectiveCamera(34, width / height, 0.1, 100);
-    camera.position.set(0, 0, 7.0);
+    const camera = new THREE.PerspectiveCamera(36, width / height, 0.1, 100);
+    camera.position.set(0, 0, 8.5);
 
     const renderer = new THREE.WebGLRenderer({
       canvas,

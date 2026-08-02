@@ -469,7 +469,7 @@ export default function App() {
               </ElectricBorder>
               <div className="intro-copy flex-1">
                 <h1>
-                  Building <ShimmerText>AI-powered</ShimmerText> software products for real users.
+                  Crafting <ShimmerText>AI-driven</ShimmerText> software that makes an impact.
                 </h1>
                 <p>
                   Senior Information Technology student at <strong>HCMUTE</strong> (GPA {personalInfo.gpa}) passionate about turning AI ideas into software that people actually use.
@@ -501,7 +501,7 @@ export default function App() {
               <div className="w-full lg:col-span-7">
                 <SectionHeader
                   eyebrow="CAPABILITIES"
-                  title="Technical Stack & Engineering Mindset"
+                  title="Technical Stack & Mindset"
                   description="Proven tools and design philosophies honed through shipping production web apps and AI systems."
                 />
 
