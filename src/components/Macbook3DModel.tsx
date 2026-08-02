@@ -5,7 +5,7 @@ import { DRACOLoader, GLTFLoader } from "three-stdlib";
 // Enable caching
 THREE.Cache.enabled = true;
 
-// Shared loader instance at module level (exact same pattern as HamishMW portfolio three.js)
+// Shared loader instance at module level
 const dracoLoader = new DRACOLoader();
 dracoLoader.setDecoderPath("/draco/");
 
@@ -29,13 +29,13 @@ export function Macbook3DModel({ screenImage, className = "" }: Macbook3DModelPr
     const canvas = canvasRef.current;
     if (!container || !canvas) return;
 
-    const width = container.clientWidth || 560;
-    const height = container.clientHeight || 420;
+    const width = container.clientWidth || 600;
+    const height = container.clientHeight || 460;
 
     // 1. Scene, Camera, Renderer
     const scene = new THREE.Scene();
-    const camera = new THREE.PerspectiveCamera(36, width / height, 0.1, 100);
-    camera.position.set(0, 0, 8);
+    const camera = new THREE.PerspectiveCamera(35, width / height, 0.1, 100);
+    camera.position.set(0, 0, 7.2);
 
     const renderer = new THREE.WebGLRenderer({
       canvas,
@@ -51,15 +51,15 @@ export function Macbook3DModel({ screenImage, className = "" }: Macbook3DModelPr
     const modelGroup = new THREE.Group();
     scene.add(modelGroup);
 
-    // 3. Lighting (Exact setup from HamishMW portfolio)
-    const ambientLight = new THREE.AmbientLight(0xffffff, 1.2);
+    // 3. Lighting (HamishMW Lighting setup)
+    const ambientLight = new THREE.AmbientLight(0xffffff, 1.3);
     scene.add(ambientLight);
 
-    const keyLight = new THREE.DirectionalLight(0xffffff, 1.4);
+    const keyLight = new THREE.DirectionalLight(0xffffff, 1.5);
     keyLight.position.set(0.5, 2, 3);
     scene.add(keyLight);
 
-    const fillLight = new THREE.DirectionalLight(0x10b981, 0.8);
+    const fillLight = new THREE.DirectionalLight(0x10b981, 0.9);
     fillLight.position.set(-6, 2, 2);
     scene.add(fillLight);
 
@@ -140,8 +140,8 @@ export function Macbook3DModel({ screenImage, className = "" }: Macbook3DModelPr
     // Handle Window Resize
     const handleResize = () => {
       if (!container || !renderer) return;
-      const newW = container.clientWidth || 560;
-      const newH = container.clientHeight || 420;
+      const newW = container.clientWidth || 600;
+      const newH = container.clientHeight || 460;
       camera.aspect = newW / newH;
       camera.updateProjectionMatrix();
       renderer.setSize(newW, newH);
@@ -160,7 +160,7 @@ export function Macbook3DModel({ screenImage, className = "" }: Macbook3DModelPr
   return (
     <div
       ref={containerRef}
-      className={`relative w-full h-[380px] sm:h-[440px] flex items-center justify-center cursor-grab active:cursor-grabbing select-none ${className}`}
+      className={`relative w-full h-[400px] sm:h-[460px] flex items-center justify-center cursor-grab active:cursor-grabbing select-none ${className}`}
     >
       {!loaded && (
         <div className="absolute inset-0 flex items-center justify-center text-xs text-muted-foreground animate-pulse">
