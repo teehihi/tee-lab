@@ -150,18 +150,18 @@ const projects = [
 const strengths = [
   {
     icon: Code2,
-    title: "Full-Stack Web Architecture",
-    body: "Building scalable REST APIs, responsive React UIs, and clean state flows.",
+    title: "Full-Stack Development",
+    body: "Building scalable web applications with React, TypeScript, Node.js, FastAPI, RESTful APIs, and modern database architectures.",
   },
   {
     icon: Bot,
-    title: "AI Integration & Vision",
-    body: "Deploying YOLOv11 models, RAG pipelines, and automated AI evaluation.",
+    title: "AI & Computer Vision",
+    body: "Developing intelligent applications with YOLOv11, Retrieval-Augmented Generation (RAG), OCR, and AI-powered automation.",
   },
   {
     icon: Puzzle,
-    title: "Interactive Gameplay & Canvas",
-    body: "Crafting 60fps HTML5 Canvas physics, particle systems, and pathfinding.",
+    title: "Product & Interactive Systems",
+    body: "Creating engaging user experiences through real-time systems, game mechanics, Canvas rendering, and responsive interfaces.",
   },
   {
     icon: ShieldCheck,
@@ -527,7 +527,7 @@ export default function App() {
 
               {/* RIGHT COLUMN: 5 Columns wide for Large 3D Three.js WebGL Macbook Model */}
               <div className="flex items-center justify-center w-full lg:col-span-5">
-                <Macbook3DModel screenImage="/bannerMac.png" className="h-[380px] sm:h-[420px] lg:h-[460px]" />
+                <Macbook3DModel screenImage="/bannerMac.png" className="h-[450px] sm:h-[520px] lg:h-[580px]" />
               </div>
             </div>
           </div>

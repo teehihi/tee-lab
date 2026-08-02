@@ -29,14 +29,14 @@ export function Macbook3DModel({ screenImage, className = "" }: Macbook3DModelPr
     const canvas = canvasRef.current;
     if (!container || !canvas) return;
 
-    const width = container.clientWidth || 600;
-    const height = container.clientHeight || 440;
+    const width = container.clientWidth || 700;
+    const height = container.clientHeight || 560;
 
     // 1. Scene, Camera, Renderer
     const scene = new THREE.Scene();
-    const camera = new THREE.PerspectiveCamera(34, width / height, 0.1, 100);
-    // Camera Y set to 0.45 (lowers model vertically) and Z set to 10.5 (generous 40% margin, zero corner clipping)
-    camera.position.set(0, 0.45, 10.5);
+    // FOV 42 with camera Z=8.0 allows the model to scale up big while staying 100% inside frustum bounds
+    const camera = new THREE.PerspectiveCamera(42, width / height, 0.1, 100);
+    camera.position.set(0, 0.22, 8.0);
 
     const renderer = new THREE.WebGLRenderer({
       canvas,
@@ -50,7 +50,8 @@ export function Macbook3DModel({ screenImage, className = "" }: Macbook3DModelPr
 
     // 2. Model Root Group
     const modelGroup = new THREE.Group();
-    modelGroup.scale.set(1.0, 1.0, 1.0);
+    // Scale up 3D Macbook model significantly so it looks impressive & prominent
+    modelGroup.scale.set(1.22, 1.22, 1.22);
     scene.add(modelGroup);
 
     // 3. Lighting (Exact setup from HamishMW portfolio)
@@ -99,7 +100,7 @@ export function Macbook3DModel({ screenImage, className = "" }: Macbook3DModelPr
       (err) => console.error("Error loading macbook-pro.glb:", err)
     );
 
-    // 5. Mouse Interaction Physics (Controlled rotation range like HamishMW portfolio)
+    // 5. Mouse Interaction Physics
     let mouseX = 0;
     let mouseY = 0;
     let targetRotX = 0;
@@ -113,8 +114,8 @@ export function Macbook3DModel({ screenImage, className = "" }: Macbook3DModelPr
       mouseX = x;
       mouseY = y;
 
-      targetRotY = mouseX * 0.28;
-      targetRotX = mouseY * 0.22;
+      targetRotY = mouseX * 0.32;
+      targetRotX = mouseY * 0.24;
     };
 
     window.addEventListener("mousemove", handleMouseMove);
@@ -132,7 +133,7 @@ export function Macbook3DModel({ screenImage, className = "" }: Macbook3DModelPr
       modelGroup.rotation.y += (targetRotY - modelGroup.rotation.y) * 0.05;
 
       // Gentle floating levitation
-      modelGroup.position.y = Math.sin(elapsedTime * 1.2) * 0.05;
+      modelGroup.position.y = Math.sin(elapsedTime * 1.2) * 0.06;
 
       renderer.render(scene, camera);
     };
@@ -142,8 +143,8 @@ export function Macbook3DModel({ screenImage, className = "" }: Macbook3DModelPr
     // Handle Window Resize
     const handleResize = () => {
       if (!container || !renderer) return;
-      const newW = container.clientWidth || 600;
-      const newH = container.clientHeight || 440;
+      const newW = container.clientWidth || 700;
+      const newH = container.clientHeight || 560;
       camera.aspect = newW / newH;
       camera.updateProjectionMatrix();
       renderer.setSize(newW, newH);
@@ -162,7 +163,7 @@ export function Macbook3DModel({ screenImage, className = "" }: Macbook3DModelPr
   return (
     <div
       ref={containerRef}
-      className={`relative w-full h-[380px] sm:h-[420px] lg:h-[460px] flex items-center justify-center cursor-grab active:cursor-grabbing select-none ${className}`}
+      className={`relative w-full h-[450px] sm:h-[520px] lg:h-[580px] flex items-center justify-center cursor-grab active:cursor-grabbing select-none ${className}`}
     >
       {!loaded && (
         <div className="absolute inset-0 flex items-center justify-center text-xs text-muted-foreground animate-pulse">
