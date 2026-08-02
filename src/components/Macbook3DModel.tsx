@@ -30,12 +30,13 @@ export function Macbook3DModel({ screenImage, className = "" }: Macbook3DModelPr
     if (!container || !canvas) return;
 
     const width = container.clientWidth || 700;
-    const height = container.clientHeight || 600;
+    const height = container.clientHeight || 550;
 
     // 1. Scene, Camera, Renderer
     const scene = new THREE.Scene();
-    const camera = new THREE.PerspectiveCamera(38, width / height, 0.1, 100);
-    camera.position.set(0, -0.15, 8.0);
+    const camera = new THREE.PerspectiveCamera(36, width / height, 0.1, 100);
+    // Camera Z distance set to 9.4 to guarantee horizontal & vertical frustum clearance on all edges
+    camera.position.set(0, -0.1, 9.4);
 
     const renderer = new THREE.WebGLRenderer({
       canvas,
@@ -49,8 +50,7 @@ export function Macbook3DModel({ screenImage, className = "" }: Macbook3DModelPr
 
     // 2. Model Root Group
     const modelGroup = new THREE.Group();
-    // Scale model up slightly so it renders big & clear
-    modelGroup.scale.set(1.18, 1.18, 1.18);
+    modelGroup.scale.set(1.05, 1.05, 1.05);
     scene.add(modelGroup);
 
     // 3. Lighting (Exact setup from HamishMW portfolio)
@@ -143,7 +143,7 @@ export function Macbook3DModel({ screenImage, className = "" }: Macbook3DModelPr
     const handleResize = () => {
       if (!container || !renderer) return;
       const newW = container.clientWidth || 700;
-      const newH = container.clientHeight || 600;
+      const newH = container.clientHeight || 550;
       camera.aspect = newW / newH;
       camera.updateProjectionMatrix();
       renderer.setSize(newW, newH);
@@ -162,7 +162,7 @@ export function Macbook3DModel({ screenImage, className = "" }: Macbook3DModelPr
   return (
     <div
       ref={containerRef}
-      className={`relative w-full h-[480px] sm:h-[560px] lg:h-[620px] flex items-center justify-center cursor-grab active:cursor-grabbing select-none overflow-visible ${className}`}
+      className={`relative w-full h-[450px] sm:h-[520px] lg:h-[580px] flex items-center justify-center cursor-grab active:cursor-grabbing select-none ${className}`}
     >
       {!loaded && (
         <div className="absolute inset-0 flex items-center justify-center text-xs text-muted-foreground animate-pulse">
