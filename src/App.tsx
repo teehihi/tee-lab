@@ -490,34 +490,34 @@ export default function App() {
         </section>
 
         {/* SKILLS SECTION */}
-        <section id="skills" className="scroll-mt-24 py-16">
-          <div className="text-center mx-auto max-w-2xl">
-            <SectionHeader
-              eyebrow="CAPABILITIES"
-              title="Technical Stack & Engineering Mindset"
-              description="Proven tools and design philosophies honed through shipping production web apps and AI systems."
-            />
-          </div>
+        <section id="skills" className="scroll-mt-24 py-16 -mx-4 sm:-mx-8 lg:-mx-16 xl:-mx-24 px-4 sm:px-8 lg:px-16 xl:px-24">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-center">
+            {/* LEFT COLUMN: Left-Aligned Section Header & 4 Equal-Height Capabilities Cards */}
+            <div className="w-full">
+              <SectionHeader
+                eyebrow="CAPABILITIES"
+                title="Technical Stack & Engineering Mindset"
+                description="Proven tools and design philosophies honed through shipping production web apps and AI systems."
+              />
 
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-center mt-10">
-            {/* LEFT COLUMN: 4 Equal-Height Capabilities Cards */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              {strengths.map((item) => {
-                const Icon = item.icon;
-                return (
-                  <Card key={item.title} className="p-5 flex flex-col justify-between h-full min-h-[145px]">
-                    <div>
-                      <div className="flex items-center gap-3 mb-2.5">
-                        <div className="p-2 rounded-lg bg-emerald-500/10 text-emerald-500 flex-shrink-0">
-                          <Icon className="h-5 w-5" />
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-8">
+                {strengths.map((item) => {
+                  const Icon = item.icon;
+                  return (
+                    <Card key={item.title} className="p-5 flex flex-col justify-between h-full min-h-[140px]">
+                      <div>
+                        <div className="flex items-center gap-3 mb-2.5">
+                          <div className="p-2 rounded-lg bg-emerald-500/10 text-emerald-500 flex-shrink-0">
+                            <Icon className="h-5 w-5" />
+                          </div>
+                          <h3 className="text-sm font-bold leading-tight">{item.title}</h3>
                         </div>
-                        <h3 className="text-sm font-bold leading-tight">{item.title}</h3>
+                        <p className="text-xs text-muted-foreground leading-relaxed">{item.body}</p>
                       </div>
-                      <p className="text-xs text-muted-foreground leading-relaxed">{item.body}</p>
-                    </div>
-                  </Card>
-                );
-              })}
+                    </Card>
+                  );
+                })}
+              </div>
             </div>
 
             {/* RIGHT COLUMN: Real 3D Three.js WebGL Macbook Model */}
