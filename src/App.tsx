@@ -29,6 +29,7 @@ import {
   ThemeToggle,
 } from "./components/effects";
 import { Button, Card, SectionHeader, Stat } from "./components/ui";
+import { Macbook3DModel } from "./components/Macbook3DModel";
 
 function Github({ className = "h-4 w-4" }: { className?: string }) {
   return (
@@ -452,7 +453,7 @@ export default function App() {
         </div>
       </nav>
 
-      <div className="page-reveal mx-auto flex min-h-screen w-full max-w-5xl flex-col px-3 py-4 text-sm leading-loose sm:px-6 lg:px-8">
+      <div className="page-reveal mx-auto flex min-h-screen w-full max-w-6xl lg:max-w-7xl flex-col px-3 py-4 text-sm leading-loose sm:px-6 lg:px-8">
         
         {/* HERO SECTION */}
         <section id="about" className="scroll-mt-24">
@@ -490,26 +491,36 @@ export default function App() {
 
         {/* SKILLS SECTION */}
         <section id="skills" className="scroll-mt-24 py-16">
-          <SectionHeader
-            eyebrow="CAPABILITIES"
-            title="Technical Stack & Engineering Mindset"
-            description="Proven tools and design philosophies honed through shipping production web apps and AI systems."
-          />
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-8">
-            {strengths.map((item) => {
-              const Icon = item.icon;
-              return (
-                <Card key={item.title} className="p-6">
-                  <div className="flex items-center gap-3 mb-3">
-                    <div className="p-2 rounded-lg bg-emerald-500/10 text-emerald-500">
-                      <Icon className="h-5 w-5" />
-                    </div>
-                    <h3 className="text-base font-bold">{item.title}</h3>
-                  </div>
-                  <p className="text-muted-foreground">{item.body}</p>
-                </Card>
-              );
-            })}
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-center">
+            {/* LEFT COLUMN: Section Header & Capabilities Cards */}
+            <div>
+              <SectionHeader
+                eyebrow="CAPABILITIES"
+                title="Technical Stack & Engineering Mindset"
+                description="Proven tools and design philosophies honed through shipping production web apps and AI systems."
+              />
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-8">
+                {strengths.map((item) => {
+                  const Icon = item.icon;
+                  return (
+                    <Card key={item.title} className="p-5">
+                      <div className="flex items-center gap-3 mb-2">
+                        <div className="p-2 rounded-lg bg-emerald-500/10 text-emerald-500">
+                          <Icon className="h-5 w-5" />
+                        </div>
+                        <h3 className="text-sm font-bold">{item.title}</h3>
+                      </div>
+                      <p className="text-xs text-muted-foreground leading-relaxed">{item.body}</p>
+                    </Card>
+                  );
+                })}
+              </div>
+            </div>
+
+            {/* RIGHT COLUMN: 3D Macbook Model Display */}
+            <div className="flex items-center justify-center">
+              <Macbook3DModel screenImage="/bannerMac.png" />
+            </div>
           </div>
         </section>
 
