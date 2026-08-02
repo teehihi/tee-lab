@@ -1,3 +1,4 @@
+import React from "react";
 import { cn } from "../lib/utils";
 
 export function Button({ as, className, variant = "primary", ...props }: { as?: React.ElementType; className?: string; variant?: string; [key: string]: any }) {
@@ -17,7 +18,7 @@ export function Button({ as, className, variant = "primary", ...props }: { as?: 
   );
 }
 
-export function Card({ className, ...props }) {
+export function Card({ className, ...props }: { className?: string; [key: string]: any }) {
   return (
     <div
       data-slot="card"
@@ -30,7 +31,7 @@ export function Card({ className, ...props }) {
   );
 }
 
-export function Badge({ className, ...props }) {
+export function Badge({ className, ...props }: { className?: string; [key: string]: any }) {
   return (
     <span
       data-slot="badge"
@@ -53,11 +54,11 @@ export function SectionHeader({ eyebrow, title, description, className }: { eyeb
   );
 }
 
-export function Stat({ value, label }) {
+export function Stat({ value, label }: { value: string; label: string }) {
   return (
-    <div className="stat-card">
-      <strong>{value}</strong>
-      <span>{label}</span>
-    </div>
+    <Card className="hero-stat-card p-3 sm:p-4 border-[var(--line)] bg-[color-mix(in_oklch,var(--card)_92%,transparent)]">
+      <p className="text-xl sm:text-2xl font-black text-[var(--foreground)]">{value}</p>
+      <span className="text-[0.68rem] text-[var(--muted-foreground)] font-medium uppercase tracking-wider">{label}</span>
+    </Card>
   );
 }

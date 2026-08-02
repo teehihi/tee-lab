@@ -454,7 +454,7 @@ export default function App() {
       </nav>
 
       <div className="page-reveal mx-auto flex min-h-screen w-full max-w-5xl flex-col px-3 py-4 text-sm leading-loose sm:px-6 lg:px-8">
-        
+
         {/* HERO SECTION */}
         <section id="about" className="scroll-mt-24">
           <div className="hero-title">
@@ -472,8 +472,9 @@ export default function App() {
                   Building <ShimmerText>AI-powered</ShimmerText> software products for real users.
                 </h1>
                 <p>
-                  Senior Information Technology student at <strong>HCMUTE</strong> (GPA {personalInfo.gpa}).
-                  Specializing in Full-Stack Web architecture, Computer Vision (YOLOv11), and Retrieval-Augmented Generation (RAG).
+                  Senior Information Technology student at <strong>HCMUTE</strong> (GPA {personalInfo.gpa}) passionate about turning AI ideas into software that people actually use.
+                  <br />
+                  I build scalable full-stack applications, intelligent computer vision systems with YOLOv11, and Retrieval-Augmented Generation (RAG) solutions—focusing on clean architecture, real-world usability, and measurable impact rather than prototypes that never leave the lab.
                 </p>
                 <div className="stat-strip">
                   <Stat value="3.24" label="HCMUTE GPA" />
