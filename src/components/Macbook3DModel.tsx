@@ -1,4 +1,5 @@
-import React, { useRef, useState, useEffect } from "react";
+import React, { useRef, useEffect } from "react";
+import * as THREE from "three";
 
 interface Macbook3DModelProps {
   screenImage: string;
@@ -6,156 +7,194 @@ interface Macbook3DModelProps {
 }
 
 export function Macbook3DModel({ screenImage, className = "" }: Macbook3DModelProps) {
-  const containerRef = useRef<HTMLDivElement>(null);
-  const [rotate, setRotate] = useState({ x: 10, y: -12 });
-  const [isHovered, setIsHovered] = useState(false);
+  const mountRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    let animationFrameId: number;
-    let targetX = 10;
-    let targetY = -12;
-    let currentX = 10;
-    let currentY = -12;
-    let time = 0;
+    const container = mountRef.current;
+    if (!container) return;
 
-    const handleMouseMove = (e: MouseEvent) => {
-      if (!containerRef.current) return;
-      const rect = containerRef.current.getBoundingClientRect();
-      const centerX = rect.left + rect.width / 2;
-      const centerY = rect.top + rect.height / 2;
+    const width = container.clientWidth || 540;
+    const height = container.clientHeight || 380;
 
-      const mouseX = (e.clientX - centerX) / (rect.width / 2);
-      const mouseY = (e.clientY - centerY) / (rect.height / 2);
+    // 1. Scene, Camera, Renderer
+    const scene = new THREE.Scene();
+    const camera = new THREE.PerspectiveCamera(45, width / height, 0.1, 1000);
+    camera.position.set(0, 0, 7.5);
 
-      targetY = mouseX * 22; // Smooth Y rotation (-22deg to +22deg)
-      targetX = -mouseY * 18 + 6; // Smooth X rotation (-12deg to +24deg)
-    };
+    const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
+    renderer.setSize(width, height);
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    renderer.shadowMap.enabled = true;
+    renderer.shadowMap.type = THREE.PCFSoftShadowMap;
 
-    const updatePhysics = () => {
-      time += 0.025;
-      if (!isHovered) {
-        // Floating levitation physics
-        targetX = 8 + Math.sin(time * 0.7) * 3.5;
-        targetY = Math.cos(time * 0.5) * 5.5;
-      }
+    // Clear old canvases
+    while (container.firstChild) {
+      container.removeChild(container.firstChild);
+    }
+    container.appendChild(renderer.domElement);
 
-      currentX += (targetX - currentX) * 0.06;
-      currentY += (targetY - currentY) * 0.06;
+    // 2. Lights
+    const ambientLight = new THREE.AmbientLight(0xffffff, 1.2);
+    scene.add(ambientLight);
 
-      setRotate({ x: currentX, y: currentY });
-      animationFrameId = requestAnimationFrame(updatePhysics);
+    const dirLight = new THREE.DirectionalLight(0xffffff, 2.2);
+    dirLight.position.set(5, 8, 5);
+    dirLight.castShadow = true;
+    scene.add(dirLight);
+
+    const pointLight = new THREE.PointLight(0x10b981, 3.5, 10);
+    pointLight.position.set(-3, 2, 2);
+    scene.add(pointLight);
+
+    // 3. Materials
+    const aluminumMaterial = new THREE.MeshStandardMaterial({
+      color: 0x1d1e23,
+      metalness: 0.85,
+      roughness: 0.25,
+    });
+
+    const darkMaterial = new THREE.MeshStandardMaterial({
+      color: 0x0f1012,
+      metalness: 0.9,
+      roughness: 0.3,
+    });
+
+    const keyboardMaterial = new THREE.MeshStandardMaterial({
+      color: 0x121316,
+      roughness: 0.7,
+    });
+
+    // Screen Texture
+    const textureLoader = new THREE.TextureLoader();
+    const screenTexture = textureLoader.load(screenImage);
+    screenTexture.colorSpace = THREE.SRGBColorSpace;
+
+    const screenMaterial = new THREE.MeshBasicMaterial({
+      map: screenTexture,
+    });
+
+    // 4. Laptop Root Group
+    const laptopGroup = new THREE.Group();
+    scene.add(laptopGroup);
+
+    // --- SCREEN LID ---
+    const lidGroup = new THREE.Group();
+    laptopGroup.add(lidGroup);
+    lidGroup.position.set(0, 0.1, -1.2);
+
+    // Lid Shell
+    const lidGeo = new THREE.BoxGeometry(4.3, 2.75, 0.08);
+    const lidMesh = new THREE.Mesh(lidGeo, aluminumMaterial);
+    lidMesh.position.set(0, 1.35, 0);
+    lidGroup.add(lidMesh);
+
+    // Screen Bezel
+    const bezelGeo = new THREE.BoxGeometry(4.18, 2.65, 0.01);
+    const bezelMesh = new THREE.Mesh(bezelGeo, darkMaterial);
+    bezelMesh.position.set(0, 1.35, 0.042);
+    lidGroup.add(bezelMesh);
+
+    // Screen Display Plane
+    const displayGeo = new THREE.PlaneGeometry(4.05, 2.5);
+    const displayMesh = new THREE.Mesh(displayGeo, screenMaterial);
+    displayMesh.position.set(0, 1.35, 0.048);
+    lidGroup.add(displayMesh);
+
+    // Tilt Lid back slightly
+    lidGroup.rotation.x = THREE.MathUtils.degToRad(-15);
+
+    // --- KEYBOARD BASE DECK ---
+    const baseGroup = new THREE.Group();
+    laptopGroup.add(baseGroup);
+    baseGroup.position.set(0, -0.05, 0.1);
+
+    // Base Chassis Body
+    const baseGeo = new THREE.BoxGeometry(4.4, 0.12, 2.7);
+    const baseMesh = new THREE.Mesh(baseGeo, aluminumMaterial);
+    baseMesh.position.set(0, 0, 0);
+    baseMesh.receiveShadow = true;
+    baseGroup.add(baseMesh);
+
+    // Keyboard Recess Plane
+    const kbRecessGeo = new THREE.BoxGeometry(3.9, 0.02, 1.4);
+    const kbRecessMesh = new THREE.Mesh(kbRecessGeo, keyboardMaterial);
+    kbRecessMesh.position.set(0, 0.065, -0.4);
+    baseGroup.add(kbRecessMesh);
+
+    // Trackpad Plane
+    const trackpadGeo = new THREE.BoxGeometry(1.4, 0.01, 0.85);
+    const trackpadMesh = new THREE.Mesh(trackpadGeo, darkMaterial);
+    trackpadMesh.position.set(0, 0.065, 0.7);
+    baseGroup.add(trackpadMesh);
+
+    // Initial Laptop Group Tilt
+    laptopGroup.rotation.x = THREE.MathUtils.degToRad(12);
+    laptopGroup.rotation.y = THREE.MathUtils.degToRad(-18);
+
+    // 5. Mouse Interaction Physics
+    let mouseX = 0;
+    let mouseY = 0;
+    let targetRotX = THREE.MathUtils.degToRad(12);
+    let targetRotY = THREE.MathUtils.degToRad(-18);
+
+    const handleMouseMove = (event: MouseEvent) => {
+      const rect = container.getBoundingClientRect();
+      const x = (event.clientX - rect.left) / rect.width - 0.5;
+      const y = (event.clientY - rect.top) / rect.height - 0.5;
+
+      mouseX = x * 2;
+      mouseY = y * 2;
+
+      targetRotY = mouseX * 0.45;
+      targetRotX = -mouseY * 0.35 + THREE.MathUtils.degToRad(10);
     };
 
     window.addEventListener("mousemove", handleMouseMove);
-    animationFrameId = requestAnimationFrame(updatePhysics);
+
+    // 6. Animation Loop
+    let animationFrameId: number;
+    let clock = new THREE.Clock();
+
+    const animate = () => {
+      animationFrameId = requestAnimationFrame(animate);
+      const elapsedTime = clock.getElapsedTime();
+
+      // Smooth Lerp Physics
+      laptopGroup.rotation.x += (targetRotX - laptopGroup.rotation.x) * 0.05;
+      laptopGroup.rotation.y += (targetRotY - laptopGroup.rotation.y) * 0.05;
+
+      // Floating Levitation
+      laptopGroup.position.y = Math.sin(elapsedTime * 1.2) * 0.08;
+
+      renderer.render(scene, camera);
+    };
+
+    animate();
+
+    // Handle Resize
+    const handleResize = () => {
+      if (!container) return;
+      const newW = container.clientWidth || 540;
+      const newH = container.clientHeight || 380;
+      camera.aspect = newW / newH;
+      camera.updateProjectionMatrix();
+      renderer.setSize(newW, newH);
+    };
+
+    window.addEventListener("resize", handleResize);
 
     return () => {
       window.removeEventListener("mousemove", handleMouseMove);
+      window.removeEventListener("resize", handleResize);
       cancelAnimationFrame(animationFrameId);
+      renderer.dispose();
     };
-  }, [isHovered]);
+  }, [screenImage]);
 
   return (
     <div
-      ref={containerRef}
-      onMouseEnter={() => setIsHovered(true)}
-      onMouseLeave={() => setIsHovered(false)}
-      className={`macbook-3d-scene relative w-full flex items-center justify-center py-8 select-none ${className}`}
-      style={{ perspective: "1400px" }}
-    >
-      {/* Background Soft Glow */}
-      <div className="absolute inset-0 bg-emerald-500/10 blur-[100px] rounded-full transform scale-110 opacity-60 pointer-events-none" />
-
-      {/* 3D Macbook Container */}
-      <div
-        className="macbook-chassis-3d relative transition-transform ease-out duration-75 cursor-grab active:cursor-grabbing"
-        style={{
-          transformStyle: "preserve-3d",
-          transform: `rotateX(${rotate.x}deg) rotateY(${rotate.y}deg) rotateZ(0deg)`,
-        }}
-      >
-        {/* ================= MACBOOK DISPLAY SCREEN LID ================= */}
-        <div
-          className="macbook-screen-frame relative rounded-t-[1.4rem] rounded-b-[0.4rem] bg-[#1a1b1f] border-[3px] border-[#2e2f36] shadow-2xl overflow-hidden"
-          style={{
-            width: "min(92vw, 560px)",
-            height: "min(58vw, 345px)",
-            boxShadow:
-              "0 30px 60px -15px rgba(0, 0, 0, 0.85), 0 0 0 1px rgba(255, 255, 255, 0.12), inset 0 0 0 1px rgba(0, 0, 0, 0.8)",
-          }}
-        >
-          {/* Top Notch & Camera Lens */}
-          <div className="absolute top-0 left-1/2 -translate-x-1/2 z-30 w-32 h-4 bg-[#0d0e11] rounded-b-md flex items-center justify-center gap-2">
-            <div className="w-2 h-2 rounded-full bg-[#18191d] border border-[#2a2b31] flex items-center justify-center">
-              <div className="w-0.5 h-0.5 rounded-full bg-emerald-400 animate-pulse" />
-            </div>
-            <div className="w-1 h-1 rounded-full bg-[#151619]" />
-          </div>
-
-          {/* Screen Content Display Container */}
-          <div className="relative w-full h-full p-2.5 bg-[#090a0c] flex items-center justify-center overflow-hidden">
-            <img
-              src={screenImage}
-              alt="Macbook Display Content"
-              className="w-full h-full object-cover object-top rounded-lg border border-white/10 shadow-inner"
-            />
-
-            {/* Screen Glass Reflection & Glare */}
-            <div className="absolute inset-0 bg-gradient-to-tr from-transparent via-white/[0.04] to-white/[0.12] pointer-events-none" />
-
-            {/* Subtle Screen Bezel Shadow */}
-            <div className="absolute inset-0 shadow-[inset_0_0_20px_rgba(0,0,0,0.6)] pointer-events-none rounded-lg" />
-          </div>
-
-          {/* Bottom Screen Bezel Bar */}
-          <div className="absolute bottom-0 inset-x-0 h-4 bg-[#121316] flex items-center justify-center border-t border-white/5">
-            <span className="text-[9px] font-semibold tracking-[0.2em] text-gray-500 uppercase opacity-75">
-              MacBook Pro
-            </span>
-          </div>
-        </div>
-
-        {/* ================= MACBOOK HINGE & BASE CHASSIS ================= */}
-        <div
-          className="macbook-keyboard-deck relative -mt-1 rounded-b-[1.4rem] bg-gradient-to-b from-[#26272d] via-[#1b1c20] to-[#111215] border-t-2 border-[#3c3d46]"
-          style={{
-            width: "min(98vw, 590px)",
-            height: "min(30vw, 175px)",
-            marginLeft: "-15px",
-            transformOrigin: "top center",
-            transform: "rotateX(72deg) translateY(-10px)",
-            transformStyle: "preserve-3d",
-            boxShadow:
-              "0 50px 100px rgba(0, 0, 0, 0.9), inset 0 1px 0 rgba(255, 255, 255, 0.2), 0 0 0 1px rgba(0, 0, 0, 0.5)",
-          }}
-        >
-          {/* Keyboard Recessed Well */}
-          <div className="mx-auto mt-3.5 w-[88%] h-[56%] rounded-lg bg-[#0c0d0f] p-2 border border-white/10 shadow-inner flex flex-col justify-between">
-            {/* Simulation of Keycaps & Function Row */}
-            <div className="w-full h-full bg-[#15161a] rounded flex flex-col justify-around p-1 space-y-0.5 opacity-90">
-              <div className="w-full h-1 bg-[#202128] rounded-sm" />
-              <div className="w-full h-1 bg-[#202128] rounded-sm" />
-              <div className="w-full h-1 bg-[#202128] rounded-sm" />
-              <div className="w-full h-1 bg-[#202128] rounded-sm" />
-              <div className="w-full h-1.5 bg-[#25262e] rounded-sm flex justify-center">
-                <div className="w-1/3 h-full bg-[#32333d] rounded-sm" />
-              </div>
-            </div>
-          </div>
-
-          {/* Trackpad */}
-          <div className="mx-auto mt-2.5 w-36 h-11 rounded-lg bg-[#16171b] border border-white/10 shadow-sm" />
-
-          {/* Front Opening Notch Lip */}
-          <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-20 h-1 bg-[#3d3e48] rounded-t-sm" />
-        </div>
-
-        {/* Floor Drop Shadow */}
-        <div
-          className="absolute -bottom-14 left-1/2 -translate-x-1/2 w-5/6 h-12 bg-black/80 blur-2xl rounded-full pointer-events-none"
-          style={{ transform: "rotateX(90deg)" }}
-        />
-      </div>
-    </div>
+      ref={mountRef}
+      className={`relative w-full h-[380px] sm:h-[420px] flex items-center justify-center cursor-grab active:cursor-grabbing select-none ${className}`}
+    />
   );
 }

@@ -151,22 +151,22 @@ const strengths = [
   {
     icon: Code2,
     title: "Full-Stack Web Architecture",
-    body: "Designing scalable REST APIs, responsive React interfaces, and clean state management.",
+    body: "Building scalable REST APIs, responsive React UIs, and clean state flows.",
   },
   {
     icon: Bot,
-    title: "AI Integration & Computer Vision",
-    body: "Deploying YOLOv11 models, RAG pipelines, and automated AI evaluation workflows.",
+    title: "AI Integration & Vision",
+    body: "Deploying YOLOv11 models, RAG pipelines, and automated AI evaluation.",
   },
   {
     icon: Puzzle,
     title: "Interactive Gameplay & Canvas",
-    body: "Building smooth 60fps Canvas physics, particle systems, and pathfinding puzzles.",
+    body: "Crafting 60fps HTML5 Canvas physics, particle systems, and pathfinding.",
   },
   {
     icon: ShieldCheck,
     title: "Production Discipline & Testing",
-    body: "Checking edge cases, optimizing build bundles, and maintaining CI/CD deployment pipelines.",
+    body: "Enforcing edge-case QA testing, build optimizations, and CI/CD pipelines.",
   },
 ];
 
@@ -453,7 +453,7 @@ export default function App() {
         </div>
       </nav>
 
-      <div className="page-reveal mx-auto flex min-h-screen w-full max-w-6xl lg:max-w-7xl flex-col px-3 py-4 text-sm leading-loose sm:px-6 lg:px-8">
+      <div className="page-reveal mx-auto flex min-h-screen w-full max-w-5xl flex-col px-3 py-4 text-sm leading-loose sm:px-6 lg:px-8">
         
         {/* HERO SECTION */}
         <section id="about" className="scroll-mt-24">
@@ -491,34 +491,37 @@ export default function App() {
 
         {/* SKILLS SECTION */}
         <section id="skills" className="scroll-mt-24 py-16">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-center">
-            {/* LEFT COLUMN: Section Header & Capabilities Cards */}
-            <div>
-              <SectionHeader
-                eyebrow="CAPABILITIES"
-                title="Technical Stack & Engineering Mindset"
-                description="Proven tools and design philosophies honed through shipping production web apps and AI systems."
-              />
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-8">
-                {strengths.map((item) => {
-                  const Icon = item.icon;
-                  return (
-                    <Card key={item.title} className="p-5">
-                      <div className="flex items-center gap-3 mb-2">
-                        <div className="p-2 rounded-lg bg-emerald-500/10 text-emerald-500">
+          <div className="text-center mx-auto max-w-2xl">
+            <SectionHeader
+              eyebrow="CAPABILITIES"
+              title="Technical Stack & Engineering Mindset"
+              description="Proven tools and design philosophies honed through shipping production web apps and AI systems."
+            />
+          </div>
+
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-center mt-10">
+            {/* LEFT COLUMN: 4 Equal-Height Capabilities Cards */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              {strengths.map((item) => {
+                const Icon = item.icon;
+                return (
+                  <Card key={item.title} className="p-5 flex flex-col justify-between h-full min-h-[145px]">
+                    <div>
+                      <div className="flex items-center gap-3 mb-2.5">
+                        <div className="p-2 rounded-lg bg-emerald-500/10 text-emerald-500 flex-shrink-0">
                           <Icon className="h-5 w-5" />
                         </div>
-                        <h3 className="text-sm font-bold">{item.title}</h3>
+                        <h3 className="text-sm font-bold leading-tight">{item.title}</h3>
                       </div>
                       <p className="text-xs text-muted-foreground leading-relaxed">{item.body}</p>
-                    </Card>
-                  );
-                })}
-              </div>
+                    </div>
+                  </Card>
+                );
+              })}
             </div>
 
-            {/* RIGHT COLUMN: 3D Macbook Model Display */}
-            <div className="flex items-center justify-center">
+            {/* RIGHT COLUMN: Real 3D Three.js WebGL Macbook Model */}
+            <div className="flex items-center justify-center w-full">
               <Macbook3DModel screenImage="/bannerMac.png" />
             </div>
           </div>

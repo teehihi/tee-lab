@@ -43,10 +43,10 @@ export function Badge({ className, ...props }) {
   );
 }
 
-export function SectionHeader({ eyebrow, title, description }) {
+export function SectionHeader({ eyebrow, title, description, className }: { eyebrow?: string; title: string; description?: string; className?: string }) {
   return (
-    <div className="section-header">
-      <p>{eyebrow}</p>
+    <div className={cn("section-header", className)}>
+      {eyebrow ? <p>{eyebrow}</p> : null}
       <h2>{title}</h2>
       {description ? <span>{description}</span> : null}
     </div>
