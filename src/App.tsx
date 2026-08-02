@@ -489,40 +489,45 @@ export default function App() {
           </div>
         </section>
 
-        {/* SKILLS SECTION */}
-        <section id="skills" className="scroll-mt-24 py-16 -mx-6 sm:-mx-12 lg:-mx-24 xl:-mx-36 px-6 sm:px-12 lg:px-24 xl:px-36">
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center">
-            {/* LEFT COLUMN: 7 Columns wide for Capabilities Header & Cards */}
-            <div className="w-full lg:col-span-7">
-              <SectionHeader
-                eyebrow="CAPABILITIES"
-                title="Technical Stack & Engineering Mindset"
-                description="Proven tools and design philosophies honed through shipping production web apps and AI systems."
-              />
+        {/* SKILLS SECTION (Expanded to ~90% screen width with 5-8% side padding) */}
+        <section
+          id="skills"
+          className="scroll-mt-24 py-16 w-screen relative left-1/2 right-1/2 -ml-[50vw] -mr-[50vw] px-[5vw] lg:px-[6vw] xl:px-[8vw] max-w-screen overflow-x-hidden"
+        >
+          <div className="mx-auto w-full max-w-[1550px]">
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-14 items-center">
+              {/* LEFT COLUMN: 7 Columns wide for Capabilities Header & Cards */}
+              <div className="w-full lg:col-span-7">
+                <SectionHeader
+                  eyebrow="CAPABILITIES"
+                  title="Technical Stack & Engineering Mindset"
+                  description="Proven tools and design philosophies honed through shipping production web apps and AI systems."
+                />
 
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-8">
-                {strengths.map((item) => {
-                  const Icon = item.icon;
-                  return (
-                    <Card key={item.title} className="p-5 sm:p-6 flex flex-col justify-between h-full min-h-[145px]">
-                      <div>
-                        <div className="flex items-center gap-3 mb-3">
-                          <div className="p-2.5 rounded-xl bg-emerald-500/10 text-emerald-500 flex-shrink-0">
-                            <Icon className="h-5 w-5" />
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-5 mt-8">
+                  {strengths.map((item) => {
+                    const Icon = item.icon;
+                    return (
+                      <Card key={item.title} className="p-6 flex flex-col justify-between h-full min-h-[150px]">
+                        <div>
+                          <div className="flex items-center gap-3 mb-3">
+                            <div className="p-2.5 rounded-xl bg-emerald-500/10 text-emerald-500 flex-shrink-0">
+                              <Icon className="h-5 w-5" />
+                            </div>
+                            <h3 className="text-base font-bold leading-snug">{item.title}</h3>
                           </div>
-                          <h3 className="text-sm sm:text-base font-bold leading-snug">{item.title}</h3>
+                          <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed">{item.body}</p>
                         </div>
-                        <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed">{item.body}</p>
-                      </div>
-                    </Card>
-                  );
-                })}
+                      </Card>
+                    );
+                  })}
+                </div>
               </div>
-            </div>
 
-            {/* RIGHT COLUMN: 5 Columns wide for Real 3D Three.js WebGL Macbook Model */}
-            <div className="flex items-center justify-center w-full lg:col-span-5">
-              <Macbook3DModel screenImage="/bannerMac.png" className="h-[420px] sm:h-[480px]" />
+              {/* RIGHT COLUMN: 5 Columns wide for Large 3D Three.js WebGL Macbook Model */}
+              <div className="flex items-center justify-center w-full lg:col-span-5">
+                <Macbook3DModel screenImage="/bannerMac.png" className="h-[440px] sm:h-[500px] lg:h-[540px]" />
+              </div>
             </div>
           </div>
         </section>
