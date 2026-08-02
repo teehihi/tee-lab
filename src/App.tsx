@@ -165,17 +165,17 @@ const strengths = [
   },
   {
     icon: ShieldCheck,
-    title: "Production Discipline & Testing",
-    body: "Enforcing edge-case QA testing, build optimizations, and CI/CD pipelines.",
+    title: "Software Engineering",
+    body: "Writing clean, maintainable code with Git, testing, debugging, performance optimization, and scalable software design.",
   },
 ];
 
 const navItems = [
-  ["about", "About"],
+  ["about", "About Me"],
   ["skills", "Skills"],
   ["projects", "Projects"],
   ["experience", "Experience"],
-  ["honors", "Honors"],
+  ["honors", "My Achievements"],
   ["contact", "Contact"],
 ];
 
@@ -404,6 +404,27 @@ function DaiduongsancaVisual() {
 
 export default function App() {
   const [copied, setCopied] = useState(false);
+  const [activeSection, setActiveSection] = useState("about");
+
+  React.useEffect(() => {
+    const handleScroll = () => {
+      const sections = ["about", "skills", "projects", "experience", "honors", "contact"];
+      const scrollPosition = window.scrollY + 250;
+
+      for (let i = sections.length - 1; i >= 0; i--) {
+        const el = document.getElementById(sections[i]);
+        if (el && el.offsetTop <= scrollPosition) {
+          setActiveSection(sections[i]);
+          break;
+        }
+      }
+    };
+
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    handleScroll();
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
   const featuredProjects = projects.filter((project) => project.featured);
   const supportingProjects = projects.filter((project) => !project.featured);
 
@@ -432,12 +453,9 @@ export default function App() {
 
       {/* FLOATING NAVBAR */}
       <nav className="section-nav" aria-label="Portfolio navigation">
-        <a href="#about" className="nav-signature" aria-label="Back to top">
-          NNT
-        </a>
         <div className="nav-links">
           {navItems.map(([id, label]) => (
-            <a key={id} href={`#${id}`}>
+            <a key={id} href={`#${id}`} className={activeSection === id ? "active" : ""}>
               {label}
             </a>
           ))}
@@ -478,8 +496,8 @@ export default function App() {
                 </p>
                 <div className="stat-strip">
                   <Stat value="3.24" label="HCMUTE GPA" />
-                  <Stat value="500+" label="AI Questions Generated" />
-                  <Stat value="2027" label="Expected Grad" />
+                  <Stat value="10+" label="Projects Built" />
+                  <Stat value="2" label="Hackathons Won" />
                 </div>
                 <div className="hero-actions">
                   <Button href="#projects">Showcase & Case Studies</Button>
@@ -496,9 +514,9 @@ export default function App() {
           className="scroll-mt-24 py-16 w-screen relative left-1/2 right-1/2 -ml-[50vw] -mr-[50vw] px-[5vw] lg:px-[6vw] xl:px-[8vw] max-w-screen overflow-x-hidden"
         >
           <div className="mx-auto w-full max-w-[1550px]">
-            <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-14 items-center">
-              {/* LEFT COLUMN: 7 Columns wide for Capabilities Header & Cards */}
-              <div className="w-full lg:col-span-7">
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10 items-center">
+              {/* LEFT COLUMN: 6 Columns wide for Capabilities Header & Cards */}
+              <div className="w-full lg:col-span-6">
                 <SectionHeader
                   eyebrow="CAPABILITIES"
                   title="Technical Stack & Mindset"
@@ -525,9 +543,9 @@ export default function App() {
                 </div>
               </div>
 
-              {/* RIGHT COLUMN: 5 Columns wide for Large 3D Three.js WebGL Macbook Model */}
-              <div className="flex items-center justify-center w-full lg:col-span-5">
-                <Macbook3DModel screenImage="/bannerMac.png" className="h-[450px] sm:h-[520px] lg:h-[580px]" />
+              {/* RIGHT COLUMN: 6 Columns wide for Large 3D Three.js WebGL Macbook Model */}
+              <div className="flex items-center justify-center w-full lg:col-span-6">
+                <Macbook3DModel screenImage="/bannerMac.png" className="h-[460px] sm:h-[520px] lg:h-[560px]" />
               </div>
             </div>
           </div>
