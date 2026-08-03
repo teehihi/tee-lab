@@ -34,9 +34,8 @@ export function IntroShowcase({ onEnterPortfolio }: IntroShowcaseProps) {
 
   return (
     <div
-      className={`fixed inset-0 z-50 flex flex-col justify-between overflow-hidden bg-[#07070a] text-white transition-opacity duration-700 select-none ${
-        isFadingOut ? "opacity-0 pointer-events-none" : "opacity-100"
-      }`}
+      className={`fixed inset-0 z-50 flex flex-col justify-between overflow-hidden bg-[#07070a] text-white transition-opacity duration-700 select-none ${isFadingOut ? "opacity-0 pointer-events-none" : "opacity-100"
+        }`}
     >
       {/* Background Images */}
       <div className="absolute inset-0 pointer-events-none overflow-hidden">
@@ -46,12 +45,12 @@ export function IntroShowcase({ onEnterPortfolio }: IntroShowcaseProps) {
           alt="Intro Background"
           className="absolute inset-0 w-full h-full object-cover"
         />
-        {/* Centered Overlay Background */}
-        <div className="absolute inset-0 flex items-center justify-center">
+        {/* Bottom-Aligned Overlay Background */}
+        <div className="absolute inset-x-0 bottom-0 flex items-end justify-center pointer-events-none">
           <img
             src="/bgintro2.avif"
-            alt="Intro Center Graphic"
-            className="w-[65%] max-w-[850px] h-auto object-contain pointer-events-none select-none opacity-85"
+            alt="Intro Bottom Graphic"
+            className="w-[60%] max-w-[10000px] h-auto object-contain pointer-events-none select-none opacity-80 translate-y-6 sm:translate-y-10"
           />
         </div>
       </div>
@@ -70,9 +69,8 @@ export function IntroShowcase({ onEnterPortfolio }: IntroShowcaseProps) {
       <main className="relative z-10 flex-1 flex flex-col items-center justify-center text-center px-4 pt-6 sm:pt-10 max-w-5xl mx-auto w-full">
         {/* Hero Title & Subtitle */}
         <div
-          className={`transition-all duration-700 transform ${
-            isZooming ? "opacity-0 -translate-y-8 scale-95" : "opacity-100 translate-y-0 scale-100"
-          }`}
+          className={`transition-all duration-700 transform ${isZooming ? "opacity-0 -translate-y-8 scale-95" : "opacity-100 translate-y-0 scale-100"
+            }`}
         >
           {/* Main Title ("The Art of Software.") */}
           <h1 className="text-4xl sm:text-6xl md:text-7xl font-extrabold tracking-tight text-white leading-none mb-4 sm:mb-6">
@@ -101,7 +99,7 @@ export function IntroShowcase({ onEnterPortfolio }: IntroShowcaseProps) {
           <Iphone3DModel
             screenImage="/phone-screen.png"
             isZoomedIn={isZooming}
-            onZoomComplete={() => {}}
+            onZoomComplete={() => { }}
             className="w-full"
           />
         </div>
@@ -111,9 +109,8 @@ export function IntroShowcase({ onEnterPortfolio }: IntroShowcaseProps) {
       <footer className="relative z-20 pb-6 text-center">
         <button
           onClick={handleStartTransition}
-          className={`inline-flex flex-col items-center gap-1.5 text-xs text-white/40 hover:text-white/80 transition-all cursor-pointer ${
-            isZooming ? "opacity-0" : "opacity-100"
-          }`}
+          className={`inline-flex flex-col items-center gap-1.5 text-xs text-white/40 hover:text-white/80 transition-all cursor-pointer ${isZooming ? "opacity-0" : "opacity-100"
+            }`}
         >
           <span>Click to launch experience</span>
           <ChevronDown className="w-4 h-4 animate-bounce text-emerald-400" />
