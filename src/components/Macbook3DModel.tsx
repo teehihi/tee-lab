@@ -35,8 +35,8 @@ export function Macbook3DModel({ screenImage, className = "" }: Macbook3DModelPr
     // 1. Scene, Camera, Renderer
     const scene = new THREE.Scene();
     const camera = new THREE.PerspectiveCamera(38, width / height, 0.1, 100);
-    // Camera Y=0.35 lowers the 3D model vertically; Z=8.8 provides 40% margin safety
-    camera.position.set(0, 0.35, 8.8);
+    // Camera Y=0.68 lowers the 3D model down vertically to align perfectly with the middle of the left cards
+    camera.position.set(0, 0.68, 8.8);
 
     const renderer = new THREE.WebGLRenderer({
       canvas,
@@ -50,7 +50,6 @@ export function Macbook3DModel({ screenImage, className = "" }: Macbook3DModelPr
 
     // 2. Model Root Group
     const modelGroup = new THREE.Group();
-    // Slightly smaller 1.15x scale for clean aesthetic proportion
     modelGroup.scale.set(1.15, 1.15, 1.15);
     scene.add(modelGroup);
 
