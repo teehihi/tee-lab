@@ -45,12 +45,12 @@ export function IntroShowcase({ onEnterPortfolio }: IntroShowcaseProps) {
           alt="Intro Background"
           className="absolute inset-0 w-full h-full object-cover"
         />
-        {/* Bottom-Aligned Overlay Background */}
-        <div className="absolute inset-x-0 bottom-0 flex items-end justify-center pointer-events-none">
+        {/* Bottom-Aligned Overlay Background Loop */}
+        <div className="absolute inset-x-0 bottom-[-2%] flex items-end justify-center pointer-events-none">
           <img
             src="/bgintro2.avif"
             alt="Intro Bottom Graphic"
-            className="w-[60%] max-w-[10000px] h-auto object-contain pointer-events-none select-none opacity-80 translate-y-6 sm:translate-y-10"
+            className="w-[82%] max-w-[1050px] h-auto object-contain pointer-events-none select-none opacity-95"
           />
         </div>
       </div>
@@ -69,13 +69,12 @@ export function IntroShowcase({ onEnterPortfolio }: IntroShowcaseProps) {
       <main className="relative z-10 flex-1 flex flex-col items-center justify-center text-center px-4 pt-6 sm:pt-10 max-w-5xl mx-auto w-full">
         {/* Hero Title & Subtitle */}
         <div
-          className={`relative z-30 transition-all duration-700 transform ${
-            isZooming ? "opacity-0 -translate-y-8 scale-95" : "opacity-100 translate-y-0 scale-100"
-          }`}
+          className={`relative z-30 transition-all duration-700 transform ${isZooming ? "opacity-0 -translate-y-8 scale-95" : "opacity-100 translate-y-0 scale-100"
+            }`}
         >
-          {/* Main Title ("The Art of Software.") */}
+          {/* Main Title ("Building Software That Matters") */}
           <h1 className="text-4xl sm:text-6xl md:text-7xl font-extrabold tracking-tight text-white leading-none mb-4 sm:mb-6">
-            The Art of <span className="text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 via-teal-300 to-cyan-400">Software.</span>
+            Building Software <span className="text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 via-teal-300 to-cyan-400">That Matters.</span>
           </h1>
 
           {/* Subtitle Description */}
@@ -95,8 +94,44 @@ export function IntroShowcase({ onEnterPortfolio }: IntroShowcaseProps) {
           </div>
         </div>
 
-        {/* 3D iPhone 17 Pro Max Canvas Container */}
+        {/* 3D iPhone 17 Pro Max Canvas Container & Tightly Tucked Tech Bubbles */}
         <div className="w-full max-w-4xl relative z-10 -mt-4 sm:-mt-8 flex items-center justify-center">
+          {/* 1. React Bubble (Top Left - tucked tightly against upper-left phone chassis) */}
+          <div className="absolute top-[22%] left-[15%] sm:left-[21%] md:left-[24%] z-20 pointer-events-none animate-bubble-1">
+            <img
+              src="/reactBubble.webp"
+              alt="React Bubble"
+              className="w-20 sm:w-28 md:w-32 h-auto object-contain select-none filter drop-shadow-[0_10px_20px_rgba(0,0,0,0.5)]"
+            />
+          </div>
+
+          {/* 2. Node.js Bubble (Bottom Left - tucked tightly against lower-left phone chassis) */}
+          <div className="absolute bottom-[24%] left-[10%] sm:left-[15%] md:left-[18%] z-20 pointer-events-none animate-bubble-2">
+            <img
+              src="/nodejsBubble.webp"
+              alt="NodeJS Bubble"
+              className="w-20 sm:w-28 md:w-32 h-auto object-contain select-none filter drop-shadow-[0_10px_20px_rgba(0,0,0,0.5)]"
+            />
+          </div>
+
+          {/* 3. Python Bubble (Top Right - tucked tightly against upper-right phone chassis) */}
+          <div className="absolute top-[24%] right-[15%] sm:right-[21%] md:right-[24%] z-20 pointer-events-none animate-bubble-3">
+            <img
+              src="/pythonBubble.webp"
+              alt="Python Bubble"
+              className="w-20 sm:w-28 md:w-32 h-auto object-contain select-none filter drop-shadow-[0_10px_20px_rgba(0,0,0,0.5)]"
+            />
+          </div>
+
+          {/* 4. DB Bubble (Bottom Right - tucked tightly against lower-right phone chassis) */}
+          <div className="absolute bottom-[22%] right-[10%] sm:right-[15%] md:right-[18%] z-20 pointer-events-none animate-bubble-4">
+            <img
+              src="/dbBubble.webp"
+              alt="DB Bubble"
+              className="w-20 sm:w-28 md:w-32 h-auto object-contain select-none filter drop-shadow-[0_10px_20px_rgba(0,0,0,0.5)]"
+            />
+          </div>
+
           <Iphone3DModel
             screenImage="/phone-screen.png"
             isZoomedIn={isZooming}

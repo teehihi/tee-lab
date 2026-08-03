@@ -63,6 +63,64 @@ a {
   background: var(--page-grid-base);
 }
 
+/* Floating Tech Bubbles Animations */
+@keyframes float-bubble-1 {
+  0%, 100% {
+    transform: translateY(0px) rotate(0deg) scale(1);
+    filter: drop-shadow(0 0 15px rgba(56, 189, 248, 0.45));
+  }
+  50% {
+    transform: translateY(-10px) rotate(2deg) scale(1.04);
+    filter: drop-shadow(0 0 25px rgba(56, 189, 248, 0.75));
+  }
+}
+
+@keyframes float-bubble-2 {
+  0%, 100% {
+    transform: translateY(0px) rotate(0deg) scale(1);
+    filter: drop-shadow(0 0 15px rgba(139, 92, 246, 0.45));
+  }
+  50% {
+    transform: translateY(-12px) rotate(-3deg) scale(1.05);
+    filter: drop-shadow(0 0 25px rgba(139, 92, 246, 0.75));
+  }
+}
+
+@keyframes float-bubble-3 {
+  0%, 100% {
+    transform: translateY(0px) rotate(0deg) scale(1);
+    filter: drop-shadow(0 0 15px rgba(16, 185, 129, 0.45));
+  }
+  50% {
+    transform: translateY(-9px) rotate(3deg) scale(1.04);
+    filter: drop-shadow(0 0 24px rgba(16, 185, 129, 0.75));
+  }
+}
+
+@keyframes float-bubble-4 {
+  0%, 100% {
+    transform: translateY(0px) rotate(0deg) scale(1);
+    filter: drop-shadow(0 0 15px rgba(245, 158, 11, 0.45));
+  }
+  50% {
+    transform: translateY(-11px) rotate(-2deg) scale(1.05);
+    filter: drop-shadow(0 0 25px rgba(245, 158, 11, 0.75));
+  }
+}
+
+.animate-bubble-1 {
+  animation: float-bubble-1 4.2s ease-in-out infinite;
+}
+.animate-bubble-2 {
+  animation: float-bubble-2 4.8s ease-in-out infinite 0.5s;
+}
+.animate-bubble-3 {
+  animation: float-bubble-3 4.5s ease-in-out infinite 1s;
+}
+.animate-bubble-4 {
+  animation: float-bubble-4 5.0s ease-in-out infinite 1.5s;
+}
+
 .interactive-grid {
   pointer-events: none;
   position: fixed;
