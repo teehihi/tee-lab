@@ -42,12 +42,12 @@ export function Iphone3DModel({
     if (!container || !canvas) return;
 
     const width = container.clientWidth || 800;
-    const height = container.clientHeight || 650;
+    const height = container.clientHeight || 700;
 
     // 1. Scene, Camera, Renderer
     const scene = new THREE.Scene();
     const camera = new THREE.PerspectiveCamera(34, width / height, 0.1, 100);
-    camera.position.set(0, 0, 5.0);
+    camera.position.set(0, 0, 4.4);
 
     const renderer = new THREE.WebGLRenderer({
       canvas,
@@ -61,13 +61,14 @@ export function Iphone3DModel({
 
     // 2. Model Root Group
     const modelGroup = new THREE.Group();
-    // Start below Y = -4.0 for entrance rise up
-    modelGroup.position.set(0, -4.0, 0);
-    modelGroup.rotation.set(0.12, -0.15, 0.02);
+    // Start below Y = -4.5 for smooth entrance rise up
+    modelGroup.position.set(0, -4.5, 0);
+    // Initial entrance tilt matching reference image angle (~-17 deg Y tilt)
+    modelGroup.rotation.set(0.16, -0.30, 0.02);
     scene.add(modelGroup);
 
     // 3. Studio Lighting Setup
-    const ambientLight = new THREE.AmbientLight(0xffffff, 2.0);
+    const ambientLight = new THREE.AmbientLight(0xffffff, 2.2);
     scene.add(ambientLight);
 
     const keyLight = new THREE.DirectionalLight(0xffffff, 2.8);
@@ -82,11 +83,9 @@ export function Iphone3DModel({
     rimLight.position.set(0, -3, -2);
     scene.add(rimLight);
 
-    // 4. Load Texture & Model
+    // 4. Load Texture & GLTF Model
     const screenTexture = textureLoader.load(screenImage);
     screenTexture.colorSpace = THREE.SRGBColorSpace;
-
-    // Correct texture orientation: rotate 180 degrees around center to display right-side up!
     screenTexture.center.set(0.5, 0.5);
     screenTexture.rotation = Math.PI;
     screenTexture.generateMipmaps = false;
@@ -97,29 +96,40 @@ export function Iphone3DModel({
         // Rotate 180 deg around Y so FRONT DISPLAY screen faces camera
         gltf.scene.rotation.y = Math.PI;
 
-        // Calculate Bounding Box & Scale to perfect size (~1.95 units tall)
+        // Calculate Bounding Box & Scale to 2.15 units tall
         const box = new THREE.Box3().setFromObject(gltf.scene);
         const center = box.getCenter(new THREE.Vector3());
         const size = box.getSize(new THREE.Vector3());
         
-        // Center model geometry
         gltf.scene.position.sub(center);
 
-        // Scale to 1.95 units tall
         const maxDim = Math.max(size.x, size.y, size.z);
-        const targetHeight = 1.95;
+        const targetHeight = 2.15;
         const scaleFactor = targetHeight / (maxDim || 1);
         gltf.scene.scale.set(scaleFactor, scaleFactor, scaleFactor);
 
-        // Traverse nodes & map screen texture to OLED material
+        // Traverse & update existing material properties directly (preserves GLTF multi-material primitive bindings)
         gltf.scene.traverse((node: any) => {
           if (node.isMesh && node.material) {
-            const matName = node.material.name || "";
-            if (matName === "OLED" || matName === "OLED off") {
-              node.material = new THREE.MeshBasicMaterial({
-                map: screenTexture,
-                side: THREE.DoubleSide,
-              });
+            const processMat = (mat: any) => {
+              const matName = (mat?.name || "").toLowerCase();
+              if (matName === "oled" || matName === "oled off") {
+                mat.map = screenTexture;
+                if (mat.emissiveMap !== undefined) mat.emissiveMap = screenTexture;
+                if (mat.emissive !== undefined) mat.emissive.setHex(0xffffff);
+                if (mat.emissiveIntensity !== undefined) mat.emissiveIntensity = 0.8;
+                mat.needsUpdate = true;
+              } else if (matName.includes("glass")) {
+                mat.transparent = true;
+                mat.opacity = 0.0;
+                mat.needsUpdate = true;
+              }
+            };
+
+            if (Array.isArray(node.material)) {
+              node.material.forEach(processMat);
+            } else {
+              processMat(node.material);
             }
           }
         });
@@ -131,49 +141,78 @@ export function Iphone3DModel({
       (err) => console.error("Error loading iphone.glb:", err)
     );
 
-    // 5. Mouse Parallax Motion
-    let mouseX = 0;
-    let mouseY = 0;
+    // 5. Interactive Mouse Hover & Drag Rotation Physics
+    let isDragging = false;
+    let previousMouseX = 0;
+    let previousMouseY = 0;
+    let dragRotX = 0;
+    let dragRotY = 0;
+    let hoverMouseX = 0;
+    let hoverMouseY = 0;
 
-    const handleMouseMove = (event: MouseEvent) => {
+    const handlePointerDown = (event: PointerEvent) => {
       if (isZoomedRef.current) return;
-      const rect = container.getBoundingClientRect();
-      mouseX = (event.clientX - rect.left) / rect.width - 0.5;
-      mouseY = (event.clientY - rect.top) / rect.height - 0.5;
+      isDragging = true;
+      previousMouseX = event.clientX;
+      previousMouseY = event.clientY;
     };
 
-    window.addEventListener("mousemove", handleMouseMove);
+    const handlePointerMove = (event: PointerEvent) => {
+      if (isZoomedRef.current) return;
+      const rect = container.getBoundingClientRect();
+      hoverMouseX = (event.clientX - rect.left) / rect.width - 0.5;
+      hoverMouseY = (event.clientY - rect.top) / rect.height - 0.5;
 
-    // 6. Render Loop with Smooth Physics
+      if (isDragging) {
+        const deltaX = event.clientX - previousMouseX;
+        const deltaY = event.clientY - previousMouseY;
+
+        dragRotY += deltaX * 0.008;
+        dragRotX += deltaY * 0.008;
+
+        dragRotX = THREE.MathUtils.clamp(dragRotX, -0.4, 0.4);
+        dragRotY = THREE.MathUtils.clamp(dragRotY, -0.6, 0.6);
+
+        previousMouseX = event.clientX;
+        previousMouseY = event.clientY;
+      }
+    };
+
+    const handlePointerUp = () => {
+      isDragging = false;
+    };
+
+    container.addEventListener("pointerdown", handlePointerDown);
+    window.addEventListener("pointermove", handlePointerMove);
+    window.addEventListener("pointerup", handlePointerUp);
+
+    // 6. Render Loop (NO LEVITATION BOBBING - STILL STANDING POSITION)
     let animationFrameId: number;
-    let clock = new THREE.Clock();
     let entranceProgress = 0;
     let zoomTriggered = false;
 
     const animate = () => {
       animationFrameId = requestAnimationFrame(animate);
-      const elapsedTime = clock.getElapsedTime();
 
       if (entranceProgress < 1) {
         entranceProgress += 0.025;
       }
 
       if (!isZoomedRef.current) {
-        // Normal State: Phone rises to Y = -0.55, displaying front screen facing camera
-        const targetY = -0.55 + (1 - Math.exp(-entranceProgress * 3.5)) * 0.55;
-        const floatOffset = Math.sin(elapsedTime * 1.4) * 0.04;
-        
-        modelGroup.position.y += (targetY + floatOffset - modelGroup.position.y) * 0.06;
+        // Normal State: Phone rises from below to Y = -0.75, THEN STAYS COMPLETELY STILL (no bobbing up and down!)
+        const targetY = -0.75 + (1 - Math.exp(-entranceProgress * 3.5)) * 0.75;
+        modelGroup.position.y += (targetY - modelGroup.position.y) * 0.06;
 
-        const targetRotY = -0.12 + mouseX * 0.25;
-        const targetRotX = 0.12 + mouseY * 0.18;
-        const targetRotZ = 0.01;
+        // Base tilt (-0.30 rad ~-17 deg Y tilt) + hover parallax + user drag rotation
+        const targetRotY = -0.30 + hoverMouseX * 0.20 + dragRotY;
+        const targetRotX = 0.16 + hoverMouseY * 0.14 + dragRotX;
+        const targetRotZ = 0.02;
 
         modelGroup.rotation.x += (targetRotX - modelGroup.rotation.x) * 0.06;
         modelGroup.rotation.y += (targetRotY - modelGroup.rotation.y) * 0.06;
         modelGroup.rotation.z += (targetRotZ - modelGroup.rotation.z) * 0.06;
 
-        camera.position.z += (5.0 - camera.position.z) * 0.06;
+        camera.position.z += (4.4 - camera.position.z) * 0.06;
       } else {
         // Zoomed State: Phone straightens upright (0,0,0) and zooms up towards camera
         modelGroup.position.y += (0.0 - modelGroup.position.y) * 0.08;
@@ -183,7 +222,6 @@ export function Iphone3DModel({
         modelGroup.rotation.y += (0 - modelGroup.rotation.y) * 0.08;
         modelGroup.rotation.z += (0 - modelGroup.rotation.z) * 0.08;
 
-        // Zoom camera close to front screen
         camera.position.z += (2.2 - camera.position.z) * 0.08;
 
         if (!zoomTriggered && Math.abs(camera.position.z - 2.2) < 0.2) {
@@ -202,7 +240,7 @@ export function Iphone3DModel({
     const handleResize = () => {
       if (!container || !renderer) return;
       const newW = container.clientWidth || 800;
-      const newH = container.clientHeight || 650;
+      const newH = container.clientHeight || 700;
       camera.aspect = newW / newH;
       camera.updateProjectionMatrix();
       renderer.setSize(newW, newH);
@@ -211,7 +249,9 @@ export function Iphone3DModel({
     window.addEventListener("resize", handleResize);
 
     return () => {
-      window.removeEventListener("mousemove", handleMouseMove);
+      container.removeEventListener("pointerdown", handlePointerDown);
+      window.removeEventListener("pointermove", handlePointerMove);
+      window.removeEventListener("pointerup", handlePointerUp);
       window.removeEventListener("resize", handleResize);
       cancelAnimationFrame(animationFrameId);
       renderer.dispose();
@@ -221,7 +261,7 @@ export function Iphone3DModel({
   return (
     <div
       ref={containerRef}
-      className={`relative w-full h-[480px] sm:h-[550px] lg:h-[600px] flex items-center justify-center cursor-grab active:cursor-grabbing select-none overflow-visible ${className}`}
+      className={`relative w-full h-[520px] sm:h-[600px] lg:h-[680px] flex items-center justify-center cursor-grab active:cursor-grabbing select-none overflow-visible ${className}`}
     >
       {!loaded && (
         <div className="absolute inset-0 flex items-center justify-center text-xs text-muted-foreground animate-pulse">
