@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Iphone3DModel } from "./Iphone3DModel";
+import { MacbookLoader } from "./MacbookLoader";
 import { ArrowRight, ChevronDown, Sparkles } from "lucide-react";
 
 interface IntroShowcaseProps {
@@ -9,6 +10,7 @@ interface IntroShowcaseProps {
 export function IntroShowcase({ onEnterPortfolio }: IntroShowcaseProps) {
   const [isZooming, setIsZooming] = useState(false);
   const [isFadingOut, setIsFadingOut] = useState(false);
+  const [isModelLoaded, setIsModelLoaded] = useState(false);
 
   // Lock body scroll while Intro Showcase is active
   useEffect(() => {
@@ -37,6 +39,14 @@ export function IntroShowcase({ onEnterPortfolio }: IntroShowcaseProps) {
       className={`fixed inset-0 z-50 flex flex-col justify-between overflow-hidden bg-[#07070a] text-white transition-opacity duration-700 select-none ${isFadingOut ? "opacity-0 pointer-events-none" : "opacity-100"
         }`}
     >
+      {/* Full-Screen Macbook Isometric Loading Overlay */}
+      <div
+        className={`fixed inset-0 z-50 flex flex-col items-center justify-center bg-[#07070a] transition-opacity duration-700 ${
+          isModelLoaded ? "opacity-0 pointer-events-none" : "opacity-100"
+        }`}
+      >
+        <MacbookLoader />
+      </div>
       {/* Background Images */}
       <div className="absolute inset-0 pointer-events-none overflow-hidden">
         {/* Base Background: Fill screen */}
@@ -72,14 +82,14 @@ export function IntroShowcase({ onEnterPortfolio }: IntroShowcaseProps) {
           className={`relative z-30 transition-all duration-700 transform ${isZooming ? "opacity-0 -translate-y-8 scale-95" : "opacity-100 translate-y-0 scale-100"
             }`}
         >
-          {/* Main Title ("Crafting Digital Experiences") */}
+          {/* Main Title ("Ideas Into Software.") */}
           <h1 className="text-4xl sm:text-6xl md:text-7xl font-extrabold tracking-tight text-white leading-none mb-4 sm:mb-6">
-            Crafting Digital <span className="text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 via-teal-300 to-cyan-400">Experiences.</span>
+            Ideas Into <span className="text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 via-teal-300 to-cyan-400">Software.</span>
           </h1>
 
           {/* Subtitle Description */}
           <p className="max-w-2xl mx-auto text-sm sm:text-base text-white/70 font-normal leading-relaxed mb-8 px-4">
-            Step into an immersive showcase of intelligent AI applications, scalable full-stack platforms, and high-performance interactive software crafted by Nguyen Nhat Thien.
+            Exploring the intersection of software engineering, artificial intelligence, and thoughtful product design through projects built for real users.
           </p>
 
           {/* CTA Interactive Button */}
@@ -136,6 +146,7 @@ export function IntroShowcase({ onEnterPortfolio }: IntroShowcaseProps) {
             screenImage="/phone-screen.png"
             isZoomedIn={isZooming}
             onZoomComplete={() => { }}
+            onModelLoaded={() => setIsModelLoaded(true)}
             className="w-full"
           />
         </div>

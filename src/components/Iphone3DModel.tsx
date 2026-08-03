@@ -1,6 +1,7 @@
 import React, { useRef, useEffect, useState } from "react";
 import * as THREE from "three";
 import { DRACOLoader, GLTFLoader } from "three-stdlib";
+import { MacbookLoader } from "./MacbookLoader";
 
 THREE.Cache.enabled = true;
 
@@ -16,6 +17,7 @@ interface Iphone3DModelProps {
   screenImage?: string;
   isZoomedIn?: boolean;
   onZoomComplete?: () => void;
+  onModelLoaded?: () => void;
   className?: string;
 }
 
@@ -23,6 +25,7 @@ export function Iphone3DModel({
   screenImage = "/phone-screen.png",
   isZoomedIn = false,
   onZoomComplete,
+  onModelLoaded,
   className = "",
 }: Iphone3DModelProps) {
   const containerRef = useRef<HTMLDivElement>(null);
@@ -35,6 +38,9 @@ export function Iphone3DModel({
 
   const onZoomCompleteRef = useRef(onZoomComplete);
   onZoomCompleteRef.current = onZoomComplete;
+
+  const onModelLoadedRef = useRef(onModelLoaded);
+  onModelLoadedRef.current = onModelLoaded;
 
   useEffect(() => {
     const container = containerRef.current;
@@ -136,6 +142,9 @@ export function Iphone3DModel({
 
         modelGroup.add(gltf.scene);
         setLoaded(true);
+        if (onModelLoadedRef.current) {
+          onModelLoadedRef.current();
+        }
       },
       undefined,
       (err) => console.error("Error loading iphone.glb:", err)
@@ -167,7 +176,6 @@ export function Iphone3DModel({
         const deltaX = event.clientX - previousMouseX;
         const deltaY = event.clientY - previousMouseY;
 
-        // Allow full unconstrained 360-degree horizontal rotation!
         dragRotY += deltaX * 0.01;
         dragRotX += deltaY * 0.008;
 
@@ -263,11 +271,6 @@ export function Iphone3DModel({
       ref={containerRef}
       className={`relative w-full h-[520px] sm:h-[600px] lg:h-[680px] flex items-center justify-center cursor-grab active:cursor-grabbing select-none overflow-visible ${className}`}
     >
-      {!loaded && (
-        <div className="absolute inset-0 flex items-center justify-center text-xs text-muted-foreground animate-pulse">
-          Loading 3D iPhone 17 Pro Max...
-        </div>
-      )}
       <canvas ref={canvasRef} className="w-full h-full block overflow-visible" />
     </div>
   );
