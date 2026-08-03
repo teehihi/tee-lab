@@ -38,13 +38,22 @@ export function IntroShowcase({ onEnterPortfolio }: IntroShowcaseProps) {
         isFadingOut ? "opacity-0 pointer-events-none" : "opacity-100"
       }`}
     >
-      {/* Background Ambient Radial Glow Effects (The Art of Software design language) */}
+      {/* Background Images */}
       <div className="absolute inset-0 pointer-events-none overflow-hidden">
-        <div className="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[700px] bg-purple-600/15 rounded-full blur-[140px]" />
-        <div className="absolute bottom-10 left-1/3 w-[600px] h-[600px] bg-emerald-500/10 rounded-full blur-[160px]" />
-        <div className="absolute bottom-20 right-1/4 w-[550px] h-[550px] bg-blue-600/15 rounded-full blur-[140px]" />
-        {/* Subtle grid pattern overlay */}
-        <div className="absolute inset-0 bg-[linear-gradient(to_right,#ffffff05_1px,transparent_1px),linear-gradient(to_bottom,#ffffff05_1px,transparent_1px)] bg-[size:4rem_4rem] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_40%,#000_70%,transparent_100%)]" />
+        {/* Base Background: Fill screen */}
+        <img
+          src="/bgintro.avif"
+          alt="Intro Background"
+          className="absolute inset-0 w-full h-full object-cover"
+        />
+        {/* Centered Overlay Background */}
+        <div className="absolute inset-0 flex items-center justify-center">
+          <img
+            src="/bgintro2.avif"
+            alt="Intro Center Graphic"
+            className="w-[65%] max-w-[850px] h-auto object-contain pointer-events-none select-none opacity-85"
+          />
+        </div>
       </div>
 
       {/* Top Floating Navbar / Skip Button */}
