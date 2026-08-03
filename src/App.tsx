@@ -555,8 +555,8 @@ export default function App() {
         <section id="projects" className="scroll-mt-24 py-16">
           <SectionHeader
             eyebrow="PORTFOLIO SHOWCASE"
-            title="Featured Projects & Playable Demos"
-            description="Core software applications, browser games, and AI platforms built with high performance discipline."
+            title="Featured Projects & Demos"
+            description="Explore the software, AI applications, and interactive products I've designed, developed, and deployed."
           />
 
           <div className="featured-projects mt-8 space-y-8">

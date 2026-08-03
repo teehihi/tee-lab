@@ -707,7 +707,7 @@ a {
 
 .section-header span {
   display: block;
-  max-width: 43rem;
+  max-width: 60rem;
   margin-top: 0.45rem;
   color: var(--muted-foreground);
 }
