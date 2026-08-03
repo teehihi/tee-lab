@@ -11,6 +11,17 @@ export function IntroShowcase({ onEnterPortfolio }: IntroShowcaseProps) {
   const [isZooming, setIsZooming] = useState(false);
   const [isFadingOut, setIsFadingOut] = useState(false);
   const [isModelLoaded, setIsModelLoaded] = useState(false);
+  const [showTextSequence, setShowTextSequence] = useState(false);
+
+  // Trigger sequential text fade-down after 3D model finishes loading
+  useEffect(() => {
+    if (isModelLoaded) {
+      const timer = setTimeout(() => {
+        setShowTextSequence(true);
+      }, 100);
+      return () => clearTimeout(timer);
+    }
+  }, [isModelLoaded]);
 
   // Lock body scroll while Intro Showcase is active
   useEffect(() => {
@@ -47,6 +58,7 @@ export function IntroShowcase({ onEnterPortfolio }: IntroShowcaseProps) {
       >
         <MacbookLoader />
       </div>
+
       {/* Background Images */}
       <div className="absolute inset-0 pointer-events-none overflow-hidden">
         {/* Base Background: Fill screen */}
@@ -65,27 +77,37 @@ export function IntroShowcase({ onEnterPortfolio }: IntroShowcaseProps) {
         </div>
       </div>
 
-
-
       {/* Main Content Area */}
       <main className="relative z-10 flex-1 flex flex-col items-center justify-center text-center px-4 pt-6 sm:pt-10 max-w-5xl mx-auto w-full">
-        {/* Hero Title & Subtitle */}
+        {/* Hero Title & Subtitle (Sequential Fade-Down Top-to-Bottom) */}
         <div
           className={`relative z-30 transition-all duration-700 transform ${isZooming ? "opacity-0 -translate-y-8 scale-95" : "opacity-100 translate-y-0 scale-100"
             }`}
         >
-          {/* Main Title ("Ideas Into Software.") */}
-          <h1 className="text-4xl sm:text-6xl md:text-7xl font-extrabold tracking-tight text-white leading-none mb-4 sm:mb-6">
+          {/* 1. Main Title ("Ideas Into Software.") */}
+          <h1
+            className={`text-4xl sm:text-6xl md:text-7xl font-extrabold tracking-tight text-white leading-none mb-4 sm:mb-6 transition-all duration-700 delay-100 transform ${
+              showTextSequence ? "opacity-100 translate-y-0" : "opacity-0 -translate-y-6"
+            }`}
+          >
             Ideas Into <span className="text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 via-teal-300 to-cyan-400">Software.</span>
           </h1>
 
-          {/* Subtitle Description */}
-          <p className="max-w-2xl mx-auto text-sm sm:text-base text-white/70 font-normal leading-relaxed mb-8 px-4">
+          {/* 2. Subtitle Description */}
+          <p
+            className={`max-w-2xl mx-auto text-sm sm:text-base text-white/70 font-normal leading-relaxed mb-8 px-4 transition-all duration-700 delay-300 transform ${
+              showTextSequence ? "opacity-100 translate-y-0" : "opacity-0 -translate-y-6"
+            }`}
+          >
             Exploring the intersection of software engineering, artificial intelligence, and thoughtful product design through projects built for real users.
           </p>
 
-          {/* CTA Interactive Button */}
-          <div className="flex items-center justify-center gap-4 relative z-30">
+          {/* 3. CTA Interactive Button */}
+          <div
+            className={`flex items-center justify-center gap-4 relative z-30 transition-all duration-700 delay-500 transform ${
+              showTextSequence ? "opacity-100 translate-y-0" : "opacity-0 -translate-y-6"
+            }`}
+          >
             <button
               onClick={handleStartTransition}
               className="group relative z-30 inline-flex items-center justify-center gap-2 px-8 py-3.5 rounded-full bg-white text-black font-semibold text-sm transition-all duration-300 hover:bg-emerald-400 hover:text-black hover:scale-105 shadow-[0_0_30px_rgba(255,255,255,0.25)] hover:shadow-[0_0_40px_rgba(16,185,129,0.5)] cursor-pointer active:scale-95"
@@ -96,10 +118,14 @@ export function IntroShowcase({ onEnterPortfolio }: IntroShowcaseProps) {
           </div>
         </div>
 
-        {/* 3D iPhone 17 Pro Max Canvas Container & Tightly Tucked Tech Bubbles */}
-        <div className="w-full max-w-4xl relative z-10 -mt-4 sm:-mt-8 flex items-center justify-center">
-          {/* 1. React Bubble (Top Left) */}
-          <div className="absolute top-[18%] left-[14%] sm:left-[19%] md:left-[22%] z-20 pointer-events-none animate-bubble-1">
+        {/* 3D iPhone 17 Pro Max Canvas Container & Fireworks Burst Tech Bubbles */}
+        <div className="w-full max-w-4xl relative z-10 mt-4 sm:mt-8 pt-2 sm:pt-4 flex items-center justify-center">
+          {/* 1. React Bubble (Top Left - Fireworks Burst Out) */}
+          <div
+            className={`absolute top-[18%] left-[14%] sm:left-[19%] md:left-[22%] z-20 pointer-events-none ${
+              isModelLoaded ? "animate-burst-1" : "opacity-0 scale-0"
+            }`}
+          >
             <img
               src="/reactBubble.webp"
               alt="React Bubble"
@@ -107,8 +133,12 @@ export function IntroShowcase({ onEnterPortfolio }: IntroShowcaseProps) {
             />
           </div>
 
-          {/* 2. Node.js Bubble (Middle-Lower Left - raised up to prevent clipping) */}
-          <div className="absolute top-[48%] left-[10%] sm:left-[14%] md:left-[17%] z-20 pointer-events-none animate-bubble-2">
+          {/* 2. Node.js Bubble (Middle-Lower Left - Fireworks Burst Out) */}
+          <div
+            className={`absolute top-[48%] left-[10%] sm:left-[14%] md:left-[17%] z-20 pointer-events-none ${
+              isModelLoaded ? "animate-burst-2" : "opacity-0 scale-0"
+            }`}
+          >
             <img
               src="/nodejsBubble.webp"
               alt="NodeJS Bubble"
@@ -116,8 +146,12 @@ export function IntroShowcase({ onEnterPortfolio }: IntroShowcaseProps) {
             />
           </div>
 
-          {/* 3. Python Bubble (Top Right) */}
-          <div className="absolute top-[20%] right-[14%] sm:right-[19%] md:right-[22%] z-20 pointer-events-none animate-bubble-3">
+          {/* 3. Python Bubble (Top Right - Fireworks Burst Out) */}
+          <div
+            className={`absolute top-[20%] right-[14%] sm:right-[19%] md:right-[22%] z-20 pointer-events-none ${
+              isModelLoaded ? "animate-burst-3" : "opacity-0 scale-0"
+            }`}
+          >
             <img
               src="/pythonBubble.webp"
               alt="Python Bubble"
@@ -125,8 +159,12 @@ export function IntroShowcase({ onEnterPortfolio }: IntroShowcaseProps) {
             />
           </div>
 
-          {/* 4. DB Bubble (Middle-Lower Right - raised up to prevent clipping) */}
-          <div className="absolute top-[50%] right-[10%] sm:right-[14%] md:right-[17%] z-20 pointer-events-none animate-bubble-4">
+          {/* 4. DB Bubble (Middle-Lower Right - Fireworks Burst Out) */}
+          <div
+            className={`absolute top-[50%] right-[10%] sm:right-[14%] md:right-[17%] z-20 pointer-events-none ${
+              isModelLoaded ? "animate-burst-4" : "opacity-0 scale-0"
+            }`}
+          >
             <img
               src="/dbBubble.webp"
               alt="DB Bubble"

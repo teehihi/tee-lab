@@ -207,12 +207,13 @@ export function Iphone3DModel({
       }
 
       if (!isZoomedRef.current) {
-        // Normal State: Phone rises from below to Y = -0.75, THEN STAYS COMPLETELY STILL
+        // Normal State: Phone rises from below to Y = -0.75 with entrance rotation spin
         const targetY = -0.75 + (1 - Math.exp(-entranceProgress * 3.5)) * 0.75;
         modelGroup.position.y += (targetY - modelGroup.position.y) * 0.06;
 
-        // Base tilt (-0.30 rad ~-17 deg Y tilt) + hover parallax + continuous 360 drag rotation
-        const targetRotY = -0.30 + hoverMouseX * 0.15 + dragRotY;
+        // Entrance Rotation Spin: smoothly unwinds 360 deg spin into base tilt (-0.30 rad)
+        const spinOffset = (1 - Math.sin(Math.min(entranceProgress, 1) * Math.PI * 0.5)) * Math.PI * 1.5;
+        const targetRotY = -0.30 + spinOffset + hoverMouseX * 0.15 + dragRotY;
         const targetRotX = 0.16 + hoverMouseY * 0.12 + dragRotX;
         const targetRotZ = 0.02;
 
