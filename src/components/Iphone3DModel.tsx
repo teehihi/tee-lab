@@ -96,6 +96,7 @@ export function Iphone3DModel({
     screenTexture.rotation = Math.PI;
     screenTexture.generateMipmaps = false;
 
+    let entranceProgress = 0;
     let isModelLoadedInScene = false;
 
     gltfLoader.load(
