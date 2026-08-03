@@ -41,7 +41,7 @@ export function IntroShowcase({ onEnterPortfolio }: IntroShowcaseProps) {
     >
       {/* Full-Screen Macbook Isometric Loading Overlay */}
       <div
-        className={`fixed inset-0 z-50 flex flex-col items-center justify-center bg-[#07070a] transition-opacity duration-700 ${
+        className={`fixed inset-0 z-[99999] flex flex-col items-center justify-center bg-[#07070a] transition-opacity duration-700 ${
           isModelLoaded ? "opacity-0 pointer-events-none" : "opacity-100"
         }`}
       >

@@ -45,8 +45,8 @@ export function MacbookLoader() {
           </div>
         </div>
       </div>
-      <p className="mt-4 text-xs font-mono tracking-widest text-emerald-400/90 uppercase animate-pulse">
-        Initializing 3D Experience...
+      <p className="macbook-loading-text">
+        Loading...
       </p>
     </div>
   );
