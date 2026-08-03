@@ -69,8 +69,9 @@ export function IntroShowcase({ onEnterPortfolio }: IntroShowcaseProps) {
       <main className="relative z-10 flex-1 flex flex-col items-center justify-center text-center px-4 pt-6 sm:pt-10 max-w-5xl mx-auto w-full">
         {/* Hero Title & Subtitle */}
         <div
-          className={`transition-all duration-700 transform ${isZooming ? "opacity-0 -translate-y-8 scale-95" : "opacity-100 translate-y-0 scale-100"
-            }`}
+          className={`relative z-30 transition-all duration-700 transform ${
+            isZooming ? "opacity-0 -translate-y-8 scale-95" : "opacity-100 translate-y-0 scale-100"
+          }`}
         >
           {/* Main Title ("The Art of Software.") */}
           <h1 className="text-4xl sm:text-6xl md:text-7xl font-extrabold tracking-tight text-white leading-none mb-4 sm:mb-6">
@@ -83,10 +84,10 @@ export function IntroShowcase({ onEnterPortfolio }: IntroShowcaseProps) {
           </p>
 
           {/* CTA Interactive Button */}
-          <div className="flex items-center justify-center gap-4">
+          <div className="flex items-center justify-center gap-4 relative z-30">
             <button
               onClick={handleStartTransition}
-              className="group relative inline-flex items-center justify-center gap-2 px-8 py-3.5 rounded-full bg-white text-black font-semibold text-sm transition-all duration-300 hover:bg-emerald-400 hover:text-black hover:scale-105 shadow-[0_0_30px_rgba(255,255,255,0.25)] hover:shadow-[0_0_40px_rgba(16,185,129,0.5)] cursor-pointer active:scale-95"
+              className="group relative z-30 inline-flex items-center justify-center gap-2 px-8 py-3.5 rounded-full bg-white text-black font-semibold text-sm transition-all duration-300 hover:bg-emerald-400 hover:text-black hover:scale-105 shadow-[0_0_30px_rgba(255,255,255,0.25)] hover:shadow-[0_0_40px_rgba(16,185,129,0.5)] cursor-pointer active:scale-95"
             >
               <span>Explore Portfolio</span>
               <ArrowRight className="w-4 h-4 transition-transform duration-300 group-hover:translate-x-1" />
@@ -95,7 +96,7 @@ export function IntroShowcase({ onEnterPortfolio }: IntroShowcaseProps) {
         </div>
 
         {/* 3D iPhone 17 Pro Max Canvas Container */}
-        <div className="w-full max-w-4xl relative -mt-4 sm:-mt-8 flex items-center justify-center">
+        <div className="w-full max-w-4xl relative z-10 -mt-4 sm:-mt-8 flex items-center justify-center">
           <Iphone3DModel
             screenImage="/phone-screen.png"
             isZoomedIn={isZooming}
