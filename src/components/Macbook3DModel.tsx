@@ -30,13 +30,13 @@ export function Macbook3DModel({ screenImage, className = "" }: Macbook3DModelPr
     if (!container || !canvas) return;
 
     const width = container.clientWidth || 800;
-    const height = container.clientHeight || 560;
+    const height = container.clientHeight || 540;
 
     // 1. Scene, Camera, Renderer
     const scene = new THREE.Scene();
     const camera = new THREE.PerspectiveCamera(38, width / height, 0.1, 100);
-    // Camera X=0 (centered), Y=0.70 (lowered vertically), Z=9.2 (50% safety margin clearance around all 4 edges)
-    camera.position.set(0, 0.70, 9.2);
+    // Camera X=0 (centered), Y=0.65 (lowered vertically), Z=9.6 (45% margin safety buffer around all 4 edges)
+    camera.position.set(0, 0.65, 9.6);
 
     const renderer = new THREE.WebGLRenderer({
       canvas,
@@ -50,6 +50,7 @@ export function Macbook3DModel({ screenImage, className = "" }: Macbook3DModelPr
 
     // 2. Model Root Group
     const modelGroup = new THREE.Group();
+    // 1.15x scale fits elegantly with zero edge clipping
     modelGroup.scale.set(1.15, 1.15, 1.15);
     scene.add(modelGroup);
 
@@ -129,8 +130,8 @@ export function Macbook3DModel({ screenImage, className = "" }: Macbook3DModelPr
       mouseX = x;
       mouseY = y;
 
-      targetRotY = mouseX * 0.22;
-      targetRotX = mouseY * 0.15;
+      targetRotY = mouseX * 0.18;
+      targetRotX = mouseY * 0.12;
     };
 
     window.addEventListener("mousemove", handleMouseMove);
@@ -167,7 +168,7 @@ export function Macbook3DModel({ screenImage, className = "" }: Macbook3DModelPr
     const handleResize = () => {
       if (!container || !renderer) return;
       const newW = container.clientWidth || 800;
-      const newH = container.clientHeight || 560;
+      const newH = container.clientHeight || 540;
       camera.aspect = newW / newH;
       camera.updateProjectionMatrix();
       renderer.setSize(newW, newH);
