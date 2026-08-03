@@ -56,7 +56,14 @@ export function IntroShowcase({ onEnterPortfolio }: IntroShowcaseProps) {
           isModelLoaded ? "opacity-0 pointer-events-none" : "opacity-100"
         }`}
       >
-        <MacbookLoader />
+        <img
+          src="/bgintro.avif"
+          alt="Loading Background"
+          className="absolute inset-0 w-full h-full object-cover opacity-90 pointer-events-none"
+        />
+        <div className="relative z-10">
+          <MacbookLoader />
+        </div>
       </div>
 
       {/* Background Images */}
@@ -118,12 +125,12 @@ export function IntroShowcase({ onEnterPortfolio }: IntroShowcaseProps) {
           </div>
         </div>
 
-        {/* 3D iPhone 17 Pro Max Canvas Container & Fireworks Burst Tech Bubbles */}
-        <div className="w-full max-w-4xl relative z-10 mt-4 sm:mt-8 pt-2 sm:pt-4 flex items-center justify-center">
-          {/* 1. React Bubble (Top Left - Fireworks Burst Out) */}
+        {/* 3D iPhone 17 Pro Max Canvas Container & Gentle Tech Bubbles */}
+        <div className="w-full max-w-4xl relative z-10 mt-1 sm:mt-2 flex items-center justify-center">
+          {/* 1. React Bubble (Top Left - Gentle Fade/Slide) */}
           <div
             className={`absolute top-[18%] left-[14%] sm:left-[19%] md:left-[22%] z-20 pointer-events-none ${
-              isModelLoaded ? "animate-burst-1" : "opacity-0 scale-0"
+              isModelLoaded ? "animate-bubble-entry-1" : "opacity-0"
             }`}
           >
             <img
@@ -133,10 +140,10 @@ export function IntroShowcase({ onEnterPortfolio }: IntroShowcaseProps) {
             />
           </div>
 
-          {/* 2. Node.js Bubble (Middle-Lower Left - Fireworks Burst Out) */}
+          {/* 2. Node.js Bubble (Middle-Lower Left - Gentle Fade/Slide) */}
           <div
             className={`absolute top-[48%] left-[10%] sm:left-[14%] md:left-[17%] z-20 pointer-events-none ${
-              isModelLoaded ? "animate-burst-2" : "opacity-0 scale-0"
+              isModelLoaded ? "animate-bubble-entry-2" : "opacity-0"
             }`}
           >
             <img
@@ -146,10 +153,10 @@ export function IntroShowcase({ onEnterPortfolio }: IntroShowcaseProps) {
             />
           </div>
 
-          {/* 3. Python Bubble (Top Right - Fireworks Burst Out) */}
+          {/* 3. Python Bubble (Top Right - Gentle Fade/Slide) */}
           <div
             className={`absolute top-[20%] right-[14%] sm:right-[19%] md:right-[22%] z-20 pointer-events-none ${
-              isModelLoaded ? "animate-burst-3" : "opacity-0 scale-0"
+              isModelLoaded ? "animate-bubble-entry-3" : "opacity-0"
             }`}
           >
             <img
@@ -159,10 +166,10 @@ export function IntroShowcase({ onEnterPortfolio }: IntroShowcaseProps) {
             />
           </div>
 
-          {/* 4. DB Bubble (Middle-Lower Right - Fireworks Burst Out) */}
+          {/* 4. DB Bubble (Middle-Lower Right - Gentle Fade/Slide) */}
           <div
             className={`absolute top-[50%] right-[10%] sm:right-[14%] md:right-[17%] z-20 pointer-events-none ${
-              isModelLoaded ? "animate-burst-4" : "opacity-0 scale-0"
+              isModelLoaded ? "animate-bubble-entry-4" : "opacity-0"
             }`}
           >
             <img

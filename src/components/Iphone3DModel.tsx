@@ -96,6 +96,8 @@ export function Iphone3DModel({
     screenTexture.rotation = Math.PI;
     screenTexture.generateMipmaps = false;
 
+    let isModelLoadedInScene = false;
+
     gltfLoader.load(
       "/models/iphone.glb",
       (gltf) => {
@@ -141,6 +143,8 @@ export function Iphone3DModel({
         });
 
         modelGroup.add(gltf.scene);
+        isModelLoadedInScene = true;
+        entranceProgress = 0; // RESET ENTRANCE PROGRESS WHEN GLTF IS ADDED TO SCENE
         setLoaded(true);
         if (onModelLoadedRef.current) {
           onModelLoadedRef.current();
@@ -196,23 +200,25 @@ export function Iphone3DModel({
 
     // 6. Render Loop (STILL STANDING POSITION, CONTINUOUS 360 ROTATION)
     let animationFrameId: number;
-    let entranceProgress = 0;
     let zoomTriggered = false;
 
     const animate = () => {
       animationFrameId = requestAnimationFrame(animate);
 
-      if (entranceProgress < 1) {
-        entranceProgress += 0.025;
+      if (isModelLoadedInScene && entranceProgress < 1) {
+        entranceProgress += 0.014; // Smooth entrance spin & rise up
       }
 
       if (!isZoomedRef.current) {
-        // Normal State: Phone rises from below to Y = -0.75 with entrance rotation spin
-        const targetY = -0.75 + (1 - Math.exp(-entranceProgress * 3.5)) * 0.75;
-        modelGroup.position.y += (targetY - modelGroup.position.y) * 0.06;
+        // Normal State: Phone rises from below up to higher target Y = -0.35
+        const currentProgress = Math.min(entranceProgress, 1);
+        const easeVal = Math.sin(currentProgress * Math.PI * 0.5);
 
-        // Entrance Rotation Spin: smoothly unwinds 360 deg spin into base tilt (-0.30 rad)
-        const spinOffset = (1 - Math.sin(Math.min(entranceProgress, 1) * Math.PI * 0.5)) * Math.PI * 1.5;
+        const targetY = -0.35 - (1 - easeVal) * 3.0;
+        modelGroup.position.y += (targetY - modelGroup.position.y) * 0.08;
+
+        // Entrance Rotation Spin: smoothly unwinds full 360 deg (2 * Math.PI) rotation into base tilt (-0.30 rad)
+        const spinOffset = (1 - easeVal) * Math.PI * 2.0;
         const targetRotY = -0.30 + spinOffset + hoverMouseX * 0.15 + dragRotY;
         const targetRotX = 0.16 + hoverMouseY * 0.12 + dragRotX;
         const targetRotZ = 0.02;
