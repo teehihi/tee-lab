@@ -545,7 +545,7 @@ export default function App() {
 
               {/* RIGHT COLUMN: 6 Columns wide for Large 3D Three.js WebGL Macbook Model */}
               <div className="flex items-center justify-center w-full lg:col-span-6">
-                <Macbook3DModel screenImage="/bannerMac.png" className="h-[460px] sm:h-[520px] lg:h-[560px]" />
+                <Macbook3DModel screenImage="/bannerMac.png" className="h-[500px] sm:h-[580px] lg:h-[640px]" />
               </div>
             </div>
           </div>
