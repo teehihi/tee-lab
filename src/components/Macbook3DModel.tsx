@@ -29,14 +29,13 @@ export function Macbook3DModel({ screenImage, className = "" }: Macbook3DModelPr
     const canvas = canvasRef.current;
     if (!container || !canvas) return;
 
-    const width = container.clientWidth || 750;
+    const width = container.clientWidth || 800;
     const height = container.clientHeight || 640;
 
     // 1. Scene, Camera, Renderer
     const scene = new THREE.Scene();
-    // PerspectiveCamera(42) with Z=7.8 and model scale=1.35 makes the 3D model BIG & PROMINENT
-    const camera = new THREE.PerspectiveCamera(42, width / height, 0.1, 100);
-    camera.position.set(0, 0.15, 7.8);
+    const camera = new THREE.PerspectiveCamera(40, width / height, 0.1, 100);
+    camera.position.set(0, 0.15, 8.0);
 
     const renderer = new THREE.WebGLRenderer({
       canvas,
@@ -50,8 +49,7 @@ export function Macbook3DModel({ screenImage, className = "" }: Macbook3DModelPr
 
     // 2. Model Root Group
     const modelGroup = new THREE.Group();
-    // Large 1.35x scale for impressive presence
-    modelGroup.scale.set(1.35, 1.35, 1.35);
+    modelGroup.scale.set(1.30, 1.30, 1.30);
     scene.add(modelGroup);
 
     // 3. Lighting (Exact setup from HamishMW portfolio)
@@ -114,9 +112,8 @@ export function Macbook3DModel({ screenImage, className = "" }: Macbook3DModelPr
       mouseX = x;
       mouseY = y;
 
-      // Subtle & elegant tilt angle range (max ~9 degrees)
-      targetRotY = mouseX * 0.18;
-      targetRotX = mouseY * 0.12;
+      targetRotY = mouseX * 0.2;
+      targetRotX = mouseY * 0.14;
     };
 
     window.addEventListener("mousemove", handleMouseMove);
@@ -144,7 +141,7 @@ export function Macbook3DModel({ screenImage, className = "" }: Macbook3DModelPr
     // Handle Window Resize
     const handleResize = () => {
       if (!container || !renderer) return;
-      const newW = container.clientWidth || 750;
+      const newW = container.clientWidth || 800;
       const newH = container.clientHeight || 640;
       camera.aspect = newW / newH;
       camera.updateProjectionMatrix();
@@ -164,14 +161,14 @@ export function Macbook3DModel({ screenImage, className = "" }: Macbook3DModelPr
   return (
     <div
       ref={containerRef}
-      className={`relative w-full h-[500px] sm:h-[580px] lg:h-[640px] flex items-center justify-center cursor-grab active:cursor-grabbing select-none ${className}`}
+      className={`relative z-20 w-full h-[500px] sm:h-[580px] lg:h-[640px] flex items-center justify-center cursor-grab active:cursor-grabbing select-none overflow-visible ${className}`}
     >
       {!loaded && (
         <div className="absolute inset-0 flex items-center justify-center text-xs text-muted-foreground animate-pulse">
           Loading 3D Macbook Pro Model...
         </div>
       )}
-      <canvas ref={canvasRef} className="w-full h-full block" />
+      <canvas ref={canvasRef} className="w-full h-full block overflow-visible" />
     </div>
   );
 }
