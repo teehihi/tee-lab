@@ -35,8 +35,8 @@ export function Macbook3DModel({ screenImage, className = "" }: Macbook3DModelPr
     // 1. Scene, Camera, Renderer
     const scene = new THREE.Scene();
     const camera = new THREE.PerspectiveCamera(38, width / height, 0.1, 100);
-    // Camera Y=0.92 lowers the 3D model down vertically a tiny bit more
-    camera.position.set(0, 0.92, 8.8);
+    // Camera X=-0.45 shifts 3D model right; Y=0.92 lowers 3D model vertically
+    camera.position.set(-0.45, 0.92, 8.8);
 
     const renderer = new THREE.WebGLRenderer({
       canvas,
@@ -65,11 +65,25 @@ export function Macbook3DModel({ screenImage, className = "" }: Macbook3DModelPr
     fillLight.position.set(-6, 2, 2);
     scene.add(fillLight);
 
-    // Load texture & GLTF model using shared modelLoader
+    // 4. Load texture & GLTF model
     const screenTexture = textureLoader.load(screenImage);
     screenTexture.colorSpace = THREE.SRGBColorSpace;
     screenTexture.flipY = false;
     screenTexture.generateMipmaps = false;
+
+    let frameNode: THREE.Object3D | null = null;
+    let isViewportVisible = false;
+
+    // IntersectionObserver to trigger lid opening animation when scrolling into viewport
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          isViewportVisible = true;
+        }
+      },
+      { threshold: 0.15 }
+    );
+    observer.observe(container);
 
     gltfLoader.load(
       "/models/macbook-pro.glb",
@@ -82,7 +96,9 @@ export function Macbook3DModel({ screenImage, className = "" }: Macbook3DModelPr
           }
 
           if (node.name === "Frame") {
-            node.rotation.x = THREE.MathUtils.degToRad(0);
+            frameNode = node;
+            // Start lid fully closed at 90 degrees (Math.PI / 2)
+            frameNode.rotation.x = THREE.MathUtils.degToRad(90);
           }
 
           if (node.name === "Screen") {
@@ -99,7 +115,7 @@ export function Macbook3DModel({ screenImage, className = "" }: Macbook3DModelPr
       (err) => console.error("Error loading macbook-pro.glb:", err)
     );
 
-    // 5. Controlled Mouse Interaction Physics (Sleek Apple-style tilt, zero edge clipping)
+    // 5. Controlled Mouse Interaction Physics (Sleek Apple-style tilt)
     let mouseX = 0;
     let mouseY = 0;
     let targetRotX = 0;
@@ -119,20 +135,28 @@ export function Macbook3DModel({ screenImage, className = "" }: Macbook3DModelPr
 
     window.addEventListener("mousemove", handleMouseMove);
 
-    // 6. Animation Render Loop
+    // 6. Animation Render Loop with Scroll-Triggered Lid Opening
     let animationFrameId: number;
     let clock = new THREE.Clock();
+    let currentLidAngle = THREE.MathUtils.degToRad(90);
 
     const animate = () => {
       animationFrameId = requestAnimationFrame(animate);
       const elapsedTime = clock.getElapsedTime();
 
-      // Lerp Smooth Rotation
+      // Lerp Smooth Model Rotation
       modelGroup.rotation.x += (targetRotX - modelGroup.rotation.x) * 0.05;
       modelGroup.rotation.y += (targetRotY - modelGroup.rotation.y) * 0.05;
 
       // Gentle floating levitation
       modelGroup.position.y = Math.sin(elapsedTime * 1.2) * 0.04;
+
+      // Scroll-triggered Macbook Lid Unfolding Animation (HamishMW portfolio style)
+      if (frameNode) {
+        const targetLidAngle = isViewportVisible ? 0 : THREE.MathUtils.degToRad(90);
+        currentLidAngle += (targetLidAngle - currentLidAngle) * 0.045;
+        (frameNode as THREE.Object3D).rotation.x = currentLidAngle;
+      }
 
       renderer.render(scene, camera);
     };
@@ -152,6 +176,7 @@ export function Macbook3DModel({ screenImage, className = "" }: Macbook3DModelPr
     window.addEventListener("resize", handleResize);
 
     return () => {
+      observer.disconnect();
       window.removeEventListener("mousemove", handleMouseMove);
       window.removeEventListener("resize", handleResize);
       cancelAnimationFrame(animationFrameId);
