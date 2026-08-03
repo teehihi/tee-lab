@@ -455,25 +455,27 @@ export default function App() {
       />
       <ClickEffects />
 
-      {/* FLOATING NAVBAR */}
-      <nav className="section-nav" aria-label="Portfolio navigation">
-        <div className="nav-links">
-          {navItems.map(([id, label]) => (
-            <a key={id} href={`#${id}`} className={activeSection === id ? "active" : ""}>
-              {label}
+      {/* FLOATING NAVBAR (Only visible after Intro Showcase) */}
+      {!showIntro && (
+        <nav className="section-nav" aria-label="Portfolio navigation">
+          <div className="nav-links">
+            {navItems.map(([id, label]) => (
+              <a key={id} href={`#${id}`} className={activeSection === id ? "active" : ""}>
+                {label}
+              </a>
+            ))}
+          </div>
+          <div className="nav-actions">
+            <ThemeToggle />
+            <a href={personalInfo.github} target="_blank" rel="noreferrer" aria-label="GitHub">
+              <Github className="h-4 w-4" />
             </a>
-          ))}
-        </div>
-        <div className="nav-actions">
-          <ThemeToggle />
-          <a href={personalInfo.github} target="_blank" rel="noreferrer" aria-label="GitHub">
-            <Github className="h-4 w-4" />
-          </a>
-          <a href={personalInfo.linkedin} target="_blank" rel="noreferrer" aria-label="LinkedIn">
-            <Linkedin className="h-4 w-4" />
-          </a>
-        </div>
-      </nav>
+            <a href={personalInfo.linkedin} target="_blank" rel="noreferrer" aria-label="LinkedIn">
+              <Linkedin className="h-4 w-4" />
+            </a>
+          </div>
+        </nav>
+      )}
 
       <div className="page-reveal mx-auto flex min-h-screen w-full max-w-5xl flex-col px-3 py-4 text-sm leading-loose sm:px-6 lg:px-8">
 

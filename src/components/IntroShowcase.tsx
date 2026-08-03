@@ -65,15 +65,7 @@ export function IntroShowcase({ onEnterPortfolio }: IntroShowcaseProps) {
         </div>
       </div>
 
-      {/* Top Floating Navbar / Skip Button */}
-      <header className="relative z-20 flex items-center justify-end px-6 pt-6 sm:px-12 max-w-7xl mx-auto w-full">
-        <button
-          onClick={handleStartTransition}
-          className="text-xs font-medium text-white/60 hover:text-white transition-colors flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-white/5 hover:bg-white/10 backdrop-blur-md border border-white/10 cursor-pointer"
-        >
-          Skip Intro <ArrowRight className="w-3.5 h-3.5" />
-        </button>
-      </header>
+
 
       {/* Main Content Area */}
       <main className="relative z-10 flex-1 flex flex-col items-center justify-center text-center px-4 pt-6 sm:pt-10 max-w-5xl mx-auto w-full">
