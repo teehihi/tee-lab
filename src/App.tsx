@@ -515,8 +515,8 @@ export default function App() {
         >
           <div className="mx-auto w-full max-w-[1550px]">
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10 items-center">
-              {/* LEFT COLUMN: 7 Columns wide for Capabilities Header & Cards */}
-              <div className="w-full lg:col-span-7 relative z-10">
+              {/* LEFT COLUMN: 6 Columns wide for Capabilities Header & Cards */}
+              <div className="w-full lg:col-span-6 relative z-10">
                 <SectionHeader
                   eyebrow="CAPABILITIES"
                   title="Technical Stack & Mindset"
@@ -543,8 +543,8 @@ export default function App() {
                 </div>
               </div>
 
-              {/* RIGHT COLUMN: 5 Columns wide for Large 3D Three.js WebGL Macbook Model (z-20 elevated stacking, lg:pt-20 vertical alignment) */}
-              <div className="flex items-center justify-center w-full lg:col-span-5 lg:pt-20 relative z-20 overflow-visible">
+              {/* RIGHT COLUMN: 6 Columns wide for Large 3D Three.js WebGL Macbook Model (z-20 elevated stacking, lg:pt-16 vertical alignment) */}
+              <div className="flex items-center justify-center w-full lg:col-span-6 lg:pt-16 relative z-20 overflow-visible">
                 <Macbook3DModel screenImage="/bannerMac.png" className="h-[440px] sm:h-[500px] lg:h-[540px]" />
               </div>
             </div>

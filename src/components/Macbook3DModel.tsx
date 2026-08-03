@@ -29,14 +29,14 @@ export function Macbook3DModel({ screenImage, className = "" }: Macbook3DModelPr
     const canvas = canvasRef.current;
     if (!container || !canvas) return;
 
-    const width = container.clientWidth || 750;
+    const width = container.clientWidth || 800;
     const height = container.clientHeight || 560;
 
     // 1. Scene, Camera, Renderer
     const scene = new THREE.Scene();
     const camera = new THREE.PerspectiveCamera(38, width / height, 0.1, 100);
-    // Camera X=-0.45 shifts 3D model right; Y=0.92 lowers 3D model vertically
-    camera.position.set(-0.45, 0.92, 8.8);
+    // Camera X=0 (centered), Y=0.70 (lowered vertically), Z=9.2 (50% safety margin clearance around all 4 edges)
+    camera.position.set(0, 0.70, 9.2);
 
     const renderer = new THREE.WebGLRenderer({
       canvas,
@@ -115,7 +115,7 @@ export function Macbook3DModel({ screenImage, className = "" }: Macbook3DModelPr
       (err) => console.error("Error loading macbook-pro.glb:", err)
     );
 
-    // 5. Controlled Mouse Interaction Physics (Sleek Apple-style tilt)
+    // 5. Controlled Mouse Interaction Physics (Sleek Apple-style tilt, zero edge clipping)
     let mouseX = 0;
     let mouseY = 0;
     let targetRotX = 0;
@@ -166,7 +166,7 @@ export function Macbook3DModel({ screenImage, className = "" }: Macbook3DModelPr
     // Handle Window Resize
     const handleResize = () => {
       if (!container || !renderer) return;
-      const newW = container.clientWidth || 750;
+      const newW = container.clientWidth || 800;
       const newH = container.clientHeight || 560;
       camera.aspect = newW / newH;
       camera.updateProjectionMatrix();
