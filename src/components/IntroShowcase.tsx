@@ -25,9 +25,8 @@ export function IntroShowcase({ onEnterPortfolio }: IntroShowcaseProps) {
 
   return (
     <div
-      className={`fixed inset-0 z-50 flex flex-col justify-between overflow-hidden bg-[#07070a] text-white transition-opacity duration-700 select-none ${
-        isFadingOut ? "opacity-0 pointer-events-none" : "opacity-100"
-      }`}
+      className={`fixed inset-0 z-50 flex flex-col justify-between overflow-hidden bg-[#07070a] text-white transition-opacity duration-700 select-none ${isFadingOut ? "opacity-0 pointer-events-none" : "opacity-100"
+        }`}
     >
       {/* Background Ambient Radial Glow Effects (The Art of Software design language) */}
       <div className="absolute inset-0 pointer-events-none overflow-hidden">
@@ -39,14 +38,7 @@ export function IntroShowcase({ onEnterPortfolio }: IntroShowcaseProps) {
       </div>
 
       {/* Top Floating Navbar / Skip Button */}
-      <header className="relative z-20 flex items-center justify-between px-6 pt-6 sm:px-12 max-w-7xl mx-auto w-full">
-        <div className="flex items-center gap-2">
-          <div className="h-2.5 w-2.5 rounded-full bg-emerald-500 animate-pulse" />
-          <span className="text-xs font-mono tracking-widest text-emerald-400 uppercase">
-            Nguyen Nhat Thien • Portfolio
-          </span>
-        </div>
-
+      <header className="relative z-20 flex items-center justify-end px-6 pt-6 sm:px-12 max-w-7xl mx-auto w-full">
         <button
           onClick={handleStartTransition}
           className="text-xs font-medium text-white/60 hover:text-white transition-colors flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-white/5 hover:bg-white/10 backdrop-blur-md border border-white/10"
@@ -59,15 +51,10 @@ export function IntroShowcase({ onEnterPortfolio }: IntroShowcaseProps) {
       <main className="relative z-10 flex-1 flex flex-col items-center justify-center text-center px-4 pt-6 sm:pt-10 max-w-5xl mx-auto w-full">
         {/* Hero Title & Subtitle */}
         <div
-          className={`transition-all duration-700 transform ${
-            isZooming ? "opacity-0 -translate-y-8 scale-95" : "opacity-100 translate-y-0 scale-100"
-          }`}
+          className={`transition-all duration-700 transform ${isZooming ? "opacity-0 -translate-y-8 scale-95" : "opacity-100 translate-y-0 scale-100"
+            }`}
         >
-          {/* Eyebrow Badge */}
-          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/5 border border-white/10 backdrop-blur-md text-xs font-medium text-emerald-400 mb-5 shadow-lg">
-            <Sparkles className="w-3.5 h-3.5 text-emerald-400" />
-            <span>Interactive 3D Experience</span>
-          </div>
+
 
           {/* Main Title ("The Art of Software.") */}
           <h1 className="text-4xl sm:text-6xl md:text-7xl font-extrabold tracking-tight text-white leading-none mb-4 sm:mb-6">
@@ -96,7 +83,7 @@ export function IntroShowcase({ onEnterPortfolio }: IntroShowcaseProps) {
           <Iphone3DModel
             screenImage="/phone-screen.png"
             isZoomedIn={isZooming}
-            onZoomComplete={() => {}}
+            onZoomComplete={() => { }}
             className="w-full"
           />
         </div>
@@ -106,9 +93,8 @@ export function IntroShowcase({ onEnterPortfolio }: IntroShowcaseProps) {
       <footer className="relative z-20 pb-6 text-center">
         <button
           onClick={handleStartTransition}
-          className={`inline-flex flex-col items-center gap-1.5 text-xs text-white/40 hover:text-white/80 transition-all ${
-            isZooming ? "opacity-0" : "opacity-100"
-          }`}
+          className={`inline-flex flex-col items-center gap-1.5 text-xs text-white/40 hover:text-white/80 transition-all ${isZooming ? "opacity-0" : "opacity-100"
+            }`}
         >
           <span>Click to launch experience</span>
           <ChevronDown className="w-4 h-4 animate-bounce text-emerald-400" />

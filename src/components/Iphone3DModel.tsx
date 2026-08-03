@@ -85,7 +85,10 @@ export function Iphone3DModel({
     // 4. Load Texture & Model
     const screenTexture = textureLoader.load(screenImage);
     screenTexture.colorSpace = THREE.SRGBColorSpace;
-    screenTexture.flipY = false;
+
+    // Correct texture orientation: rotate 180 degrees around center to display right-side up!
+    screenTexture.center.set(0.5, 0.5);
+    screenTexture.rotation = Math.PI;
     screenTexture.generateMipmaps = false;
 
     gltfLoader.load(
@@ -112,7 +115,7 @@ export function Iphone3DModel({
         gltf.scene.traverse((node: any) => {
           if (node.isMesh && node.material) {
             const matName = node.material.name || "";
-            if (matName === "OLED" || matName === "OLED off" || matName.toLowerCase().includes("screen") || matName.toLowerCase().includes("glass")) {
+            if (matName === "OLED" || matName === "OLED off") {
               node.material = new THREE.MeshBasicMaterial({
                 map: screenTexture,
                 side: THREE.DoubleSide,
