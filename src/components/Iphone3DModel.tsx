@@ -108,7 +108,7 @@ export function Iphone3DModel({
         const scaleFactor = targetHeight / (maxDim || 1);
         gltf.scene.scale.set(scaleFactor, scaleFactor, scaleFactor);
 
-        // Traverse & update existing material properties directly (preserves GLTF multi-material primitive bindings)
+        // Traverse & update existing material properties directly
         gltf.scene.traverse((node: any) => {
           if (node.isMesh && node.material) {
             const processMat = (mat: any) => {
@@ -141,7 +141,7 @@ export function Iphone3DModel({
       (err) => console.error("Error loading iphone.glb:", err)
     );
 
-    // 5. Interactive Mouse Hover & Drag Rotation Physics
+    // 5. Interactive Mouse Hover & 360-Degree Continuous Drag Rotation Physics
     let isDragging = false;
     let previousMouseX = 0;
     let previousMouseY = 0;
@@ -167,11 +167,11 @@ export function Iphone3DModel({
         const deltaX = event.clientX - previousMouseX;
         const deltaY = event.clientY - previousMouseY;
 
-        dragRotY += deltaX * 0.008;
+        // Allow full unconstrained 360-degree horizontal rotation!
+        dragRotY += deltaX * 0.01;
         dragRotX += deltaY * 0.008;
 
-        dragRotX = THREE.MathUtils.clamp(dragRotX, -0.4, 0.4);
-        dragRotY = THREE.MathUtils.clamp(dragRotY, -0.6, 0.6);
+        dragRotX = THREE.MathUtils.clamp(dragRotX, -1.0, 1.0);
 
         previousMouseX = event.clientX;
         previousMouseY = event.clientY;
@@ -186,7 +186,7 @@ export function Iphone3DModel({
     window.addEventListener("pointermove", handlePointerMove);
     window.addEventListener("pointerup", handlePointerUp);
 
-    // 6. Render Loop (NO LEVITATION BOBBING - STILL STANDING POSITION)
+    // 6. Render Loop (STILL STANDING POSITION, CONTINUOUS 360 ROTATION)
     let animationFrameId: number;
     let entranceProgress = 0;
     let zoomTriggered = false;
@@ -199,18 +199,18 @@ export function Iphone3DModel({
       }
 
       if (!isZoomedRef.current) {
-        // Normal State: Phone rises from below to Y = -0.75, THEN STAYS COMPLETELY STILL (no bobbing up and down!)
+        // Normal State: Phone rises from below to Y = -0.75, THEN STAYS COMPLETELY STILL
         const targetY = -0.75 + (1 - Math.exp(-entranceProgress * 3.5)) * 0.75;
         modelGroup.position.y += (targetY - modelGroup.position.y) * 0.06;
 
-        // Base tilt (-0.30 rad ~-17 deg Y tilt) + hover parallax + user drag rotation
-        const targetRotY = -0.30 + hoverMouseX * 0.20 + dragRotY;
-        const targetRotX = 0.16 + hoverMouseY * 0.14 + dragRotX;
+        // Base tilt (-0.30 rad ~-17 deg Y tilt) + hover parallax + continuous 360 drag rotation
+        const targetRotY = -0.30 + hoverMouseX * 0.15 + dragRotY;
+        const targetRotX = 0.16 + hoverMouseY * 0.12 + dragRotX;
         const targetRotZ = 0.02;
 
-        modelGroup.rotation.x += (targetRotX - modelGroup.rotation.x) * 0.06;
-        modelGroup.rotation.y += (targetRotY - modelGroup.rotation.y) * 0.06;
-        modelGroup.rotation.z += (targetRotZ - modelGroup.rotation.z) * 0.06;
+        modelGroup.rotation.x += (targetRotX - modelGroup.rotation.x) * 0.08;
+        modelGroup.rotation.y += (targetRotY - modelGroup.rotation.y) * 0.08;
+        modelGroup.rotation.z += (targetRotZ - modelGroup.rotation.z) * 0.08;
 
         camera.position.z += (4.4 - camera.position.z) * 0.06;
       } else {
