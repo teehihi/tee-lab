@@ -514,16 +514,16 @@ export default function App() {
           className="scroll-mt-24 py-16 w-screen relative left-1/2 right-1/2 -ml-[50vw] -mr-[50vw] px-[5vw] lg:px-[6vw] xl:px-[8vw] max-w-screen overflow-x-hidden"
         >
           <div className="mx-auto w-full max-w-[1550px]">
-            <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10 items-center">
-              {/* LEFT COLUMN: 6 Columns wide for Capabilities Header & Cards */}
-              <div className="w-full lg:col-span-6 relative z-10">
-                <SectionHeader
-                  eyebrow="CAPABILITIES"
-                  title="Technical Stack & Mindset"
-                  description="Proven tools and design philosophies honed through shipping production web apps and AI systems."
-                />
+            <SectionHeader
+              eyebrow="CAPABILITIES"
+              title="Technical Stack & Mindset"
+              description="Proven tools and design philosophies honed through shipping production web apps and AI systems."
+            />
 
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-5 mt-8">
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10 items-center mt-8">
+              {/* LEFT COLUMN: 6 Columns wide for Capabilities Cards */}
+              <div className="w-full lg:col-span-6 relative z-10">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
                   {strengths.map((item) => {
                     const Icon = item.icon;
                     return (
@@ -543,8 +543,8 @@ export default function App() {
                 </div>
               </div>
 
-              {/* RIGHT COLUMN: 6 Columns wide for Large 3D Three.js WebGL Macbook Model (z-20 elevated stacking, lg:pt-16 vertical alignment) */}
-              <div className="flex items-center justify-center w-full lg:col-span-6 lg:pt-16 relative z-20 overflow-visible">
+              {/* RIGHT COLUMN: 6 Columns wide for Large 3D Three.js WebGL Macbook Model */}
+              <div className="flex items-center justify-center w-full lg:col-span-6 relative z-20 overflow-visible">
                 <Macbook3DModel screenImage="/bannerMac.png" className="h-[440px] sm:h-[500px] lg:h-[540px]" />
               </div>
             </div>

@@ -35,8 +35,8 @@ export function Macbook3DModel({ screenImage, className = "" }: Macbook3DModelPr
     // 1. Scene, Camera, Renderer
     const scene = new THREE.Scene();
     const camera = new THREE.PerspectiveCamera(38, width / height, 0.1, 100);
-    // Camera X=0 (centered), Y=0.65 (lowered vertically), Z=9.6 (45% margin safety buffer around all 4 edges)
-    camera.position.set(0, 0.65, 9.6);
+    // Camera X=0 (centered), Y=0.20 (vertically centered with cards), Z=9.4 (safety margin buffer around all 4 edges)
+    camera.position.set(0, 0.20, 9.4);
 
     const renderer = new THREE.WebGLRenderer({
       canvas,
