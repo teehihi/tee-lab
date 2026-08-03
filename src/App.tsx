@@ -545,7 +545,7 @@ export default function App() {
 
               {/* RIGHT COLUMN: 6 Columns wide for Large 3D Three.js WebGL Macbook Model (z-20 elevated stacking) */}
               <div className="flex items-center justify-center w-full lg:col-span-6 relative z-20 overflow-visible">
-                <Macbook3DModel screenImage="/bannerMac.png" className="h-[500px] sm:h-[580px] lg:h-[640px]" />
+                <Macbook3DModel screenImage="/bannerMac.png" className="h-[440px] sm:h-[500px] lg:h-[540px]" />
               </div>
             </div>
           </div>
