@@ -126,56 +126,64 @@ export function IntroShowcase({ onEnterPortfolio }: IntroShowcaseProps) {
         </div>
 
         {/* 3D iPhone 17 Pro Max Canvas Container & Gentle Tech Bubbles */}
-        <div className="w-full max-w-4xl relative z-10 mt-1 sm:mt-2 flex items-center justify-center">
-          {/* 1. React Bubble (Top Left - Gentle Fade/Slide) */}
+        <div className="w-full max-w-4xl relative z-10 -mt-2 sm:-mt-4 flex items-center justify-center">
+          {/* 1. React Bubble (Top Left - Smooth Fade/Slide) */}
           <div
-            className={`absolute top-[18%] left-[14%] sm:left-[19%] md:left-[22%] z-20 pointer-events-none ${
-              isModelLoaded ? "animate-bubble-entry-1" : "opacity-0"
+            className={`absolute top-[18%] left-[14%] sm:left-[19%] md:left-[22%] z-20 pointer-events-none transition-all duration-1000 ease-out transform ${
+              isModelLoaded
+                ? "opacity-100 translate-y-0 scale-100 delay-300"
+                : "opacity-0 translate-y-10 scale-90"
             }`}
           >
             <img
               src="/reactBubble.webp"
               alt="React Bubble"
-              className="w-18 sm:w-26 md:w-28 h-auto object-contain select-none filter drop-shadow-[0_10px_20px_rgba(0,0,0,0.5)]"
+              className="w-18 sm:w-26 md:w-28 h-auto object-contain select-none filter drop-shadow-[0_10px_20px_rgba(0,0,0,0.5)] animate-float-bubble-1"
             />
           </div>
 
-          {/* 2. Node.js Bubble (Middle-Lower Left - Gentle Fade/Slide) */}
+          {/* 2. Node.js Bubble (Middle-Lower Left - Smooth Fade/Slide) */}
           <div
-            className={`absolute top-[48%] left-[10%] sm:left-[14%] md:left-[17%] z-20 pointer-events-none ${
-              isModelLoaded ? "animate-bubble-entry-2" : "opacity-0"
+            className={`absolute top-[48%] left-[10%] sm:left-[14%] md:left-[17%] z-20 pointer-events-none transition-all duration-1000 ease-out transform ${
+              isModelLoaded
+                ? "opacity-100 translate-y-0 scale-100 delay-500"
+                : "opacity-0 translate-y-10 scale-90"
             }`}
           >
             <img
               src="/nodejsBubble.webp"
               alt="NodeJS Bubble"
-              className="w-18 sm:w-26 md:w-28 h-auto object-contain select-none filter drop-shadow-[0_10px_20px_rgba(0,0,0,0.5)]"
+              className="w-18 sm:w-26 md:w-28 h-auto object-contain select-none filter drop-shadow-[0_10px_20px_rgba(0,0,0,0.5)] animate-float-bubble-2"
             />
           </div>
 
-          {/* 3. Python Bubble (Top Right - Gentle Fade/Slide) */}
+          {/* 3. Python Bubble (Top Right - Smooth Fade/Slide) */}
           <div
-            className={`absolute top-[20%] right-[14%] sm:right-[19%] md:right-[22%] z-20 pointer-events-none ${
-              isModelLoaded ? "animate-bubble-entry-3" : "opacity-0"
+            className={`absolute top-[20%] right-[14%] sm:right-[19%] md:right-[22%] z-20 pointer-events-none transition-all duration-1000 ease-out transform ${
+              isModelLoaded
+                ? "opacity-100 translate-y-0 scale-100 delay-400"
+                : "opacity-0 translate-y-10 scale-90"
             }`}
           >
             <img
               src="/pythonBubble.webp"
               alt="Python Bubble"
-              className="w-18 sm:w-26 md:w-28 h-auto object-contain select-none filter drop-shadow-[0_10px_20px_rgba(0,0,0,0.5)]"
+              className="w-18 sm:w-26 md:w-28 h-auto object-contain select-none filter drop-shadow-[0_10px_20px_rgba(0,0,0,0.5)] animate-float-bubble-3"
             />
           </div>
 
-          {/* 4. DB Bubble (Middle-Lower Right - Gentle Fade/Slide) */}
+          {/* 4. DB Bubble (Middle-Lower Right - Smooth Fade/Slide) */}
           <div
-            className={`absolute top-[50%] right-[10%] sm:right-[14%] md:right-[17%] z-20 pointer-events-none ${
-              isModelLoaded ? "animate-bubble-entry-4" : "opacity-0"
+            className={`absolute top-[50%] right-[10%] sm:right-[14%] md:right-[17%] z-20 pointer-events-none transition-all duration-1000 ease-out transform ${
+              isModelLoaded
+                ? "opacity-100 translate-y-0 scale-100 delay-600"
+                : "opacity-0 translate-y-10 scale-90"
             }`}
           >
             <img
               src="/dbBubble.webp"
               alt="DB Bubble"
-              className="w-18 sm:w-26 md:w-28 h-auto object-contain select-none filter drop-shadow-[0_10px_20px_rgba(0,0,0,0.5)]"
+              className="w-18 sm:w-26 md:w-28 h-auto object-contain select-none filter drop-shadow-[0_10px_20px_rgba(0,0,0,0.5)] animate-float-bubble-4"
             />
           </div>
 

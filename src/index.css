@@ -108,29 +108,17 @@ a {
   }
 }
 
-/* Gentle & Elegant Bubble Fade/Slide Entrance */
-@keyframes bubble-fade-slide-1 {
-  0% {
-    opacity: 0;
-    transform: translateY(18px) scale(0.92);
-  }
-  100% {
-    opacity: 1;
-    transform: translateY(0px) scale(1);
-  }
+.animate-float-bubble-1 {
+  animation: float-bubble-1 4.2s ease-in-out infinite;
 }
-
-.animate-bubble-entry-1 {
-  animation: bubble-fade-slide-1 0.75s cubic-bezier(0.16, 1, 0.3, 1) 0.3s forwards, float-bubble-1 4.2s ease-in-out infinite 1.1s;
+.animate-float-bubble-2 {
+  animation: float-bubble-2 4.8s ease-in-out infinite;
 }
-.animate-bubble-entry-2 {
-  animation: bubble-fade-slide-1 0.75s cubic-bezier(0.16, 1, 0.3, 1) 0.45s forwards, float-bubble-2 4.8s ease-in-out infinite 1.25s;
+.animate-float-bubble-3 {
+  animation: float-bubble-3 4.5s ease-in-out infinite;
 }
-.animate-bubble-entry-3 {
-  animation: bubble-fade-slide-1 0.75s cubic-bezier(0.16, 1, 0.3, 1) 0.6s forwards, float-bubble-3 4.5s ease-in-out infinite 1.4s;
-}
-.animate-bubble-entry-4 {
-  animation: bubble-fade-slide-1 0.75s cubic-bezier(0.16, 1, 0.3, 1) 0.75s forwards, float-bubble-4 5.0s ease-in-out infinite 1.55s;
+.animate-float-bubble-4 {
+  animation: float-bubble-4 5.0s ease-in-out infinite;
 }
 
 .interactive-grid {

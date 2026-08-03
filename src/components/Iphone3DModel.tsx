@@ -42,10 +42,17 @@ export function Iphone3DModel({
   const onModelLoadedRef = useRef(onModelLoaded);
   onModelLoadedRef.current = onModelLoaded;
 
+  const entranceProgressRef = useRef(0);
+  const isModelLoadedInSceneRef = useRef(false);
+
   useEffect(() => {
     const container = containerRef.current;
     const canvas = canvasRef.current;
     if (!container || !canvas) return;
+
+    let isMounted = true;
+    entranceProgressRef.current = 0;
+    isModelLoadedInSceneRef.current = false;
 
     const width = container.clientWidth || 800;
     const height = container.clientHeight || 700;
@@ -96,12 +103,10 @@ export function Iphone3DModel({
     screenTexture.rotation = Math.PI;
     screenTexture.generateMipmaps = false;
 
-    let entranceProgress = 0;
-    let isModelLoadedInScene = false;
-
     gltfLoader.load(
       "/models/iphone.glb",
       (gltf) => {
+        if (!isMounted) return;
         // Rotate 180 deg around Y so FRONT DISPLAY screen faces camera
         gltf.scene.rotation.y = Math.PI;
 
@@ -144,8 +149,8 @@ export function Iphone3DModel({
         });
 
         modelGroup.add(gltf.scene);
-        isModelLoadedInScene = true;
-        entranceProgress = 0; // RESET ENTRANCE PROGRESS WHEN GLTF IS ADDED TO SCENE
+        isModelLoadedInSceneRef.current = true;
+        entranceProgressRef.current = 0; // RESET ENTRANCE PROGRESS WHEN GLTF IS ADDED TO SCENE
         setLoaded(true);
         if (onModelLoadedRef.current) {
           onModelLoadedRef.current();
@@ -206,16 +211,16 @@ export function Iphone3DModel({
     const animate = () => {
       animationFrameId = requestAnimationFrame(animate);
 
-      if (isModelLoadedInScene && entranceProgress < 1) {
-        entranceProgress += 0.014; // Smooth entrance spin & rise up
+      if (isModelLoadedInSceneRef.current && entranceProgressRef.current < 1) {
+        entranceProgressRef.current += 0.014; // Smooth entrance spin & rise up
       }
 
       if (!isZoomedRef.current) {
-        // Normal State: Phone rises from below up to higher target Y = -0.35
-        const currentProgress = Math.min(entranceProgress, 1);
+        // Normal State: Phone rises from below up to higher target Y = 0.0
+        const currentProgress = Math.min(entranceProgressRef.current, 1);
         const easeVal = Math.sin(currentProgress * Math.PI * 0.5);
 
-        const targetY = -0.35 - (1 - easeVal) * 3.0;
+        const targetY = 0.0 - (1 - easeVal) * 3.0;
         modelGroup.position.y += (targetY - modelGroup.position.y) * 0.08;
 
         // Entrance Rotation Spin: smoothly unwinds full 360 deg (2 * Math.PI) rotation into base tilt (-0.30 rad)
@@ -265,6 +270,7 @@ export function Iphone3DModel({
     window.addEventListener("resize", handleResize);
 
     return () => {
+      isMounted = false;
       container.removeEventListener("pointerdown", handlePointerDown);
       window.removeEventListener("pointermove", handlePointerMove);
       window.removeEventListener("pointerup", handlePointerUp);
