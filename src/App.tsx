@@ -30,6 +30,7 @@ import {
 } from "./components/effects";
 import { Button, Card, SectionHeader, Stat } from "./components/ui";
 import { Macbook3DModel } from "./components/Macbook3DModel";
+import { IntroShowcase } from "./components/IntroShowcase";
 
 function Github({ className = "h-4 w-4" }: { className?: string }) {
   return (
@@ -405,6 +406,7 @@ function DaiduongsancaVisual() {
 export default function App() {
   const [copied, setCopied] = useState(false);
   const [activeSection, setActiveSection] = useState("about");
+  const [showIntro, setShowIntro] = useState(true);
 
   React.useEffect(() => {
     const handleScroll = () => {
@@ -435,7 +437,9 @@ export default function App() {
   };
 
   return (
-    <main className="page-grid-shell">
+    <>
+      {showIntro && <IntroShowcase onEnterPortfolio={() => setShowIntro(false)} />}
+      <main className="page-grid-shell">
       <ScrollProgress />
       <InteractiveGrid
         clickInteraction
@@ -733,5 +737,6 @@ export default function App() {
 
       </div>
     </main>
+    </>
   );
 }
