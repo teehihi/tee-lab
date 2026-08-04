@@ -726,16 +726,7 @@ export default function App() {
       )}
       {!showIntro && <ClickEffects />}
 
-      <main
-        className={`page-grid-shell transition-all duration-[1200ms] cubic-bezier(0.16,1,0.3,1) transform ${
-          showIntro && !isHeroRevealed
-            ? "opacity-0 translate-y-16 pointer-events-none"
-            : "opacity-100 translate-y-0"
-        }`}
-      >
-        <ScrollProgress />
-
-      {/* FLOATING NAVBAR (Only visible after Intro Showcase) */}
+      {/* FLOATING NAVBAR (Always sticky/fixed at top of screen after Intro Showcase) */}
       {!showIntro && (
         <nav className="section-nav" aria-label="Portfolio navigation">
           <div className="nav-links">
@@ -756,6 +747,15 @@ export default function App() {
           </div>
         </nav>
       )}
+
+      <main
+        className={`page-grid-shell transition-all duration-[1200ms] cubic-bezier(0.16,1,0.3,1) transform ${
+          showIntro && !isHeroRevealed
+            ? "opacity-0 translate-y-16 pointer-events-none"
+            : "opacity-100 translate-y-0"
+        }`}
+      >
+        <ScrollProgress />
 
       <div className="page-reveal mx-auto flex min-h-screen w-full max-w-5xl flex-col px-3 py-4 text-sm leading-loose sm:px-6 lg:px-8">
 
