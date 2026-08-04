@@ -1,17 +1,7 @@
 import React, { useRef, useEffect, useState } from "react";
 import * as THREE from "three";
-import { DRACOLoader, GLTFLoader } from "three-stdlib";
 import { MacbookLoader } from "./MacbookLoader";
-
-THREE.Cache.enabled = true;
-
-const dracoLoader = new DRACOLoader();
-dracoLoader.setDecoderPath("/draco/");
-
-const gltfLoader = new GLTFLoader();
-gltfLoader.setDRACOLoader(dracoLoader);
-
-const textureLoader = new THREE.TextureLoader();
+import { loadGLTFModel, loadCachedTexture } from "../utils/modelCache";
 
 interface Iphone3DModelProps {
   screenImage?: string;
@@ -96,16 +86,14 @@ export function Iphone3DModel({
     rimLight.position.set(0, -3, -2);
     scene.add(rimLight);
 
-    // 4. Load Texture & GLTF Model
-    const screenTexture = textureLoader.load(screenImage);
-    screenTexture.colorSpace = THREE.SRGBColorSpace;
+    // 4. Load Texture & GLTF Model via Model Cache Manager
+    const screenTexture = loadCachedTexture(screenImage);
     screenTexture.center.set(0.5, 0.5);
     screenTexture.rotation = Math.PI;
     screenTexture.generateMipmaps = false;
 
-    gltfLoader.load(
-      "/models/iphone.glb",
-      (gltf) => {
+    loadGLTFModel("/models/iphone.glb")
+      .then((gltf) => {
         if (!isMounted) return;
         // Rotate 180 deg around Y so FRONT DISPLAY screen faces camera
         gltf.scene.rotation.y = Math.PI;
@@ -135,11 +123,10 @@ export function Iphone3DModel({
                 mat.needsUpdate = true;
               } else if (matName.includes("glass")) {
                 mat.transparent = true;
-                mat.opacity = 0.0;
+                mat.opacity = 0.3;
                 mat.needsUpdate = true;
               }
             };
-
             if (Array.isArray(node.material)) {
               node.material.forEach(processMat);
             } else {
@@ -155,10 +142,8 @@ export function Iphone3DModel({
         if (onModelLoadedRef.current) {
           onModelLoadedRef.current();
         }
-      },
-      undefined,
-      (err) => console.error("Error loading iphone.glb:", err)
-    );
+      })
+      .catch((err) => console.error("Error loading iphone.glb:", err));
 
     // 5. Interactive Mouse Hover & 360-Degree Continuous Drag Rotation Physics
     let isDragging = false;

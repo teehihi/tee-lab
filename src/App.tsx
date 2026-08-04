@@ -34,6 +34,7 @@ import {
 import { Button, Card, SectionHeader, Stat } from "./components/ui";
 import { Macbook3DModel } from "./components/Macbook3DModel";
 import { IntroShowcase } from "./components/IntroShowcase";
+import { preload3DAssets } from "./utils/modelCache";
 
 function Github({ className = "h-4 w-4" }: { className?: string }) {
   return (
@@ -148,14 +149,10 @@ const projects: ProjectItem[] = [
     description:
       "Explore thousands of movies through a fast, responsive interface with personalized recommendations, intelligent search, and a seamless browsing experience.",
     tags: ["React", "TMDB API", "Tailwind CSS", "Search & Discovery"],
-    mediaType: "placeholder",
+    mediaType: "gif",
     bgGraphic: "/bg1.webp",
-    // =========================================================================
-    // HƯỚNG DẪN DÀNH CHO BẠN (USER):
-    // Thay thế link GIF (Giphy URL) của project Movie DoubleT vào mediaUrl dưới đây:
-    // Ví dụ: mediaUrl: "https://media.giphy.com/media/v1.Y2lk.../giphy.gif"
-    // =========================================================================
-    mediaUrl: "",
+    mediaUrl:
+      "https://media2.giphy.com/media/v1.Y2lkPTc5MGI3NjExdXE3MmZjN3VwdjBrbjA0bTUyZGdpN3p3Y2VvaTZyb2V4MTBrd25qYyZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/8kMQHXT5j4D9NHDxLs/giphy.gif",
     links: [
       { label: "Live Demo", href: "#" },
       { label: "More Info...", href: "https://github.com/teehihi" },
@@ -258,24 +255,51 @@ function ProfileAvatar() {
 
 function ProjectSlideshow({ images, title }: { images: string[]; title: string }) {
   const [currentIndex, setCurrentIndex] = useState(0);
+  const [slideDirection, setSlideDirection] = useState<"right" | "left">("right");
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setSlideDirection("right");
+      setCurrentIndex((prev) => (prev === images.length - 1 ? 0 : prev + 1));
+    }, 3000);
+
+    return () => clearInterval(timer);
+  }, [images.length]);
+
+  const goToSlide = (newIndex: number) => {
+    if (newIndex === currentIndex) return;
+    setSlideDirection(newIndex > currentIndex ? "right" : "left");
+    setCurrentIndex(newIndex);
+  };
 
   const prevSlide = (e: React.MouseEvent) => {
     e.stopPropagation();
+    setSlideDirection("left");
     setCurrentIndex((prev) => (prev === 0 ? images.length - 1 : prev - 1));
   };
 
   const nextSlide = (e: React.MouseEvent) => {
     e.stopPropagation();
+    setSlideDirection("right");
     setCurrentIndex((prev) => (prev === images.length - 1 ? 0 : prev + 1));
   };
 
   return (
     <div className="relative w-full h-full min-h-[240px] sm:min-h-[300px] overflow-hidden bg-black/80 group rounded-2xl border border-white/10">
-      <img
-        src={images[currentIndex]}
-        alt={`${title} screenshot ${currentIndex + 1}`}
-        className="w-full h-full object-cover object-top"
-      />
+      <div className="relative w-full h-full overflow-hidden">
+        <img
+          key={currentIndex}
+          src={images[currentIndex]}
+          alt={`${title} screenshot ${currentIndex + 1}`}
+          style={{
+            animation:
+              slideDirection === "right"
+                ? "slideRight 0.38s cubic-bezier(0.22, 1, 0.36, 1) forwards"
+                : "slideLeft 0.38s cubic-bezier(0.22, 1, 0.36, 1) forwards",
+          }}
+          className="w-full h-full object-cover object-top"
+        />
+      </div>
 
       {/* Prev / Next Controls */}
       <button
@@ -294,23 +318,26 @@ function ProjectSlideshow({ images, title }: { images: string[]; title: string }
         <ChevronRight className="w-5 h-5" />
       </button>
 
-      {/* Clean Floating Dot Pagination Control (No Background Box - Matching User Screenshot) */}
-      <div className="absolute bottom-3.5 inset-x-0 flex items-center justify-center gap-2.5 z-10 pointer-events-auto">
-        {images.map((_, idx) => (
-          <button
-            key={idx}
-            onClick={(e) => {
-              e.stopPropagation();
-              setCurrentIndex(idx);
-            }}
-            className={`transition-all duration-300 rounded-full cursor-pointer ${
-              idx === currentIndex
-                ? "w-2.5 h-2.5 bg-white scale-125 shadow-[0_0_8px_rgba(255,255,255,0.95)]"
-                : "w-2 h-2 bg-white/40 hover:bg-white/80"
-            }`}
-            aria-label={`Go to slide ${idx + 1}`}
-          />
-        ))}
+      {/* Pure Floating Dot Pagination Control (#1A1A1A Active, #B2B2B2 Unselected) */}
+      <div className="absolute bottom-6 sm:bottom-7 inset-x-0 flex items-center justify-center gap-2.5 z-10 pointer-events-auto">
+        {images.map((_, idx) => {
+          const isSelected = idx === currentIndex;
+          return (
+            <button
+              key={idx}
+              onClick={(e) => {
+                e.stopPropagation();
+                goToSlide(idx);
+              }}
+              className={`w-2.5 h-2.5 rounded-full transition-all duration-300 cursor-pointer shrink-0 ${
+                isSelected
+                  ? "bg-emerald-500 scale-125 shadow-[0_0_10px_rgba(16,185,129,0.85)]"
+                  : "bg-[#B2B2B2] hover:bg-emerald-400/70"
+              }`}
+              aria-label={`Go to slide ${idx + 1}`}
+            />
+          );
+        })}
       </div>
     </div>
   );
@@ -323,16 +350,12 @@ function ProjectMedia({ project }: { project: ProjectItem }) {
 
   if (project.mediaType === "gif" && project.mediaUrl) {
     return (
-      <div className="relative w-full h-full min-h-[240px] sm:min-h-[300px] overflow-hidden bg-black/80 group rounded-2xl border border-white/10">
+      <div className="relative w-full h-full min-h-[240px] sm:min-h-[300px] overflow-hidden rounded-2xl border border-white/10 flex items-center justify-center">
         <img
           src={project.mediaUrl}
           alt={`${project.title} GIF Demo`}
-          className="w-full h-full object-cover object-top"
+          className="w-full h-full object-cover object-center rounded-2xl"
         />
-        <div className="absolute top-3 right-3 px-3 py-1 rounded-full bg-emerald-500/20 backdrop-blur-md border border-emerald-500/30 text-emerald-400 text-xs font-mono font-medium z-10 flex items-center gap-1.5">
-          <span className="w-2 h-2 rounded-full bg-emerald-400 animate-ping" />
-          <span>LIVE DEMO</span>
-        </div>
       </div>
     );
   }
@@ -344,22 +367,17 @@ function ProjectMedia({ project }: { project: ProjectItem }) {
         <img
           src={project.mediaUrl}
           alt={`${project.title} Media`}
-          className="w-full h-full object-cover object-top"
+          className="w-full h-full object-cover object-center"
         />
       ) : (
         <div className="relative z-10 flex flex-col items-center gap-3">
-          <div className="p-3.5 rounded-2xl bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 group-hover:scale-110 transition-transform duration-300">
-            <Film className="w-7 h-7" />
+          <div className="p-4 rounded-2xl bg-white/5 border border-white/10 text-emerald-400 mb-1">
+            <Code2 className="w-8 h-8" />
           </div>
-          <div>
-            <h4 className="text-base font-bold text-white mb-1">{project.title} Preview</h4>
-            <p className="text-xs text-white/50 max-w-xs leading-relaxed">
-              GIF Media Placeholder. Copy Giphy link into <code>mediaUrl</code> property in <code>projects</code> array.
-            </p>
-          </div>
-          <span className="mt-1 text-[10px] font-mono px-3 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-300">
-            Paste Giphy Link in App.tsx line ~145
-          </span>
+          <h4 className="text-base font-bold text-white tracking-wide">{project.title}</h4>
+          <p className="text-xs text-slate-400 max-w-[260px] leading-relaxed">
+            Case study & interactive demonstration coming soon.
+          </p>
         </div>
       )}
     </div>
@@ -376,14 +394,14 @@ function ScrollProjectCard({ project, index }: { project: ProjectItem; index: nu
     const el = cardRef.current;
     if (!el) return;
 
-    // Trigger focus when card reaches 65% visibility in viewport
     const observer = new IntersectionObserver(
       ([entry]) => {
-        setIsInFocus(entry.intersectionRatio >= 0.65);
+        setIsInFocus(entry.isIntersecting);
       },
       {
         root: null,
-        threshold: [0, 0.65, 1.0],
+        rootMargin: "-10% 0px -10% 0px",
+        threshold: 0.2,
       }
     );
 
@@ -399,8 +417,8 @@ function ScrollProjectCard({ project, index }: { project: ProjectItem; index: nu
     const x = (e.clientX - rect.left) / rect.width - 0.5;
     const y = (e.clientY - rect.top) / rect.height - 0.5;
 
-    // 10-degree tilt maximum for elegant 3D corner response
-    const maxTilt = 10;
+    // 6-degree tilt maximum for subtle Finera-style 3D corner response
+    const maxTilt = 6;
     setTilt({
       x: -y * maxTilt,
       y: x * maxTilt,
@@ -427,16 +445,19 @@ function ScrollProjectCard({ project, index }: { project: ProjectItem; index: nu
       style={{
         transformStyle: "preserve-3d",
         transform: isHovered
-          ? `perspective(1000px) rotateX(${tilt.x}deg) rotateY(${tilt.y}deg) scale3d(1.01, 1.01, 1.01)`
-          : `perspective(1000px) rotateX(0deg) rotateY(0deg) scale3d(1, 1, 1)`,
+          ? `perspective(1000px) rotateX(${tilt.x}deg) rotateY(${tilt.y}deg) scale(1.008) translateY(0px)`
+          : isInFocus
+            ? `perspective(1000px) rotateX(0deg) rotateY(0deg) scale(1) translateY(0px)`
+            : `perspective(1000px) rotateX(0deg) rotateY(0deg) scale(0.65) translateY(32px)`,
+        opacity: isInFocus ? 1 : 0,
         transition: isHovered
-          ? "transform 0.15s ease-out, opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1)"
-          : "transform 0.8s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1)",
+          ? "transform 0.15s ease-out, opacity 0.6s ease-in-out"
+          : "transform 1.15s cubic-bezier(0.16, 1, 0.3, 1), opacity 1.15s cubic-bezier(0.16, 1, 0.3, 1)",
       }}
-      className={`relative w-full max-w-[1232px] mx-auto aspect-auto lg:aspect-[1232/540] min-h-[380px] rounded-[2.2rem] sm:rounded-[2.8rem] overflow-hidden flex items-center p-5 sm:p-8 lg:p-10 ${
+      className={`relative w-full max-w-[1232px] mx-auto aspect-auto lg:aspect-[1232/540] min-h-[380px] rounded-[2.5rem] overflow-hidden flex items-center p-6 sm:p-10 lg:p-12 will-change-transform ${
         isInFocus
-          ? "opacity-100 translate-y-0 shadow-[0_30px_90px_rgba(0,0,0,0.85)] pointer-events-auto"
-          : "opacity-0 scale-[0.88] translate-y-12 shadow-none pointer-events-none"
+          ? "shadow-[0_25px_80px_rgba(0,0,0,0.7)] pointer-events-auto z-10"
+          : "shadow-none pointer-events-none z-0"
       }`}
     >
       {/* Full Background Card Image with 85% Opacity (bg1.webp, Bg2.webp, bg3.webp) */}
@@ -508,6 +529,31 @@ export default function App() {
   const [activeSection, setActiveSection] = useState("about");
   const [showIntro, setShowIntro] = useState(true);
   const [isHeroRevealed, setIsHeroRevealed] = useState(false);
+  const [isMacOpen, setIsMacOpen] = useState(false);
+  const [isSkillsVisible, setIsSkillsVisible] = useState(false);
+  const skillsRef = useRef<HTMLElement>(null);
+
+  React.useEffect(() => {
+    // Proactively preload 3D models and textures in background
+    preload3DAssets();
+  }, []);
+
+  React.useEffect(() => {
+    const el = skillsRef.current;
+    if (!el) return;
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setIsSkillsVisible(true);
+        }
+      },
+      { threshold: 0.15 }
+    );
+
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, []);
 
   React.useEffect(() => {
     const handleScroll = () => {
@@ -635,6 +681,7 @@ export default function App() {
 
         {/* SKILLS SECTION (Expanded to ~90% screen width with 5-8% side padding) */}
         <section
+          ref={skillsRef}
           id="skills"
           className="scroll-mt-24 py-16 w-screen relative left-1/2 right-1/2 -ml-[50vw] -mr-[50vw] px-[5vw] lg:px-[6vw] xl:px-[8vw] max-w-screen overflow-x-hidden"
         >
@@ -649,10 +696,19 @@ export default function App() {
               {/* LEFT COLUMN: 6 Columns wide for Capabilities Cards */}
               <div className="w-full lg:col-span-6 relative z-10">
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
-                  {strengths.map((item) => {
+                  {strengths.map((item, idx) => {
                     const Icon = item.icon;
+                    const isCardVisible = isSkillsVisible || isMacOpen;
                     return (
-                      <Card key={item.title} className="p-6 flex flex-col justify-between h-full min-h-[150px]">
+                      <Card
+                        key={item.title}
+                        style={{
+                          transitionDelay: `${idx * 150}ms`,
+                        }}
+                        className={`p-6 flex flex-col justify-between h-full min-h-[150px] transition-opacity duration-1000 cubic-bezier(0.16, 1, 0.3, 1) ${
+                          isCardVisible ? "opacity-100" : "opacity-0 pointer-events-none"
+                        }`}
+                      >
                         <div>
                           <div className="flex items-center gap-3 mb-3">
                             <div className="p-2.5 rounded-xl bg-emerald-500/10 text-emerald-500 flex-shrink-0">
@@ -670,7 +726,11 @@ export default function App() {
 
               {/* RIGHT COLUMN: 6 Columns wide for Large 3D Three.js WebGL Macbook Model */}
               <div className="flex items-center justify-center w-full lg:col-span-6 relative z-20 overflow-visible">
-                <Macbook3DModel screenImage="/bannerMac.png" className="h-[440px] sm:h-[500px] lg:h-[540px]" />
+                <Macbook3DModel
+                  screenImage="/bannerMac.png"
+                  className="h-[440px] sm:h-[500px] lg:h-[540px]"
+                  onLidOpenStateChange={(isOpen) => setIsMacOpen(isOpen)}
+                />
               </div>
             </div>
           </div>
@@ -688,7 +748,7 @@ export default function App() {
               description="Explore the AI vision systems, real-time multiplayer platforms, and full-stack web applications I've engineered."
             />
 
-            <div className="featured-projects mt-16 space-y-24 sm:space-y-36 lg:space-y-44">
+            <div className="featured-projects mt-12 space-y-10 sm:space-y-12 lg:space-y-14">
               {projects.map((project, idx) => (
                 <ScrollProjectCard key={project.id} project={project} index={idx} />
               ))}

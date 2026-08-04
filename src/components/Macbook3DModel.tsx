@@ -1,25 +1,14 @@
 import React, { useRef, useEffect, useState } from "react";
 import * as THREE from "three";
-import { DRACOLoader, GLTFLoader } from "three-stdlib";
-
-// Enable caching
-THREE.Cache.enabled = true;
-
-// Shared loader instance at module level
-const dracoLoader = new DRACOLoader();
-dracoLoader.setDecoderPath("/draco/");
-
-const gltfLoader = new GLTFLoader();
-gltfLoader.setDRACOLoader(dracoLoader);
-
-const textureLoader = new THREE.TextureLoader();
+import { loadGLTFModel, loadCachedTexture } from "../utils/modelCache";
 
 interface Macbook3DModelProps {
   screenImage: string;
   className?: string;
+  onLidOpenStateChange?: (isOpen: boolean) => void;
 }
 
-export function Macbook3DModel({ screenImage, className = "" }: Macbook3DModelProps) {
+export function Macbook3DModel({ screenImage, className = "", onLidOpenStateChange }: Macbook3DModelProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const [loaded, setLoaded] = useState(false);
@@ -66,9 +55,8 @@ export function Macbook3DModel({ screenImage, className = "" }: Macbook3DModelPr
     fillLight.position.set(-6, 2, 2);
     scene.add(fillLight);
 
-    // 4. Load texture & GLTF model
-    const screenTexture = textureLoader.load(screenImage);
-    screenTexture.colorSpace = THREE.SRGBColorSpace;
+    // 4. Load texture & GLTF model via Model Cache Manager
+    const screenTexture = loadCachedTexture(screenImage);
     screenTexture.flipY = false;
     screenTexture.generateMipmaps = false;
 
@@ -79,17 +67,19 @@ export function Macbook3DModel({ screenImage, className = "" }: Macbook3DModelPr
     const observer = new IntersectionObserver(
       ([entry]) => {
         isViewportVisible = entry.isIntersecting;
+        if (onLidOpenStateChange) {
+          onLidOpenStateChange(entry.isIntersecting);
+        }
       },
       {
-        threshold: 0.45, // Triggers lid opening when model is ~50% into viewport
-        rootMargin: "-10% 0px -10% 0px",
+        threshold: 0.5, // Requires model to be ~50% in middle of viewport
+        rootMargin: "-20% 0px -20% 0px", // Triggers exclusively in the middle 60% band of screen
       }
     );
     observer.observe(container);
 
-    gltfLoader.load(
-      "/models/macbook-pro.glb",
-      (gltf) => {
+    loadGLTFModel("/models/macbook-pro.glb")
+      .then((gltf) => {
         modelGroup.add(gltf.scene);
 
         gltf.scene.traverse((node: any) => {
@@ -99,8 +89,8 @@ export function Macbook3DModel({ screenImage, className = "" }: Macbook3DModelPr
 
           if (node.name === "Frame") {
             frameNode = node;
-            // Start lid fully closed at 90 degrees (Math.PI / 2)
-            frameNode.rotation.x = THREE.MathUtils.degToRad(90);
+            // Start lid open at 0 degrees
+            frameNode.rotation.x = 0;
           }
 
           if (node.name === "Screen") {
@@ -112,10 +102,8 @@ export function Macbook3DModel({ screenImage, className = "" }: Macbook3DModelPr
         });
 
         setLoaded(true);
-      },
-      undefined,
-      (err) => console.error("Error loading macbook-pro.glb:", err)
-    );
+      })
+      .catch((err) => console.error("Error loading macbook-pro.glb:", err));
 
     // 5. Controlled Mouse Interaction Physics (Sleek Apple-style tilt, zero edge clipping)
     let mouseX = 0;
@@ -140,7 +128,7 @@ export function Macbook3DModel({ screenImage, className = "" }: Macbook3DModelPr
     // 6. Animation Render Loop with Scroll-Triggered Lid Opening
     let animationFrameId: number;
     let clock = new THREE.Clock();
-    let currentLidAngle = THREE.MathUtils.degToRad(90);
+    let currentLidAngle = 0;
 
     const animate = () => {
       animationFrameId = requestAnimationFrame(animate);
@@ -153,9 +141,9 @@ export function Macbook3DModel({ screenImage, className = "" }: Macbook3DModelPr
       // Gentle floating levitation
       modelGroup.position.y = Math.sin(elapsedTime * 1.2) * 0.04;
 
-      // Scroll-triggered Macbook Lid Unfolding Animation (HamishMW portfolio style)
+      // Scroll-triggered Macbook Lid Unfolding Animation
       if (frameNode) {
-        const targetLidAngle = isViewportVisible ? 0 : THREE.MathUtils.degToRad(90);
+        const targetLidAngle = isViewportVisible ? 0 : THREE.MathUtils.degToRad(75);
         currentLidAngle += (targetLidAngle - currentLidAngle) * 0.045;
         (frameNode as THREE.Object3D).rotation.x = currentLidAngle;
       }
