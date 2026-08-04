@@ -12,14 +12,24 @@ export function IntroShowcase({ onEnterPortfolio, onMidTransition }: IntroShowca
   const [isSlidingUp, setIsSlidingUp] = useState(false);
   const [isModelLoaded, setIsModelLoaded] = useState(false);
   const [showTextSequence, setShowTextSequence] = useState(false);
+  const [showBubbles, setShowBubbles] = useState(false);
 
-  // Trigger sequential text fade-down after 3D model finishes loading
+  // Trigger sequential text & floating tech bubbles AFTER 3D model finishes entrance rise up
   useEffect(() => {
     if (isModelLoaded) {
-      const timer = setTimeout(() => {
+      const textTimer = setTimeout(() => {
         setShowTextSequence(true);
       }, 100);
-      return () => clearTimeout(timer);
+
+      // Trigger floating tech icon bubbles ONLY AFTER the 3D iPhone has risen and appeared into position (~1100ms)
+      const bubblesTimer = setTimeout(() => {
+        setShowBubbles(true);
+      }, 1100);
+
+      return () => {
+        clearTimeout(textTimer);
+        clearTimeout(bubblesTimer);
+      };
     }
   }, [isModelLoaded]);
 
@@ -148,8 +158,8 @@ export function IntroShowcase({ onEnterPortfolio, onMidTransition }: IntroShowca
           {/* 1. React Bubble (Top Left - Smooth Fade/Slide) */}
           <div
             className={`absolute top-[18%] left-[14%] sm:left-[19%] md:left-[22%] z-20 pointer-events-none transition-all duration-1000 ease-out transform ${
-              isModelLoaded
-                ? "opacity-100 translate-y-0 scale-100 delay-300"
+              showBubbles
+                ? "opacity-100 translate-y-0 scale-100 delay-100"
                 : "opacity-0 translate-y-10 scale-90"
             }`}
           >
@@ -163,8 +173,8 @@ export function IntroShowcase({ onEnterPortfolio, onMidTransition }: IntroShowca
           {/* 2. Node.js Bubble (Middle-Lower Left - Smooth Fade/Slide) */}
           <div
             className={`absolute top-[48%] left-[10%] sm:left-[14%] md:left-[17%] z-20 pointer-events-none transition-all duration-1000 ease-out transform ${
-              isModelLoaded
-                ? "opacity-100 translate-y-0 scale-100 delay-500"
+              showBubbles
+                ? "opacity-100 translate-y-0 scale-100 delay-300"
                 : "opacity-0 translate-y-10 scale-90"
             }`}
           >
@@ -178,8 +188,8 @@ export function IntroShowcase({ onEnterPortfolio, onMidTransition }: IntroShowca
           {/* 3. Python Bubble (Top Right - Smooth Fade/Slide) */}
           <div
             className={`absolute top-[20%] right-[14%] sm:right-[19%] md:right-[22%] z-20 pointer-events-none transition-all duration-1000 ease-out transform ${
-              isModelLoaded
-                ? "opacity-100 translate-y-0 scale-100 delay-400"
+              showBubbles
+                ? "opacity-100 translate-y-0 scale-100 delay-200"
                 : "opacity-0 translate-y-10 scale-90"
             }`}
           >
@@ -193,8 +203,8 @@ export function IntroShowcase({ onEnterPortfolio, onMidTransition }: IntroShowca
           {/* 4. DB Bubble (Middle-Lower Right - Smooth Fade/Slide) */}
           <div
             className={`absolute top-[50%] right-[10%] sm:right-[14%] md:right-[17%] z-20 pointer-events-none transition-all duration-1000 ease-out transform ${
-              isModelLoaded
-                ? "opacity-100 translate-y-0 scale-100 delay-600"
+              showBubbles
+                ? "opacity-100 translate-y-0 scale-100 delay-400"
                 : "opacity-0 translate-y-10 scale-90"
             }`}
           >
