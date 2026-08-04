@@ -564,7 +564,8 @@ const supportingProjects: SecondaryProjectItem[] = [
     description:
       "Fast-paced 1v1 auto-combat game with custom Canvas rendering, spell interactions, and real-time battle balance mechanics.",
     tags: ["React", "HTML5 Canvas", "Game Mechanics", "Vite"],
-    mediaUrl: "",
+    mediaUrl:
+      "https://media3.giphy.com/media/v1.Y2lkPTc5MGI3NjExaXUzeHpvcmRwbHFrampuaDdhMWlocjRtc3yxcG1hMWp5MWNud21leCZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/xGJhfJEIVrRScFvCUF/giphy.gif",
     linkHref: "https://github.com/teehihi",
   },
 ];
