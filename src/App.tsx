@@ -497,10 +497,14 @@ export default function App() {
     <>
       {showIntro && (
         <IntroShowcase
-          onMidTransition={() => setIsHeroRevealed(true)}
+          onMidTransition={() => {
+            setIsHeroRevealed(true);
+            window.scrollTo({ top: 0, behavior: "instant" });
+          }}
           onEnterPortfolio={() => {
             setShowIntro(false);
             setIsHeroRevealed(true);
+            window.scrollTo({ top: 0, behavior: "instant" });
           }}
         />
       )}

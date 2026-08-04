@@ -23,8 +23,9 @@ export function IntroShowcase({ onEnterPortfolio, onMidTransition }: IntroShowca
     }
   }, [isModelLoaded]);
 
-  // Lock body scroll while Intro Showcase is active
+  // Lock body scroll while Intro Showcase is active and ensure scroll is reset to top Hero section
   useEffect(() => {
+    window.scrollTo(0, 0);
     document.body.style.overflow = "hidden";
     return () => {
       document.body.style.overflow = "";
@@ -34,16 +35,21 @@ export function IntroShowcase({ onEnterPortfolio, onMidTransition }: IntroShowca
   const handleStartTransition = () => {
     if (isSlidingUp) return;
 
+    // Reset window scroll position to top Hero section
+    window.scrollTo({ top: 0, behavior: "instant" });
+
     // Phase 1 (t = 0ms): Start 3D spinning cross-fade blend transition
     setIsSlidingUp(true);
 
     // Phase 2 (t = 300ms): Trigger portfolio hero section cross-fade in
     setTimeout(() => {
+      window.scrollTo({ top: 0, behavior: "instant" });
       onMidTransition?.();
     }, 300);
 
-    // Phase 3 (t = 1600ms): Intro showcase fully dissolved into portfolio after complete 3D spin
+    // Phase 3 (t = 1600ms): Intro showcase fully dissolved into portfolio, unmount cleanly
     setTimeout(() => {
+      window.scrollTo({ top: 0, behavior: "instant" });
       document.body.style.overflow = "";
       onEnterPortfolio();
     }, 1600);
