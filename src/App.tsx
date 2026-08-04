@@ -100,7 +100,7 @@ const projects: ProjectItem[] = [
     ],
     links: [
       { label: "Live Demo", href: "https://github.com/teehihi/PhoenixVision" },
-      { label: "GitHub", href: "https://github.com/teehihi/PhoenixVision" },
+      { label: "More Info...", href: "https://github.com/teehihi/PhoenixVision" },
     ],
   },
   {
@@ -116,7 +116,7 @@ const projects: ProjectItem[] = [
       "https://media1.giphy.com/media/v1.Y2lkPTc5MGI3NjExN25kb20ybWI3b282dmF1djN3a2NiaHh0N3A1NmxzZnRweTZtbjJ0ZiZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/HcPgPBQKj7LoUYJG0H/giphy.gif",
     links: [
       { label: "Live Demo", href: "https://uniquizzdom.vercel.app/" },
-      { label: "GitHub", href: "https://github.com/teehihi/UniQuizzFE" },
+      { label: "More Info...", href: "https://github.com/teehihi/UniQuizzFE" },
     ],
   },
   {
@@ -138,7 +138,7 @@ const projects: ProjectItem[] = [
     ],
     links: [
       { label: "Live Demo", href: "https://xenow.vercel.app/" },
-      { label: "GitHub", href: "https://github.com/teehihi/xe-now-ui" },
+      { label: "More Info...", href: "https://github.com/teehihi/xe-now-ui" },
     ],
   },
   {
@@ -158,7 +158,7 @@ const projects: ProjectItem[] = [
     mediaUrl: "",
     links: [
       { label: "Live Demo", href: "#" },
-      { label: "GitHub", href: "https://github.com/teehihi" },
+      { label: "More Info...", href: "https://github.com/teehihi" },
     ],
   },
 ];
@@ -399,71 +399,65 @@ function ScrollProjectCard({ project, index }: { project: ProjectItem; index: nu
   return (
     <div
       ref={cardRef}
-      className={`relative w-full rounded-[2.5rem] p-6 sm:p-10 lg:p-14 transition-all duration-700 cubic-bezier(0.16, 1, 0.3, 1) transform overflow-hidden ${
+      className={`relative w-full max-w-[1232px] mx-auto aspect-[1232/638] rounded-[2.5rem] sm:rounded-[3rem] overflow-hidden transition-all duration-700 cubic-bezier(0.16, 1, 0.3, 1) transform flex items-center p-6 sm:p-10 lg:p-14 ${
         isInFocus
-          ? "opacity-100 scale-100 translate-y-0 shadow-[0_30px_90px_rgba(0,0,0,0.85)] border border-white/15"
-          : "opacity-40 scale-[0.93] translate-y-8 shadow-none border border-white/5"
+          ? "opacity-100 scale-100 translate-y-0 shadow-[0_30px_90px_rgba(0,0,0,0.85)]"
+          : "opacity-40 scale-[0.93] translate-y-8 shadow-none"
       }`}
     >
       {/* Full Background Card Image (bg1.webp, Bg2.webp, bg3.webp) */}
       <img
         src={project.bgGraphic}
         alt=""
-        className="absolute inset-0 w-full h-full object-cover z-0 pointer-events-none"
+        className="absolute inset-0 w-full h-full object-fill z-0 pointer-events-none"
       />
 
-      <div className="relative z-10 grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center">
+      <div className="relative z-10 grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-10 items-center w-full h-full">
         {/* MEDIA COLUMN */}
         <div className={`w-full lg:col-span-6 ${isEven ? "lg:order-1" : "lg:order-2"}`}>
-          <div className="relative flex items-center justify-center p-1 sm:p-3 w-full">
+          <div className="relative flex items-center justify-center w-full">
             {/* Primary Media Card Mockup */}
-            <div className="relative z-10 w-full aspect-[16/10] rounded-2xl overflow-hidden border border-white/20 bg-black/90 shadow-[0_25px_65px_rgba(0,0,0,0.9)] group transition-transform duration-500 hover:scale-[1.02]">
+            <div className="relative z-10 w-full aspect-[16/10] rounded-xl overflow-hidden border border-white/20 bg-black/90 shadow-[0_25px_65px_rgba(0,0,0,0.9)] group transition-transform duration-500 hover:scale-[1.02]">
               <ProjectMedia project={project} />
             </div>
           </div>
         </div>
 
         {/* DETAILS COLUMN */}
-        <div className={`w-full lg:col-span-6 flex flex-col justify-between space-y-6 ${isEven ? "lg:order-2" : "lg:order-1"}`}>
+        <div className={`w-full lg:col-span-6 flex flex-col justify-center space-y-4 sm:space-y-6 ${isEven ? "lg:order-2" : "lg:order-1"}`}>
           <div>
-            <h3 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-white tracking-tight mb-4 leading-[1.15]">
+            <h3 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-white tracking-tight mb-3 sm:mb-4 leading-tight">
               {project.title}
             </h3>
-            <p className="text-sm sm:text-base text-slate-200 font-normal leading-relaxed mb-6 max-w-xl">
+            <p className="text-slate-200 text-sm sm:text-base lg:text-lg font-normal leading-relaxed max-w-xl">
               {project.description}
             </p>
-
-            {/* Tag List */}
-            <div className="flex flex-wrap gap-2 mb-8">
-              {project.tags.map((tag) => (
-                <span
-                  key={tag}
-                  className="px-3.5 py-1.5 rounded-xl bg-white/10 backdrop-blur-md border border-white/15 text-white text-xs font-medium hover:border-emerald-500/40 transition-colors"
-                >
-                  {tag}
-                </span>
-              ))}
-            </div>
           </div>
 
-          {/* Action Buttons: Live Demo & GitHub / Learn More */}
-          <div className="flex items-center gap-5 pt-2">
-            {project.links.map((link) => {
-              const isDemo = link.label.toLowerCase().includes("demo");
-              return (
+          {/* Action Buttons (Exact Match to Screenshot 3) */}
+          <div className="flex items-center gap-4 pt-1 sm:pt-2">
+            {project.links.map((link, idx) => {
+              const isDemo = idx === 0 || link.label.toLowerCase().includes("demo");
+              return isDemo ? (
                 <a
                   key={link.label}
                   href={link.href}
                   target="_blank"
                   rel="noreferrer"
-                  className={`inline-flex items-center gap-2 transition-all duration-300 cursor-pointer ${
-                    isDemo
-                      ? "px-7 py-3.5 rounded-full bg-white text-black font-bold text-xs sm:text-sm hover:bg-emerald-400 hover:text-black hover:scale-105 shadow-[0_0_30px_rgba(255,255,255,0.25)] hover:shadow-[0_0_40px_rgba(16,185,129,0.5)] active:scale-95"
-                      : "text-slate-200 hover:text-white text-xs sm:text-sm font-medium hover:underline flex items-center gap-1.5 px-3 py-2"
-                  }`}
+                  className="inline-flex items-center gap-2 px-7 py-3 sm:px-8 sm:py-3.5 rounded-full bg-white text-black font-bold text-sm sm:text-base hover:bg-emerald-400 hover:scale-105 transition-all shadow-md active:scale-95 cursor-pointer"
                 >
                   <span>{link.label}</span>
-                  <ExternalIcon className="w-4 h-4" />
+                  <ArrowUpRight className="w-4 h-4" />
+                </a>
+              ) : (
+                <a
+                  key={link.label}
+                  href={link.href}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="inline-flex items-center gap-1 text-slate-300 hover:text-white font-semibold text-sm sm:text-base hover:underline transition-colors ml-2 sm:ml-4 cursor-pointer"
+                >
+                  <span>{link.label}</span>
                 </a>
               );
             })}
