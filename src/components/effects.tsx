@@ -319,16 +319,14 @@ export function InteractiveGrid({
       animationRef.current = requestAnimationFrame(draw);
     };
 
-    const updateMousePosition = (clientX, clientY) => {
-      const rect = rectRef.current;
+    const updateMousePosition = (clientX: number, clientY: number) => {
+      const canvasEl = canvasRef.current;
+      if (!canvasEl) return null;
+      const rect = canvasEl.getBoundingClientRect();
       const x = clientX - rect.left;
       const y = clientY - rect.top;
-      if (x >= 0 && y >= 0 && x <= rect.width && y <= rect.height) {
-        mousePosRef.current = { x, y };
-        return { x, y };
-      }
-      mousePosRef.current = null;
-      return null;
+      mousePosRef.current = { x, y };
+      return { x, y };
     };
 
     const pushTrailPoint = (x, y) => {

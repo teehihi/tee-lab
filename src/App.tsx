@@ -710,6 +710,22 @@ export default function App() {
           }}
         />
       )}
+      {!showIntro && (
+        <InteractiveGrid
+          clickInteraction
+          clickForce={1.0}
+          cursorTrail
+          trailMode="hover"
+          trailColor="#10b981"
+          hoverColor="#10b981"
+          gridSize={52}
+          radius={360}
+          repulsionStrength={-0.8}
+          motionSpeed={0.8}
+        />
+      )}
+      {!showIntro && <ClickEffects />}
+
       <main
         className={`page-grid-shell transition-all duration-[1200ms] cubic-bezier(0.16,1,0.3,1) transform ${
           showIntro && !isHeroRevealed
@@ -717,20 +733,7 @@ export default function App() {
             : "opacity-100 translate-y-0"
         }`}
       >
-      <ScrollProgress />
-      <InteractiveGrid
-        clickInteraction
-        clickForce={1.0}
-        cursorTrail
-        trailMode="hover"
-        trailColor="#10b981"
-        hoverColor="#10b981"
-        gridSize={52}
-        radius={360}
-        repulsionStrength={-0.8}
-        motionSpeed={0.8}
-      />
-      <ClickEffects />
+        <ScrollProgress />
 
       {/* FLOATING NAVBAR (Only visible after Intro Showcase) */}
       {!showIntro && (
