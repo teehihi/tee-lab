@@ -34,26 +34,26 @@ export function IntroShowcase({ onEnterPortfolio, onMidTransition }: IntroShowca
   const handleStartTransition = () => {
     if (isSlidingUp) return;
 
-    // Phase 1 (t = 0ms): Start cross-fade blend transition
+    // Phase 1 (t = 0ms): Start 3D spinning cross-fade blend transition
     setIsSlidingUp(true);
 
-    // Phase 2 (t = 150ms): Trigger portfolio hero section cross-fade in
+    // Phase 2 (t = 300ms): Trigger portfolio hero section cross-fade in
     setTimeout(() => {
       onMidTransition?.();
-    }, 150);
+    }, 300);
 
-    // Phase 3 (t = 1200ms): Intro showcase fully dissolved into portfolio, unmount cleanly
+    // Phase 3 (t = 1600ms): Intro showcase fully dissolved into portfolio after complete 3D spin
     setTimeout(() => {
       document.body.style.overflow = "";
       onEnterPortfolio();
-    }, 1200);
+    }, 1600);
   };
 
   return (
     <div
-      className={`fixed inset-0 z-50 flex flex-col justify-between overflow-hidden bg-[#07070a] text-white select-none transition-all duration-[1200ms] cubic-bezier(0.16,1,0.3,1) transform ${
+      className={`fixed inset-0 z-50 flex flex-col justify-between overflow-hidden bg-[#07070a] text-white select-none transition-all duration-[1600ms] cubic-bezier(0.16,1,0.3,1) transform ${
         isSlidingUp
-          ? "opacity-0 -translate-y-[45vh] pointer-events-none"
+          ? "opacity-0 -translate-y-[25vh] pointer-events-none"
           : "opacity-100 translate-y-0"
       }`}
     >
@@ -73,7 +73,7 @@ export function IntroShowcase({ onEnterPortfolio, onMidTransition }: IntroShowca
         </div>
       </div>
 
-      {/* Background Images Layer (Cross-fades and rolls up smoothly) */}
+      {/* Background Images Layer (Cross-fades & floats gently) */}
       <div className="absolute inset-0 pointer-events-none overflow-hidden">
         {/* Base Background: Fill screen */}
         <img
@@ -93,10 +93,10 @@ export function IntroShowcase({ onEnterPortfolio, onMidTransition }: IntroShowca
 
       {/* Main Content Area */}
       <main className="relative z-10 flex-1 flex flex-col items-center justify-center text-center px-4 pt-6 sm:pt-10 max-w-5xl mx-auto w-full">
-        {/* Hero Title & Subtitle (Cross-fades & slides up) */}
+        {/* Hero Title & Subtitle (Cross-fades & slides up gently) */}
         <div
-          className={`relative z-30 transition-all duration-[1000ms] cubic-bezier(0.16,1,0.3,1) transform ${
-            isSlidingUp ? "opacity-0 -translate-y-[55vh] scale-95" : "opacity-100 translate-y-0 scale-100"
+          className={`relative z-30 transition-all duration-[1200ms] cubic-bezier(0.16,1,0.3,1) transform ${
+            isSlidingUp ? "opacity-0 -translate-y-[35vh] scale-95" : "opacity-100 translate-y-0 scale-100"
           }`}
         >
           {/* 1. Main Title ("Ideas Into Software.") */}
@@ -133,10 +133,10 @@ export function IntroShowcase({ onEnterPortfolio, onMidTransition }: IntroShowca
           </div>
         </div>
 
-        {/* 3D iPhone 17 Pro Max Canvas Container & Tech Bubbles (Cross-fades & floats up) */}
+        {/* 3D iPhone 17 Pro Max Canvas Container & Tech Bubbles (Stays centered & spins in clear view) */}
         <div
-          className={`w-full max-w-4xl relative z-10 -mt-2 sm:-mt-4 flex items-center justify-center transition-all duration-[1200ms] cubic-bezier(0.16,1,0.3,1) transform ${
-            isSlidingUp ? "opacity-0 -translate-y-[70vh] scale-95" : "opacity-100 translate-y-0 scale-100"
+          className={`w-full max-w-4xl relative z-10 -mt-2 sm:-mt-4 flex items-center justify-center transition-all duration-[1600ms] cubic-bezier(0.16,1,0.3,1) transform ${
+            isSlidingUp ? "opacity-0 -translate-y-[20vh] scale-105" : "opacity-100 translate-y-0 scale-100"
           }`}
         >
           {/* 1. React Bubble (Top Left - Smooth Fade/Slide) */}
