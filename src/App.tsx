@@ -413,18 +413,18 @@ function ScrollProjectCard({ project, index }: { project: ProjectItem; index: nu
       />
 
       <div className="relative z-10 grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-10 items-center w-full h-full">
-        {/* MEDIA COLUMN (Enlarged to 7 columns) */}
-        <div className={`w-full lg:col-span-7 ${isEven ? "lg:order-1" : "lg:order-2"}`}>
+        {/* MEDIA COLUMN (Balanced 6 columns, compact frame) */}
+        <div className={`w-full lg:col-span-6 ${isEven ? "lg:order-1" : "lg:order-2"}`}>
           <div className="relative flex items-center justify-center w-full">
-            {/* Primary Media Card Mockup (Enlarged size) */}
-            <div className="relative z-10 w-full sm:w-[104%] aspect-[16/10] rounded-xl overflow-hidden border border-white/20 bg-black/90 shadow-[0_25px_65px_rgba(0,0,0,0.9)] group transition-transform duration-500 hover:scale-[1.02]">
+            {/* Primary Media Card Mockup (Compact size) */}
+            <div className="relative z-10 w-full sm:w-[94%] aspect-[16/10] rounded-xl overflow-hidden border border-white/20 bg-black/90 shadow-[0_20px_50px_rgba(0,0,0,0.8)] group transition-transform duration-500 hover:scale-[1.02]">
               <ProjectMedia project={project} />
             </div>
           </div>
         </div>
 
-        {/* DETAILS COLUMN (5 columns) */}
-        <div className={`w-full lg:col-span-5 flex flex-col justify-center space-y-4 sm:space-y-6 ${isEven ? "lg:order-2" : "lg:order-1"}`}>
+        {/* DETAILS COLUMN (6 columns) */}
+        <div className={`w-full lg:col-span-6 flex flex-col justify-center space-y-4 sm:space-y-6 ${isEven ? "lg:order-2" : "lg:order-1"}`}>
           <div>
             <h3 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-white tracking-tight mb-3 sm:mb-4 leading-tight">
               {project.title}
