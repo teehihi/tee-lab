@@ -569,6 +569,17 @@ const supportingProjects: SecondaryProjectItem[] = [
       "https://media3.giphy.com/media/v1.Y2lkPTc5MGI3NjExaXUzeHpvcmRwbHFrampuaDdhMWlocjRtc3yxcG1hMWp5MWNud21leCZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/xGJhfJEIVrRScFvCUF/giphy.gif",
     linkHref: "https://github.com/teehihi",
   },
+  {
+    id: "coravamaris",
+    title: "CoravaMaris",
+    subtitle: "24h Unity Pathfinding Puzzle Game",
+    description:
+      "Built in 24 hours at VNG Prompt to Play Hackathon. A Unity-powered pathfinding puzzle game featuring custom grid mechanics and interactive level design.",
+    tags: ["Unity", "C#", "Pathfinding", "VNG Prompt to Play"],
+    mediaUrl:
+      "https://media0.giphy.com/media/v1.Y2lkPTc5MGI3NjExY3N5eXR1OTZrbGdteDVxMWQ4cDhjNnN4bGc4OXR2dHI3OHA5MGc2aiZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/pSvAezoMonh5SPcZJl/giphy.gif",
+    linkHref: "https://github.com/teehihi/corava-maris",
+  },
 ];
 
 function Flip3DProjectCard({ project }: { project: SecondaryProjectItem }) {
