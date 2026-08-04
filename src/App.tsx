@@ -2,6 +2,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import {
   ArrowUpRight,
+  ArrowRight,
   Bot,
   Briefcase,
   Code2,
@@ -578,7 +579,7 @@ const supportingProjects: SecondaryProjectItem[] = [
     tags: ["Unity", "C#", "Pathfinding", "VNG Prompt to Play"],
     mediaUrl:
       "https://media0.giphy.com/media/v1.Y2lkPTc5MGI3NjExY3N5eXR1OTZrbGdteDVxMWQ4cDhjNnN4bGc4OXR2dHI3OHA5MGc2aiZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/pSvAezoMonh5SPcZJl/giphy.gif",
-    linkHref: "https://github.com/teehihi/corava-maris",
+    linkHref: "https://teehihi.itch.io/corava-maris",
   },
 ];
 
@@ -633,17 +634,17 @@ function Flip3DProjectCard({ project }: { project: SecondaryProjectItem }) {
       </div>
 
       {/* BOTTOM LABEL BAR (TÊN DỰ ÁN) */}
-      <div className="w-full px-5 py-4 bg-[#171922] border-t border-white/5 flex items-center justify-between">
-        <div className="pr-2">
-          <h4 className="text-base font-bold text-white tracking-wide group-hover:text-emerald-400 transition-colors">
+      <div className="w-full px-5 py-3.5 bg-[#171922] border-t border-white/5 flex items-center justify-between min-h-[64px]">
+        <div className="pr-2 flex flex-col justify-center">
+          <h4 className="text-base font-bold text-white tracking-wide group-hover:text-emerald-400 transition-colors leading-snug">
             {project.title}
           </h4>
-          <p className="text-xs text-slate-400 font-mono mt-0.5 truncate max-w-[220px]">
+          <p className="text-xs text-slate-400 font-mono mt-0.5 truncate max-w-[210px]">
             {project.subtitle}
           </p>
         </div>
-        <div className="w-8 h-8 rounded-full bg-white/5 group-hover:bg-emerald-500 group-hover:text-black text-white/70 flex items-center justify-center transition-all duration-300 shrink-0">
-          <ArrowUpRight className="w-4 h-4" />
+        <div className="w-8.5 h-8.5 rounded-full bg-white/5 group-hover:bg-emerald-500 group-hover:text-black text-white/70 flex items-center justify-center transition-all duration-300 shrink-0 self-center">
+          <ArrowRight className="w-4 h-4 group-hover:translate-x-0.5 transition-transform" />
         </div>
       </div>
     </a>
