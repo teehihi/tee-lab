@@ -413,18 +413,18 @@ function ScrollProjectCard({ project, index }: { project: ProjectItem; index: nu
       />
 
       <div className="relative z-10 grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-10 items-center w-full h-full">
-        {/* MEDIA COLUMN */}
-        <div className={`w-full lg:col-span-6 ${isEven ? "lg:order-1" : "lg:order-2"}`}>
+        {/* MEDIA COLUMN (Enlarged to 7 columns) */}
+        <div className={`w-full lg:col-span-7 ${isEven ? "lg:order-1" : "lg:order-2"}`}>
           <div className="relative flex items-center justify-center w-full">
-            {/* Primary Media Card Mockup */}
-            <div className="relative z-10 w-full aspect-[16/10] rounded-xl overflow-hidden border border-white/20 bg-black/90 shadow-[0_25px_65px_rgba(0,0,0,0.9)] group transition-transform duration-500 hover:scale-[1.02]">
+            {/* Primary Media Card Mockup (Enlarged size) */}
+            <div className="relative z-10 w-full sm:w-[104%] aspect-[16/10] rounded-xl overflow-hidden border border-white/20 bg-black/90 shadow-[0_25px_65px_rgba(0,0,0,0.9)] group transition-transform duration-500 hover:scale-[1.02]">
               <ProjectMedia project={project} />
             </div>
           </div>
         </div>
 
-        {/* DETAILS COLUMN */}
-        <div className={`w-full lg:col-span-6 flex flex-col justify-center space-y-4 sm:space-y-6 ${isEven ? "lg:order-2" : "lg:order-1"}`}>
+        {/* DETAILS COLUMN (5 columns) */}
+        <div className={`w-full lg:col-span-5 flex flex-col justify-center space-y-4 sm:space-y-6 ${isEven ? "lg:order-2" : "lg:order-1"}`}>
           <div>
             <h3 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-white tracking-tight mb-3 sm:mb-4 leading-tight">
               {project.title}
@@ -434,7 +434,7 @@ function ScrollProjectCard({ project, index }: { project: ProjectItem; index: nu
             </p>
           </div>
 
-          {/* Action Buttons (Exact Match to Screenshot 3) */}
+          {/* Action Buttons (Exact Match to Screenshot 3 & Black Text Fix) */}
           <div className="flex items-center gap-4 pt-1 sm:pt-2">
             {project.links.map((link, idx) => {
               const isDemo = idx === 0 || link.label.toLowerCase().includes("demo");
@@ -444,10 +444,11 @@ function ScrollProjectCard({ project, index }: { project: ProjectItem; index: nu
                   href={link.href}
                   target="_blank"
                   rel="noreferrer"
-                  className="inline-flex items-center gap-2 px-7 py-3 sm:px-8 sm:py-3.5 rounded-full bg-white text-black font-bold text-sm sm:text-base hover:bg-emerald-400 hover:scale-105 transition-all shadow-md active:scale-95 cursor-pointer"
+                  className="inline-flex items-center gap-2 px-7 py-3 sm:px-8 sm:py-3.5 rounded-full bg-white !text-black font-bold text-sm sm:text-base hover:bg-emerald-400 hover:!text-black hover:scale-105 transition-all shadow-md active:scale-95 cursor-pointer z-20"
+                  style={{ color: "#000000" }}
                 >
-                  <span>{link.label}</span>
-                  <ArrowUpRight className="w-4 h-4" />
+                  <span className="!text-black font-bold" style={{ color: "#000000" }}>{link.label}</span>
+                  <ArrowUpRight className="w-4 h-4 !text-black" style={{ color: "#000000" }} />
                 </a>
               ) : (
                 <a
@@ -455,7 +456,7 @@ function ScrollProjectCard({ project, index }: { project: ProjectItem; index: nu
                   href={link.href}
                   target="_blank"
                   rel="noreferrer"
-                  className="inline-flex items-center gap-1 text-slate-300 hover:text-white font-semibold text-sm sm:text-base hover:underline transition-colors ml-2 sm:ml-4 cursor-pointer"
+                  className="inline-flex items-center gap-1 text-slate-300 hover:text-white font-semibold text-sm sm:text-base hover:underline transition-colors ml-2 sm:ml-4 cursor-pointer z-20"
                 >
                   <span>{link.label}</span>
                 </a>
