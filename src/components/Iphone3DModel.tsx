@@ -236,7 +236,7 @@ export function Iphone3DModel({
         camera.position.z += (4.4 - camera.position.z) * 0.06;
       } else {
         // Sliding Up State: Phone model accelerates upward in 3D space as container translates up
-        modelGroup.position.y += (7.0 - modelGroup.position.y) * 0.1;
+        modelGroup.position.y += (7.0 - modelGroup.position.y) * 0.05;
         modelGroup.position.x += (0 - modelGroup.position.x) * 0.08;
 
         modelGroup.rotation.x += (0.2 - modelGroup.rotation.x) * 0.08;

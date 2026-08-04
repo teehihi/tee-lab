@@ -35,29 +35,29 @@ export function IntroShowcase({ onEnterPortfolio }: IntroShowcaseProps) {
   const handleStartTransition = () => {
     if (isPhoneSlidingUp) return;
 
-    // Phase 1 (t = 0ms): Phone 3D container & bubbles slide UP first
+    // Phase 1 (t = 0ms): Phone 3D container & bubbles slide UP first smoothly
     setIsPhoneSlidingUp(true);
 
-    // Phase 2 (t = 220ms): Entire background slides UP behind the phone
+    // Phase 2 (t = 450ms): Entire background slides UP behind the phone (distinct lag for clear visual hierarchy)
     setTimeout(() => {
       setIsBgSlidingUp(true);
-    }, 220);
+    }, 450);
 
-    // Phase 3 (t = 650ms): Entire Intro showcase overlay fades out
+    // Phase 3 (t = 1250ms): Entire Intro showcase overlay fades out
     setTimeout(() => {
       setIsFadingOut(true);
 
-      // Phase 4 (t = 850ms): Reveal portfolio hero section (slides up into view & fades in)
+      // Phase 4 (t = 1600ms): Reveal portfolio hero section (slides up into view & fades in)
       setTimeout(() => {
         document.body.style.overflow = "";
         onEnterPortfolio();
-      }, 250);
-    }, 650);
+      }, 350);
+    }, 1250);
   };
 
   return (
     <div
-      className={`fixed inset-0 z-50 flex flex-col justify-between overflow-hidden bg-[#07070a] text-white transition-opacity duration-500 select-none ${
+      className={`fixed inset-0 z-50 flex flex-col justify-between overflow-hidden bg-[#07070a] text-white transition-opacity duration-800 select-none ${
         isFadingOut ? "opacity-0 pointer-events-none" : "opacity-100"
       }`}
     >
@@ -79,7 +79,7 @@ export function IntroShowcase({ onEnterPortfolio }: IntroShowcaseProps) {
 
       {/* Background Images Layer (Slides UP in Phase 2) */}
       <div
-        className={`absolute inset-0 pointer-events-none overflow-hidden transition-transform duration-800 ease-in-out transform ${
+        className={`absolute inset-0 pointer-events-none overflow-hidden transition-transform duration-[1400ms] cubic-bezier(0.22,1,0.36,1) transform ${
           isBgSlidingUp ? "-translate-y-full" : "translate-y-0"
         }`}
       >
@@ -103,8 +103,8 @@ export function IntroShowcase({ onEnterPortfolio }: IntroShowcaseProps) {
       <main className="relative z-10 flex-1 flex flex-col items-center justify-center text-center px-4 pt-6 sm:pt-10 max-w-5xl mx-auto w-full">
         {/* Hero Title & Subtitle (Slides UP with Phone) */}
         <div
-          className={`relative z-30 transition-all duration-750 ease-in-out transform ${
-            isPhoneSlidingUp ? "opacity-30 -translate-y-[100vh]" : "opacity-100 translate-y-0"
+          className={`relative z-30 transition-all duration-[1200ms] cubic-bezier(0.22,1,0.36,1) transform ${
+            isPhoneSlidingUp ? "opacity-20 -translate-y-[100vh]" : "opacity-100 translate-y-0"
           }`}
         >
           {/* 1. Main Title ("Ideas Into Software.") */}
@@ -143,8 +143,8 @@ export function IntroShowcase({ onEnterPortfolio }: IntroShowcaseProps) {
 
         {/* 3D iPhone 17 Pro Max Canvas Container & Gentle Tech Bubbles (Slides UP in Phase 1) */}
         <div
-          className={`w-full max-w-4xl relative z-10 -mt-2 sm:-mt-4 flex items-center justify-center transition-all duration-850 ease-in-out transform ${
-            isPhoneSlidingUp ? "-translate-y-[135vh] scale-95" : "translate-y-0 scale-100"
+          className={`w-full max-w-4xl relative z-10 -mt-2 sm:-mt-4 flex items-center justify-center transition-all duration-[1500ms] cubic-bezier(0.22,1,0.36,1) transform ${
+            isPhoneSlidingUp ? "-translate-y-[140vh] scale-95" : "translate-y-0 scale-100"
           }`}
         >
           {/* 1. React Bubble (Top Left - Smooth Fade/Slide) */}

@@ -365,7 +365,7 @@ a {
 }
 
 .page-reveal {
-  animation: page-enter 900ms cubic-bezier(0.16, 1, 0.3, 1) both;
+  animation: page-enter 1400ms cubic-bezier(0.22, 1, 0.36, 1) both;
 }
 
 .page-reveal :where(
