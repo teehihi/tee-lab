@@ -99,7 +99,7 @@ const projects: ProjectItem[] = [
       "https://files.catbox.moe/pyy1kw.jpg",
     ],
     links: [
-      { label: "Live Demo", href: "https://github.com/teehihi/PhoenixVision" },
+      { label: "GitHub", href: "https://github.com/teehihi/PhoenixVision" },
       { label: "More Info...", href: "https://github.com/teehihi/PhoenixVision" },
     ],
   },
