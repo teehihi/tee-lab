@@ -235,13 +235,14 @@ export function Iphone3DModel({
 
         camera.position.z += (4.4 - camera.position.z) * 0.06;
       } else {
-        // Sliding Up State: Phone model gently floats upward in 3D space as container translates up
-        modelGroup.position.y += (3.0 - modelGroup.position.y) * 0.025;
+        // Sliding Up State: Phone model gently floats upward in 3D space while spinning gracefully
+        modelGroup.position.y += (4.0 - modelGroup.position.y) * 0.035;
         modelGroup.position.x += (0 - modelGroup.position.x) * 0.08;
 
-        modelGroup.rotation.x += (0.2 - modelGroup.rotation.x) * 0.08;
-        modelGroup.rotation.y += (0 - modelGroup.rotation.y) * 0.08;
-        modelGroup.rotation.z += (0 - modelGroup.rotation.z) * 0.08;
+        // Dynamic 3D Spin and Tilt on transition
+        modelGroup.rotation.y += 0.045; // Smooth continuous 360-degree Y spin
+        modelGroup.rotation.x += (0.35 - modelGroup.rotation.x) * 0.06; // Elegant forward tilt
+        modelGroup.rotation.z += (0.12 - modelGroup.rotation.z) * 0.06; // Subtle Z roll
 
         camera.position.z += (4.4 - camera.position.z) * 0.08;
       }
