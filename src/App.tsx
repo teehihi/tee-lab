@@ -419,10 +419,10 @@ function ScrollProjectCard({ project, index }: { project: ProjectItem; index: nu
         }`}
       />
 
-      <div className="relative z-10 grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-14 items-center">
-        {/* MEDIA COLUMN WITH GRAPHIC ACCENT & MULTI-LAYER FLOATING CARDS */}
-        <div className={`w-full lg:col-span-7 ${isEven ? "lg:order-1" : "lg:order-2"}`}>
-          <div className="relative flex items-center justify-center p-3 sm:p-6 min-h-[340px] sm:min-h-[420px]">
+      <div className="relative z-10 grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center">
+        {/* MEDIA COLUMN WITH GRAPHIC ACCENT & SINGLE CLEAN MEDIA CARD */}
+        <div className={`w-full lg:col-span-6 ${isEven ? "lg:order-1" : "lg:order-2"}`}>
+          <div className="relative flex items-center justify-center p-2 sm:p-4 w-full">
             {/* 1. Background Graphic Accent (/bgLeft.avif, /bgRight1.avif, etc.) */}
             <img
               src={project.bgGraphic}
@@ -430,37 +430,15 @@ function ScrollProjectCard({ project, index }: { project: ProjectItem; index: nu
               className="absolute inset-0 w-full h-full object-contain pointer-events-none opacity-85 z-0 scale-110 filter drop-shadow-[0_15px_35px_rgba(0,0,0,0.6)]"
             />
 
-            {/* 2. Secondary Offset Card in Back (Inspired by reference mockup layout) */}
-            <div className="absolute -top-3 -left-3 sm:-top-6 sm:-left-6 w-[88%] aspect-[16/10] rounded-2xl bg-black/70 border border-white/10 overflow-hidden opacity-60 scale-95 z-10 shadow-2xl pointer-events-none hidden sm:block">
-              {project.mediaImages && project.mediaImages.length > 1 ? (
-                <img
-                  src={project.mediaImages[1]}
-                  alt=""
-                  className="w-full h-full object-cover object-top filter blur-[0.5px]"
-                />
-              ) : project.mediaUrl ? (
-                <img
-                  src={project.mediaUrl}
-                  alt=""
-                  className="w-full h-full object-cover object-top filter blur-[0.5px]"
-                />
-              ) : (
-                <div className="w-full h-full bg-slate-900/80" />
-              )}
-              <div className="absolute top-3 left-3 px-3 py-1 rounded-full bg-emerald-500/30 backdrop-blur-md border border-emerald-500/40 text-emerald-300 text-[10px] font-mono font-medium">
-                System Active
-              </div>
-            </div>
-
-            {/* 3. Primary Floating Card in Front */}
-            <div className="relative z-20 w-full sm:w-[92%] aspect-[16/10] rounded-2xl overflow-hidden border border-white/20 bg-black/90 shadow-[0_25px_65px_rgba(0,0,0,0.9)] group transition-transform duration-500 hover:scale-[1.02]">
+            {/* 2. Single Primary Media Card (Clean & Focused) */}
+            <div className="relative z-10 w-full aspect-[16/10] rounded-2xl overflow-hidden border border-white/20 bg-black/90 shadow-[0_25px_65px_rgba(0,0,0,0.9)] group transition-transform duration-500 hover:scale-[1.02]">
               <ProjectMedia project={project} />
             </div>
           </div>
         </div>
 
         {/* DETAILS COLUMN */}
-        <div className={`w-full lg:col-span-5 flex flex-col justify-between space-y-6 ${isEven ? "lg:order-2" : "lg:order-1"}`}>
+        <div className={`w-full lg:col-span-6 flex flex-col justify-between space-y-6 ${isEven ? "lg:order-2" : "lg:order-1"}`}>
           <div>
             <div className="flex items-center gap-2 mb-3">
               <span className="px-3.5 py-1 rounded-full bg-emerald-500/10 text-emerald-400 text-xs font-mono font-medium border border-emerald-500/20">
