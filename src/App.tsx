@@ -89,7 +89,7 @@ const projects: ProjectItem[] = [
       "Improve fire safety using real-time computer vision that detects smoke and flames instantly, helping reduce response time and support early intervention.",
     tags: ["Computer Vision", "YOLOv11", "Real-Time AI", "PyTorch", "Fire Detection"],
     mediaType: "slideshow",
-    bgGraphic: "/bg1.webp",
+    bgGraphic: "/Bg2.webp",
     mediaImages: [
       "https://files.catbox.moe/brqvrv.png",
       "https://files.catbox.moe/nxdu8v.png",
@@ -112,7 +112,7 @@ const projects: ProjectItem[] = [
       "Create engaging classroom and event experiences with instant quizzes, live leaderboards, and synchronized multiplayer participation.",
     tags: ["React", "NodeJS", "Socket.io", "MongoDB", "Real-Time Quiz"],
     mediaType: "gif",
-    bgGraphic: "/Bg2.webp",
+    bgGraphic: "/bg1.webp",
     mediaUrl:
       "https://media1.giphy.com/media/v1.Y2lkPTc5MGI3NjExN25kb20ybWI3b282dmF1djN3a2NiaHh0N3A1NmxzZnRweTZtbjJ0ZiZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/HcPgPBQKj7LoUYJG0H/giphy.gif",
     links: [
@@ -524,6 +524,118 @@ function ScrollProjectCard({ project, index }: { project: ProjectItem; index: nu
   );
 }
 
+interface SecondaryProjectItem {
+  id: string;
+  title: string;
+  subtitle: string;
+  description: string;
+  tags: string[];
+  mediaUrl?: string;
+  linkHref?: string;
+}
+
+const supportingProjects: SecondaryProjectItem[] = [
+  {
+    id: "dacsanviet",
+    title: "Đặc Sản Việt",
+    subtitle: "Bringing Local Specialties Online",
+    description:
+      "Connect customers with authentic Vietnamese specialty products through a modern e-commerce platform designed for smooth shopping and efficient store management.",
+    tags: ["React", "NodeJS", "E-Commerce", "MongoDB"],
+    mediaUrl: "",
+    linkHref: "https://github.com/teehihi",
+  },
+  {
+    id: "chayngaydi",
+    title: "Chạy Ngay Đi",
+    subtitle: "2D Maze Hunter & Pathfinding Puzzle",
+    description:
+      "An action-packed maze survival game featuring intelligent hunter pathfinding AI, interactive quiz gates, and pixel-art rendering.",
+    tags: ["Pygame", "Pathfinding AI", "Maze Logic", "Python"],
+    mediaUrl:
+      "https://media3.giphy.com/media/v1.Y2lkPTc5MGI3NjExOGQ3NjU3dHplYWlxcTV1ZGw0aDYzdzUxZXVseHE3bGhweTVhMG1tdSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/CTF3ctDQNVei069FBQ/giphy.gif",
+    linkHref: "https://github.com/teehihi",
+  },
+  {
+    id: "apex",
+    title: "APEX-CHAOS",
+    subtitle: "1v1 Tactical Auto-Battler Game",
+    description:
+      "Fast-paced 1v1 auto-combat game with custom Canvas rendering, spell interactions, and real-time battle balance mechanics.",
+    tags: ["React", "HTML5 Canvas", "Game Mechanics", "Vite"],
+    mediaUrl: "",
+    linkHref: "https://github.com/teehihi",
+  },
+];
+
+function Flip3DProjectCard({ project }: { project: SecondaryProjectItem }) {
+  return (
+    <a
+      href={project.linkHref || "#"}
+      target="_blank"
+      rel="noreferrer"
+      className="group relative shrink-0 w-[300px] sm:w-[340px] flex flex-col rounded-2xl overflow-hidden bg-[#121318] border border-white/10 shadow-xl transition-all duration-500 hover:scale-[1.03] hover:shadow-[0_12px_35px_rgba(16,185,129,0.25)] hover:border-emerald-500/40 cursor-pointer select-none"
+    >
+      {/* TOP MEDIA AREA (ẢNH / GIF) & 3D FLIP OVERLAY */}
+      <div className="relative w-full h-[200px] sm:h-[220px] overflow-hidden bg-[#0d0e12] perspective-1000 flex items-center justify-center">
+        {project.mediaUrl ? (
+          <img
+            src={project.mediaUrl}
+            alt={project.title}
+            className="w-full h-full object-cover transition-all duration-600 ease-[cubic-bezier(0.175,0.885,0.32,1.275)] group-hover:scale-0 group-hover:opacity-0"
+          />
+        ) : (
+          <div className="flex flex-col items-center justify-center p-6 text-center transition-all duration-600 ease-[cubic-bezier(0.175,0.885,0.32,1.275)] group-hover:scale-0 group-hover:opacity-0">
+            <div className="p-3.5 rounded-2xl bg-white/5 border border-white/10 text-emerald-400 mb-2 group-hover:scale-110 transition-transform">
+              <Code2 className="w-8 h-8" />
+            </div>
+            <span className="text-xs font-mono font-semibold text-slate-400 tracking-wider uppercase">
+              ẢNH / GIF CHƯA CÓ
+            </span>
+          </div>
+        )}
+
+        {/* 3D FLIP CONTENT BOX ON HOVER (rotateX(-90deg) -> rotateX(0deg)) */}
+        <div className="absolute inset-0 w-full h-full p-5 bg-[#161824] text-left border-b border-emerald-500/30 origin-bottom [transform:rotateX(-90deg)] group-hover:[transform:rotateX(0deg)] transition-all duration-600 ease-[cubic-bezier(0.175,0.885,0.32,1.275)] flex flex-col justify-between z-10">
+          <div>
+            <span className="text-[11px] font-mono text-emerald-400 font-bold uppercase tracking-wider block mb-1.5">
+              {project.subtitle}
+            </span>
+            <p className="text-xs text-slate-300 leading-relaxed line-clamp-4 font-normal">
+              {project.description}
+            </p>
+          </div>
+          <div className="flex flex-wrap gap-1.5 pt-2">
+            {project.tags.map((tag) => (
+              <span
+                key={tag}
+                className="px-2 py-0.5 rounded-md bg-emerald-500/15 border border-emerald-500/30 text-emerald-300 text-[10px] font-mono font-medium"
+              >
+                {tag}
+              </span>
+            ))}
+          </div>
+        </div>
+      </div>
+
+      {/* BOTTOM LABEL BAR (TÊN DỰ ÁN) */}
+      <div className="w-full px-5 py-4 bg-[#171922] border-t border-white/5 flex items-center justify-between">
+        <div className="pr-2">
+          <h4 className="text-base font-bold text-white tracking-wide group-hover:text-emerald-400 transition-colors">
+            {project.title}
+          </h4>
+          <p className="text-xs text-slate-400 font-mono mt-0.5 truncate max-w-[220px]">
+            {project.subtitle}
+          </p>
+        </div>
+        <div className="w-8 h-8 rounded-full bg-white/5 group-hover:bg-emerald-500 group-hover:text-black text-white/70 flex items-center justify-center transition-all duration-300 shrink-0">
+          <ArrowUpRight className="w-4 h-4" />
+        </div>
+      </div>
+    </a>
+  );
+}
+
 export default function App() {
   const [copied, setCopied] = useState(false);
   const [activeSection, setActiveSection] = useState("about");
@@ -751,6 +863,34 @@ export default function App() {
             <div className="featured-projects mt-12 space-y-10 sm:space-y-12 lg:space-y-14">
               {projects.map((project, idx) => (
                 <ScrollProjectCard key={project.id} project={project} index={idx} />
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* SUPPORTING & EXPERIMENTAL PROJECTS MARQUEE CAROUSEL */}
+        <section className="py-12 w-screen relative left-1/2 right-1/2 -ml-[50vw] -mr-[50vw] overflow-hidden my-4">
+          <div className="mx-auto w-full max-w-[1550px] px-[5vw] lg:px-[6vw] xl:px-[8vw] mb-8">
+            <div className="flex flex-col sm:flex-row items-start sm:items-end justify-between gap-4">
+              <div>
+                <span className="text-xs font-mono text-emerald-400 font-bold uppercase tracking-wider block mb-1">
+                  MORE CREATIONS
+                </span>
+                <h3 className="text-2xl sm:text-3xl font-extrabold text-white tracking-tight">
+                  Supporting & Experimental Projects
+                </h3>
+              </div>
+              <p className="text-xs sm:text-sm text-slate-400 max-w-md font-normal">
+                Continuous drifting carousel. Hover over any project card to halt movement and reveal 3D details.
+              </p>
+            </div>
+          </div>
+
+          {/* Marquee Track Container */}
+          <div className="relative w-full overflow-hidden flex py-4">
+            <div className="flex gap-6 animate-marquee-scroll shrink-0 min-w-full">
+              {[...supportingProjects, ...supportingProjects, ...supportingProjects, ...supportingProjects].map((proj, idx) => (
+                <Flip3DProjectCard key={`${proj.id}-${idx}`} project={proj} />
               ))}
             </div>
           </div>
