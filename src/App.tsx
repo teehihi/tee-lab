@@ -378,14 +378,14 @@ function ScrollProjectCard({ project, index }: { project: ProjectItem; index: nu
     const el = cardRef.current;
     if (!el) return;
 
+    // Trigger focus when card reaches 65% visibility in viewport
     const observer = new IntersectionObserver(
       ([entry]) => {
-        setIsInFocus(entry.isIntersecting);
+        setIsInFocus(entry.intersectionRatio >= 0.65);
       },
       {
         root: null,
-        rootMargin: "-15% 0px -15% 0px",
-        threshold: 0.15,
+        threshold: [0, 0.65, 1.0],
       }
     );
 
@@ -401,8 +401,8 @@ function ScrollProjectCard({ project, index }: { project: ProjectItem; index: nu
     const x = (e.clientX - rect.left) / rect.width - 0.5;
     const y = (e.clientY - rect.top) / rect.height - 0.5;
 
-    // 12-degree tilt maximum for rich 3D corner response
-    const maxTilt = 12;
+    // 10-degree tilt maximum for elegant 3D corner response
+    const maxTilt = 10;
     setTilt({
       x: -y * maxTilt,
       y: x * maxTilt,
@@ -429,13 +429,16 @@ function ScrollProjectCard({ project, index }: { project: ProjectItem; index: nu
       style={{
         transformStyle: "preserve-3d",
         transform: isHovered
-          ? `perspective(1000px) rotateX(${tilt.x}deg) rotateY(${tilt.y}deg) scale3d(1.015, 1.015, 1.015)`
-          : undefined,
+          ? `perspective(1000px) rotateX(${tilt.x}deg) rotateY(${tilt.y}deg) scale3d(1.01, 1.01, 1.01)`
+          : `perspective(1000px) rotateX(0deg) rotateY(0deg) scale3d(1, 1, 1)`,
+        transition: isHovered
+          ? "transform 0.15s ease-out, opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1)"
+          : "transform 0.8s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1)",
       }}
-      className={`relative w-full max-w-[1232px] mx-auto aspect-auto lg:aspect-[1232/540] min-h-[380px] rounded-[2.2rem] sm:rounded-[2.8rem] overflow-hidden transition-all duration-300 ease-out flex items-center p-5 sm:p-8 lg:p-10 ${
+      className={`relative w-full max-w-[1232px] mx-auto aspect-auto lg:aspect-[1232/540] min-h-[380px] rounded-[2.2rem] sm:rounded-[2.8rem] overflow-hidden flex items-center p-5 sm:p-8 lg:p-10 ${
         isInFocus
-          ? "opacity-100 translate-y-0 shadow-[0_30px_90px_rgba(0,0,0,0.85)]"
-          : "opacity-40 translate-y-8 shadow-none"
+          ? "opacity-100 translate-y-0 shadow-[0_30px_90px_rgba(0,0,0,0.85)] pointer-events-auto"
+          : "opacity-0 scale-[0.88] translate-y-12 shadow-none pointer-events-none"
       }`}
     >
       {/* Full Background Card Image with 85% Opacity (bg1.webp, Bg2.webp, bg3.webp) */}
@@ -687,7 +690,7 @@ export default function App() {
               description="Explore the AI vision systems, real-time multiplayer platforms, and full-stack web applications I've engineered."
             />
 
-            <div className="featured-projects mt-12 space-y-12 sm:space-y-16 lg:space-y-20">
+            <div className="featured-projects mt-16 space-y-24 sm:space-y-36 lg:space-y-44">
               {projects.map((project, idx) => (
                 <ScrollProjectCard key={project.id} project={project} index={idx} />
               ))}
