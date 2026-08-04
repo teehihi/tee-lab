@@ -88,7 +88,7 @@ const projects: ProjectItem[] = [
       "Improve fire safety using real-time computer vision that detects smoke and flames instantly, helping reduce response time and support early intervention.",
     tags: ["Computer Vision", "YOLOv11", "Real-Time AI", "PyTorch", "Fire Detection"],
     mediaType: "slideshow",
-    bgGraphic: "/bgLeft.avif",
+    bgGraphic: "/bg1.webp",
     mediaImages: [
       "https://files.catbox.moe/brqvrv.png",
       "https://files.catbox.moe/nxdu8v.png",
@@ -111,7 +111,7 @@ const projects: ProjectItem[] = [
       "Create engaging classroom and event experiences with instant quizzes, live leaderboards, and synchronized multiplayer participation.",
     tags: ["React", "NodeJS", "Socket.io", "MongoDB", "Real-Time Quiz"],
     mediaType: "gif",
-    bgGraphic: "/bgRight1.avif",
+    bgGraphic: "/Bg2.webp",
     mediaUrl:
       "https://media1.giphy.com/media/v1.Y2lkPTc5MGI3NjExN25kb20ybWI3b282dmF1djN3a2NiaHh0N3A1NmxzZnRweTZtbjJ0ZiZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/HcPgPBQKj7LoUYJG0H/giphy.gif",
     links: [
@@ -127,7 +127,7 @@ const projects: ProjectItem[] = [
       "Book cars and motorcycles through a seamless rental experience featuring smart search, identity verification, secure payments, and intuitive booking management.",
     tags: ["React", "Vite", "NodeJS", "Express", "Vehicle Rental"],
     mediaType: "slideshow",
-    bgGraphic: "/bgLeft2.avif",
+    bgGraphic: "/bg3.webp",
     mediaImages: [
       "https://files.catbox.moe/oe3tyt.png",
       "https://files.catbox.moe/ygh8o2.png",
@@ -149,7 +149,7 @@ const projects: ProjectItem[] = [
       "Explore thousands of movies through a fast, responsive interface with personalized recommendations, intelligent search, and a seamless browsing experience.",
     tags: ["React", "TMDB API", "Tailwind CSS", "Search & Discovery"],
     mediaType: "placeholder",
-    bgGraphic: "/bgRight2.avif",
+    bgGraphic: "/bg1.webp",
     // =========================================================================
     // HƯỚNG DẪN DÀNH CHO BẠN (USER):
     // Thay thế link GIF (Giphy URL) của project Movie DoubleT vào mediaUrl dưới đây:
@@ -399,38 +399,41 @@ function ScrollProjectCard({ project, index }: { project: ProjectItem; index: nu
   return (
     <div
       ref={cardRef}
-      className={`relative w-full rounded-[2.5rem] p-6 sm:p-10 lg:p-14 transition-all duration-700 cubic-bezier(0.16, 1, 0.3, 1) transform border overflow-hidden ${
+      className={`relative w-full rounded-[2.8rem] p-6 sm:p-10 lg:p-14 transition-all duration-700 cubic-bezier(0.16, 1, 0.3, 1) transform border overflow-hidden ${
         isInFocus
-          ? "opacity-100 scale-100 translate-y-0 bg-[#0a0b12]/95 border-emerald-500/30 shadow-[0_30px_90px_rgba(0,0,0,0.85)]"
-          : "opacity-40 scale-[0.93] translate-y-8 bg-[#06060a]/60 border-white/5 shadow-none"
+          ? "opacity-100 scale-100 translate-y-0 bg-[#0d101a]/95 border-white/15 shadow-[0_30px_90px_rgba(0,0,0,0.85)]"
+          : "opacity-40 scale-[0.93] translate-y-8 bg-[#070910]/60 border-white/5 shadow-none"
       }`}
     >
-      {/* Background Texture Overlay: bgintro.avif */}
-      <img
-        src="/bgintro.avif"
-        alt=""
-        className="absolute inset-0 w-full h-full object-cover opacity-25 pointer-events-none mix-blend-overlay z-0"
-      />
-
-      {/* Ambient Radial Gradient Glow */}
+      {/* Abstract 3D Background Graphic Accent (bg1.webp, Bg2.webp, bg3.webp) */}
       <div
-        className={`absolute w-[500px] h-[500px] rounded-full blur-[130px] pointer-events-none opacity-20 z-0 ${
-          isEven ? "-top-32 -left-32 bg-emerald-500" : "-bottom-32 -right-32 bg-cyan-500"
+        className={`absolute top-0 bottom-0 ${
+          isEven ? "left-0 w-full sm:w-[52%]" : "right-0 w-full sm:w-[52%]"
+        } h-full pointer-events-none z-0 overflow-hidden`}
+      >
+        <img
+          src={project.bgGraphic}
+          alt=""
+          className={`w-full h-full object-cover opacity-75 filter contrast-125 brightness-110 ${
+            isEven
+              ? "[mask-image:linear-gradient(to_right,black_60%,transparent_100%)]"
+              : "[mask-image:linear-gradient(to_left,black_60%,transparent_100%)]"
+          }`}
+        />
+      </div>
+
+      {/* Ambient Gradient Glow */}
+      <div
+        className={`absolute w-[450px] h-[450px] rounded-full blur-[130px] pointer-events-none opacity-25 z-0 ${
+          isEven ? "-top-28 -left-28 bg-indigo-500/30" : "-bottom-28 -right-28 bg-purple-500/30"
         }`}
       />
 
       <div className="relative z-10 grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center">
-        {/* MEDIA COLUMN WITH GRAPHIC ACCENT & SINGLE CLEAN MEDIA CARD */}
+        {/* MEDIA COLUMN WITH SINGLE CLEAN MEDIA CARD */}
         <div className={`w-full lg:col-span-6 ${isEven ? "lg:order-1" : "lg:order-2"}`}>
-          <div className="relative flex items-center justify-center p-2 sm:p-4 w-full">
-            {/* 1. Background Graphic Accent (/bgLeft.avif, /bgRight1.avif, etc.) */}
-            <img
-              src={project.bgGraphic}
-              alt=""
-              className="absolute inset-0 w-full h-full object-contain pointer-events-none opacity-85 z-0 scale-110 filter drop-shadow-[0_15px_35px_rgba(0,0,0,0.6)]"
-            />
-
-            {/* 2. Single Primary Media Card (Clean & Focused) */}
+          <div className="relative flex items-center justify-center p-1 sm:p-3 w-full">
+            {/* Primary Media Card Mockup */}
             <div className="relative z-10 w-full aspect-[16/10] rounded-2xl overflow-hidden border border-white/20 bg-black/90 shadow-[0_25px_65px_rgba(0,0,0,0.9)] group transition-transform duration-500 hover:scale-[1.02]">
               <ProjectMedia project={project} />
             </div>
@@ -440,15 +443,10 @@ function ScrollProjectCard({ project, index }: { project: ProjectItem; index: nu
         {/* DETAILS COLUMN */}
         <div className={`w-full lg:col-span-6 flex flex-col justify-between space-y-6 ${isEven ? "lg:order-2" : "lg:order-1"}`}>
           <div>
-            <div className="flex items-center gap-2 mb-3">
-              <span className="px-3.5 py-1 rounded-full bg-emerald-500/10 text-emerald-400 text-xs font-mono font-medium border border-emerald-500/20">
-                0{index + 1} • {project.subtitle}
-              </span>
-            </div>
-            <h3 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-white tracking-tight mb-5 leading-[1.15]">
+            <h3 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-white tracking-tight mb-4 leading-[1.15]">
               {project.title}
             </h3>
-            <p className="text-sm sm:text-base text-white/75 font-normal leading-relaxed mb-6">
+            <p className="text-sm sm:text-base text-slate-300 font-normal leading-relaxed mb-6 max-w-xl">
               {project.description}
             </p>
 
@@ -465,8 +463,8 @@ function ScrollProjectCard({ project, index }: { project: ProjectItem; index: nu
             </div>
           </div>
 
-          {/* Action Buttons: Live Demo & GitHub */}
-          <div className="flex items-center gap-4 pt-2">
+          {/* Action Buttons: Live Demo & GitHub / Learn More */}
+          <div className="flex items-center gap-5 pt-2">
             {project.links.map((link) => {
               const isDemo = link.label.toLowerCase().includes("demo");
               return (
@@ -475,10 +473,10 @@ function ScrollProjectCard({ project, index }: { project: ProjectItem; index: nu
                   href={link.href}
                   target="_blank"
                   rel="noreferrer"
-                  className={`inline-flex items-center gap-2 px-7 py-3.5 rounded-full font-bold text-xs sm:text-sm transition-all duration-300 cursor-pointer ${
+                  className={`inline-flex items-center gap-2 transition-all duration-300 cursor-pointer ${
                     isDemo
-                      ? "bg-white text-black hover:bg-emerald-400 hover:text-black hover:scale-105 shadow-[0_0_30px_rgba(255,255,255,0.25)] hover:shadow-[0_0_40px_rgba(16,185,129,0.5)] active:scale-95"
-                      : "bg-white/10 text-white border border-white/20 hover:bg-white/20 hover:border-white/40 hover:scale-105 active:scale-95"
+                      ? "px-7 py-3.5 rounded-full bg-white text-black font-bold text-xs sm:text-sm hover:bg-emerald-400 hover:text-black hover:scale-105 shadow-[0_0_30px_rgba(255,255,255,0.25)] hover:shadow-[0_0_40px_rgba(16,185,129,0.5)] active:scale-95"
+                      : "text-slate-300 hover:text-white text-xs sm:text-sm font-medium hover:underline flex items-center gap-1.5 px-3 py-2"
                   }`}
                 >
                   <span>{link.label}</span>
