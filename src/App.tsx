@@ -617,39 +617,39 @@ function Flip3DProjectCard({ project }: { project: SecondaryProjectItem }) {
         )}
 
         {/* 3D FLIP CONTENT BOX ON HOVER (rotateX(-90deg) -> rotateX(0deg)) */}
-        <div className="absolute inset-0 w-full h-full p-5 bg-[#161824] text-left border-b border-emerald-500/30 origin-bottom [transform:rotateX(-90deg)] group-hover:[transform:rotateX(0deg)] transition-all duration-600 ease-[cubic-bezier(0.175,0.885,0.32,1.275)] flex flex-col justify-between z-10">
+        <div className="absolute inset-0 w-full h-full p-4 sm:p-5 bg-[#161824] text-left border-b border-emerald-500/30 origin-bottom [transform:rotateX(-90deg)] group-hover:[transform:rotateX(0deg)] transition-all duration-600 ease-[cubic-bezier(0.175,0.885,0.32,1.275)] flex flex-col justify-between z-10">
           <div>
-            <div className="flex items-center justify-between gap-2 mb-1.5">
-              <span className="text-[11px] font-mono text-emerald-400 font-bold uppercase tracking-wider block">
-                {project.subtitle}
-              </span>
-              {project.githubUrl && (
-                <a
-                  href={project.githubUrl}
-                  target="_blank"
-                  rel="noreferrer"
-                  onClick={(e) => e.stopPropagation()}
-                  className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-emerald-500/20 hover:bg-emerald-400 border border-emerald-500/40 text-emerald-300 hover:text-black text-[10px] font-mono font-bold transition-all shadow-sm shrink-0"
-                >
-                  <Github className="w-3 h-3" />
-                  <span>Repo</span>
-                  <ArrowUpRight className="w-2.5 h-2.5" />
-                </a>
-              )}
-            </div>
+            <span className="text-[11px] font-mono text-emerald-400 font-bold uppercase tracking-wider block mb-1">
+              {project.subtitle}
+            </span>
             <p className="text-xs text-slate-300 leading-relaxed line-clamp-3 font-normal">
               {project.description}
             </p>
           </div>
-          <div className="flex flex-wrap gap-1.5 pt-2">
-            {project.tags.map((tag) => (
-              <span
-                key={tag}
-                className="px-2 py-0.5 rounded-md bg-emerald-500/15 border border-emerald-500/30 text-emerald-300 text-[10px] font-mono font-medium"
+          <div className="flex items-end justify-between gap-2 pt-2 border-t border-white/5">
+            <div className="flex flex-wrap gap-1 max-w-[190px] sm:max-w-[210px]">
+              {project.tags.map((tag) => (
+                <span
+                  key={tag}
+                  className="px-2 py-0.5 rounded-md bg-emerald-500/15 border border-emerald-500/30 text-emerald-300 text-[10px] font-mono font-medium"
+                >
+                  {tag}
+                </span>
+              ))}
+            </div>
+            {project.githubUrl && (
+              <a
+                href={project.githubUrl}
+                target="_blank"
+                rel="noreferrer"
+                onClick={(e) => e.stopPropagation()}
+                className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-emerald-500/20 hover:bg-emerald-400 border border-emerald-500/40 text-emerald-300 hover:text-black text-[11px] font-mono font-bold transition-all shadow-sm shrink-0 self-end mb-0.5"
               >
-                {tag}
-              </span>
-            ))}
+                <Github className="w-3.5 h-3.5" />
+                <span>Repo</span>
+                <ArrowUpRight className="w-3 h-3" />
+              </a>
+            )}
           </div>
         </div>
       </div>
