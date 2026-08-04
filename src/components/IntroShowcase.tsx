@@ -8,7 +8,8 @@ interface IntroShowcaseProps {
 }
 
 export function IntroShowcase({ onEnterPortfolio }: IntroShowcaseProps) {
-  const [isZooming, setIsZooming] = useState(false);
+  const [isPhoneSlidingUp, setIsPhoneSlidingUp] = useState(false);
+  const [isBgSlidingUp, setIsBgSlidingUp] = useState(false);
   const [isFadingOut, setIsFadingOut] = useState(false);
   const [isModelLoaded, setIsModelLoaded] = useState(false);
   const [showTextSequence, setShowTextSequence] = useState(false);
@@ -32,23 +33,33 @@ export function IntroShowcase({ onEnterPortfolio }: IntroShowcaseProps) {
   }, []);
 
   const handleStartTransition = () => {
-    if (isZooming) return;
-    setIsZooming(true);
+    if (isPhoneSlidingUp) return;
 
-    // After zoom animation completes, fade out the showcase screen and reveal portfolio
+    // Phase 1 (t = 0ms): Phone 3D container & bubbles slide UP first
+    setIsPhoneSlidingUp(true);
+
+    // Phase 2 (t = 220ms): Entire background slides UP behind the phone
+    setTimeout(() => {
+      setIsBgSlidingUp(true);
+    }, 220);
+
+    // Phase 3 (t = 650ms): Entire Intro showcase overlay fades out
     setTimeout(() => {
       setIsFadingOut(true);
+
+      // Phase 4 (t = 850ms): Reveal portfolio hero section (slides up into view & fades in)
       setTimeout(() => {
         document.body.style.overflow = "";
         onEnterPortfolio();
-      }, 600);
-    }, 700);
+      }, 250);
+    }, 650);
   };
 
   return (
     <div
-      className={`fixed inset-0 z-50 flex flex-col justify-between overflow-hidden bg-[#07070a] text-white transition-opacity duration-700 select-none ${isFadingOut ? "opacity-0 pointer-events-none" : "opacity-100"
-        }`}
+      className={`fixed inset-0 z-50 flex flex-col justify-between overflow-hidden bg-[#07070a] text-white transition-opacity duration-500 select-none ${
+        isFadingOut ? "opacity-0 pointer-events-none" : "opacity-100"
+      }`}
     >
       {/* Full-Screen Macbook Isometric Loading Overlay */}
       <div
@@ -66,8 +77,12 @@ export function IntroShowcase({ onEnterPortfolio }: IntroShowcaseProps) {
         </div>
       </div>
 
-      {/* Background Images */}
-      <div className="absolute inset-0 pointer-events-none overflow-hidden">
+      {/* Background Images Layer (Slides UP in Phase 2) */}
+      <div
+        className={`absolute inset-0 pointer-events-none overflow-hidden transition-transform duration-800 ease-in-out transform ${
+          isBgSlidingUp ? "-translate-y-full" : "translate-y-0"
+        }`}
+      >
         {/* Base Background: Fill screen */}
         <img
           src="/bgintro.avif"
@@ -86,10 +101,11 @@ export function IntroShowcase({ onEnterPortfolio }: IntroShowcaseProps) {
 
       {/* Main Content Area */}
       <main className="relative z-10 flex-1 flex flex-col items-center justify-center text-center px-4 pt-6 sm:pt-10 max-w-5xl mx-auto w-full">
-        {/* Hero Title & Subtitle (Sequential Fade-Down Top-to-Bottom) */}
+        {/* Hero Title & Subtitle (Slides UP with Phone) */}
         <div
-          className={`relative z-30 transition-all duration-700 transform ${isZooming ? "opacity-0 -translate-y-8 scale-95" : "opacity-100 translate-y-0 scale-100"
-            }`}
+          className={`relative z-30 transition-all duration-750 ease-in-out transform ${
+            isPhoneSlidingUp ? "opacity-30 -translate-y-[100vh]" : "opacity-100 translate-y-0"
+          }`}
         >
           {/* 1. Main Title ("Ideas Into Software.") */}
           <h1
@@ -125,8 +141,12 @@ export function IntroShowcase({ onEnterPortfolio }: IntroShowcaseProps) {
           </div>
         </div>
 
-        {/* 3D iPhone 17 Pro Max Canvas Container & Gentle Tech Bubbles */}
-        <div className="w-full max-w-4xl relative z-10 -mt-2 sm:-mt-4 flex items-center justify-center">
+        {/* 3D iPhone 17 Pro Max Canvas Container & Gentle Tech Bubbles (Slides UP in Phase 1) */}
+        <div
+          className={`w-full max-w-4xl relative z-10 -mt-2 sm:-mt-4 flex items-center justify-center transition-all duration-850 ease-in-out transform ${
+            isPhoneSlidingUp ? "-translate-y-[135vh] scale-95" : "translate-y-0 scale-100"
+          }`}
+        >
           {/* 1. React Bubble (Top Left - Smooth Fade/Slide) */}
           <div
             className={`absolute top-[18%] left-[14%] sm:left-[19%] md:left-[22%] z-20 pointer-events-none transition-all duration-1000 ease-out transform ${
@@ -189,7 +209,7 @@ export function IntroShowcase({ onEnterPortfolio }: IntroShowcaseProps) {
 
           <Iphone3DModel
             screenImage="/phone-screen.png"
-            isZoomedIn={isZooming}
+            isZoomedIn={isPhoneSlidingUp}
             onZoomComplete={() => { }}
             onModelLoaded={() => setIsModelLoaded(true)}
             className="w-full"
@@ -201,8 +221,9 @@ export function IntroShowcase({ onEnterPortfolio }: IntroShowcaseProps) {
       <footer className="relative z-20 pb-6 text-center">
         <button
           onClick={handleStartTransition}
-          className={`inline-flex flex-col items-center gap-1.5 text-xs text-white/40 hover:text-white/80 transition-all cursor-pointer ${isZooming ? "opacity-0" : "opacity-100"
-            }`}
+          className={`inline-flex flex-col items-center gap-1.5 text-xs text-white/40 hover:text-white/80 transition-all duration-500 cursor-pointer ${
+            isPhoneSlidingUp ? "opacity-0 -translate-y-8" : "opacity-100 translate-y-0"
+          }`}
         >
           <span>Click to launch experience</span>
           <ChevronDown className="w-4 h-4 animate-bounce text-emerald-400" />

@@ -235,22 +235,15 @@ export function Iphone3DModel({
 
         camera.position.z += (4.4 - camera.position.z) * 0.06;
       } else {
-        // Zoomed State: Phone straightens upright (0,0,0) and zooms up towards camera
-        modelGroup.position.y += (0.0 - modelGroup.position.y) * 0.08;
+        // Sliding Up State: Phone model accelerates upward in 3D space as container translates up
+        modelGroup.position.y += (7.0 - modelGroup.position.y) * 0.1;
         modelGroup.position.x += (0 - modelGroup.position.x) * 0.08;
 
-        modelGroup.rotation.x += (0 - modelGroup.rotation.x) * 0.08;
+        modelGroup.rotation.x += (0.2 - modelGroup.rotation.x) * 0.08;
         modelGroup.rotation.y += (0 - modelGroup.rotation.y) * 0.08;
         modelGroup.rotation.z += (0 - modelGroup.rotation.z) * 0.08;
 
-        camera.position.z += (2.2 - camera.position.z) * 0.08;
-
-        if (!zoomTriggered && Math.abs(camera.position.z - 2.2) < 0.2) {
-          zoomTriggered = true;
-          if (onZoomCompleteRef.current) {
-            onZoomCompleteRef.current();
-          }
-        }
+        camera.position.z += (4.4 - camera.position.z) * 0.08;
       }
 
       renderer.render(scene, camera);
