@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import {
   ArrowUpRight,
   Bot,
@@ -17,6 +17,9 @@ import {
   Users,
   Check,
   Copy,
+  ChevronLeft,
+  ChevronRight,
+  Film,
   ExternalLink as ExternalIcon
 } from "lucide-react";
 import {
@@ -63,88 +66,117 @@ const personalInfo = {
   tagline: "Building AI-powered software products for real users.",
 };
 
-const projects = [
+export interface ProjectItem {
+  id: string;
+  title: string;
+  subtitle: string;
+  description: string;
+  tags: string[];
+  mediaType: "slideshow" | "gif" | "placeholder";
+  mediaImages?: string[];
+  mediaUrl?: string;
+  links: { label: string; href: string }[];
+}
+
+const projects: ProjectItem[] = [
   {
-    id: "maze",
-    title: "ChayNgayDi MazeHunter",
-    subtitle: "Core game project / pathfinding puzzle",
-    variant: "maze",
-    featured: true,
-    tags: ["Pygame", "Pathfinding", "Pixel art", "Maze logic"],
+    id: "phoenixvision",
+    title: "Phoenix Vision",
+    subtitle: "Early Fire Detection with AI Vision",
     description:
-      "A pixel-art maze game with pathfinding logic, animated characters, collectible objectives, and multiple environment styles. This is the clearest proof of puzzle/gameplay thinking.",
-    links: [
-      { label: "GitHub", href: "https://github.com/teehihi/ChayNgayDi_MazeHunter" }
+      "Improve fire safety using real-time computer vision that detects smoke and flames instantly, helping reduce response time and support early intervention.",
+    tags: ["Computer Vision", "YOLOv11", "Real-Time AI", "PyTorch", "Fire Detection"],
+    mediaType: "slideshow",
+    mediaImages: [
+      "https://files.catbox.moe/brqvrv.png",
+      "https://files.catbox.moe/nxdu8v.png",
+      "https://files.catbox.moe/5i05c4.png",
+      "https://files.catbox.moe/0gp87p.png",
+      "https://files.catbox.moe/niaowz.png",
+      "https://files.catbox.moe/6jdfby.png",
+      "https://files.catbox.moe/pyy1kw.jpg",
     ],
-  },
-  {
-    id: "apex",
-    title: "APEX-CHAOS",
-    subtitle: "Core game project / 1v1 autobattler",
-    variant: "apex",
-    featured: true,
-    tags: ["React", "Vite", "Canvas", "Co-developed", "Combat balance"],
-    description:
-      "A co-developed browser autobattler with combat rules, eight distinct champions, fighter selection UI, animated asset sets, and a production loop shaped through GDDs, Codex specs, playtesting, and balance tuning. Deployed on Vercel.",
     links: [
-      { label: "Live demo", href: "https://apexchaos.vercel.app/" },
-      { label: "GitHub", href: "https://github.com/Khanh-glitch/APEX-CHAOS" },
-    ],
-  },
-  {
-    id: "daiduongsanca",
-    title: "Đại Dương Săn Cá",
-    subtitle: "Core game project / browser arcade fish shooter",
-    variant: "daiduongsanca",
-    featured: true,
-    tags: ["HTML5 Canvas", "Vanilla JS", "Arcade Shooter", "Collision Physics"],
-    description:
-      "A browser arcade-style fish shooting game featuring multiple fish types, smooth bullet physics, dynamic scoring, audio effects, and responsive controls. Built with canvas and vanilla Javascript.",
-    links: [
-      { label: "Live demo", href: "https://daiduongsanca.vercel.app/" },
-      { label: "GitHub", href: "https://github.com/teehihi/dai-duong-san-ca" },
+      { label: "Live Demo", href: "https://github.com/teehihi/PhoenixVision" },
+      { label: "GitHub", href: "https://github.com/teehihi/PhoenixVision" },
     ],
   },
   {
     id: "uniquizz",
     title: "UniQuizz",
-    subtitle: "Supporting project / battle quiz + Qbit wardrobe",
-    variant: "uniquizz",
-    featured: false,
-    tags: ["React", "NodeJS", "MongoDB", "Socket room", "Avatar system"],
+    subtitle: "Real-Time Quiz Platform for Live Events",
     description:
-      "A quiz platform with multiplayer rooms, answer flow, generated learning content, and a polished Qbit dressing system for the battle room.",
+      "Create engaging classroom and event experiences with instant quizzes, live leaderboards, and synchronized multiplayer participation.",
+    tags: ["React", "NodeJS", "Socket.io", "MongoDB", "Real-Time Quiz"],
+    mediaType: "gif",
+    mediaUrl:
+      "https://media1.giphy.com/media/v1.Y2lkPTc5MGI3NjExN25kb20ybWI3b282dmF1djN3a2NiaHh0N3A1NmxzZnRweTZtbjJ0ZiZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/HcPgPBQKj7LoUYJG0H/giphy.gif",
     links: [
-      { label: "Live demo", href: "https://uniquizzdom.vercel.app/" },
-      { label: "Frontend", href: "https://github.com/teehihi/UniQuizzFE" },
+      { label: "Live Demo", href: "https://uniquizzdom.vercel.app/" },
+      { label: "GitHub", href: "https://github.com/teehihi/UniQuizzFE" },
     ],
   },
   {
     id: "xenow",
     title: "XeNow",
-    subtitle: "Supporting project / full-stack delivery",
-    variant: "xenow",
-    featured: false,
-    tags: ["React", "NodeJS", "REST API", "MySQL", "Booking flow"],
+    subtitle: "Rent Vehicles with Confidence",
     description:
-      "A full-stack vehicle rental product showing auth, search, booking, upload, API integration, loading/error states, data models, and deployment discipline.",
+      "Book cars and motorcycles through a seamless rental experience featuring smart search, identity verification, secure payments, and intuitive booking management.",
+    tags: ["React", "Vite", "NodeJS", "Express", "Vehicle Rental"],
+    mediaType: "slideshow",
+    mediaImages: [
+      "https://files.catbox.moe/oe3tyt.png",
+      "https://files.catbox.moe/ygh8o2.png",
+      "https://files.catbox.moe/0fdisu.png",
+      "https://files.catbox.moe/74b8ga.png",
+      "https://files.catbox.moe/tnt29g.png",
+      "https://files.catbox.moe/5fgx8b.png",
+    ],
     links: [
-      { label: "Live demo", href: "https://xenow.vercel.app/" },
+      { label: "Live Demo", href: "https://xenow.vercel.app/" },
       { label: "GitHub", href: "https://github.com/teehihi/xe-now-ui" },
     ],
   },
   {
-    id: "phoenixvision",
-    title: "PhoenixVision AI",
-    subtitle: "Computer Vision & Defect Detection",
-    variant: "archaeologist",
-    featured: false,
-    tags: ["Python", "YOLOv11", "PyTorch", "FastAPI", "React"],
+    id: "moviedoublet",
+    title: "Movie DoubleT",
+    subtitle: "Discover Movies Without the Noise",
     description:
-      "Real-time industrial anomaly detection system powered by YOLOv11 and PyTorch, featuring web dashboard monitoring, edge deployment support, and instant quality inspection reports.",
+      "Explore thousands of movies through a fast, responsive interface with personalized recommendations, intelligent search, and a seamless browsing experience.",
+    tags: ["React", "TMDB API", "Tailwind CSS", "Search & Discovery"],
+    mediaType: "placeholder",
+    // =========================================================================
+    // HƯỚNG DẪN DÀNH CHO BẠN (USER):
+    // Thay thế link GIF (Giphy URL) của project Movie DoubleT vào mediaUrl dưới đây:
+    // Ví dụ: mediaUrl: "https://media.giphy.com/media/v1.Y2lk.../giphy.gif"
+    // =========================================================================
+    mediaUrl: "",
     links: [
-      { label: "GitHub Repo", href: "https://github.com/teehihi" }
+      { label: "Live Demo", href: "#" },
+      { label: "GitHub", href: "https://github.com/teehihi" },
     ],
+  },
+];
+
+// Archived / Secondary projects preserved for future sections
+const archivedProjects = [
+  {
+    id: "maze",
+    title: "ChayNgayDi MazeHunter",
+    subtitle: "Core game project / pathfinding puzzle",
+    tags: ["Pygame", "Pathfinding", "Pixel art", "Maze logic"],
+  },
+  {
+    id: "apex",
+    title: "APEX-CHAOS",
+    subtitle: "Core game project / 1v1 autobattler",
+    tags: ["React", "Vite", "Canvas", "Combat balance"],
+  },
+  {
+    id: "daiduongsanca",
+    title: "Đại Dương Săn Cá",
+    subtitle: "Core game project / browser arcade fish shooter",
+    tags: ["HTML5 Canvas", "Vanilla JS", "Arcade Shooter"],
   },
 ];
 
@@ -219,185 +251,209 @@ function ProfileAvatar() {
   );
 }
 
-function ProjectCard({ project }: { project: typeof projects[0] }) {
+function ProjectSlideshow({ images, title }: { images: string[]; title: string }) {
+  const [currentIndex, setCurrentIndex] = useState(0);
+
+  const prevSlide = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    setCurrentIndex((prev) => (prev === 0 ? images.length - 1 : prev - 1));
+  };
+
+  const nextSlide = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    setCurrentIndex((prev) => (prev === images.length - 1 ? 0 : prev + 1));
+  };
+
   return (
-    <Card className={`project-card ${project.featured ? "featured" : ""}`}>
-      <div className="project-head">
-        <div>
-          <span className="project-subtitle">{project.subtitle}</span>
-          <h3>{project.title}</h3>
+    <div className="relative w-full aspect-[16/10] rounded-2xl overflow-hidden bg-black/60 border border-white/10 group shadow-2xl">
+      <img
+        src={images[currentIndex]}
+        alt={`${title} screenshot ${currentIndex + 1}`}
+        className="w-full h-full object-cover object-top transition-all duration-500 ease-out transform group-hover:scale-105"
+      />
+
+      {/* Top Slide Counter Badge */}
+      <div className="absolute top-3 right-3 px-3 py-1 rounded-full bg-black/75 backdrop-blur-md border border-white/10 text-white/90 text-xs font-mono font-medium z-10 shadow-lg">
+        {currentIndex + 1} / {images.length}
+      </div>
+
+      {/* Prev / Next Controls */}
+      <button
+        onClick={prevSlide}
+        className="absolute left-3 top-1/2 -translate-y-1/2 p-2.5 rounded-full bg-black/70 hover:bg-emerald-500 text-white hover:text-black transition-all duration-300 opacity-90 sm:opacity-0 group-hover:opacity-100 backdrop-blur-md border border-white/10 z-10 active:scale-90 cursor-pointer"
+        aria-label="Previous Slide"
+      >
+        <ChevronLeft className="w-5 h-5" />
+      </button>
+
+      <button
+        onClick={nextSlide}
+        className="absolute right-3 top-1/2 -translate-y-1/2 p-2.5 rounded-full bg-black/70 hover:bg-emerald-500 text-white hover:text-black transition-all duration-300 opacity-90 sm:opacity-0 group-hover:opacity-100 backdrop-blur-md border border-white/10 z-10 active:scale-90 cursor-pointer"
+        aria-label="Next Slide"
+      >
+        <ChevronRight className="w-5 h-5" />
+      </button>
+
+      {/* Bottom Dots Navigation */}
+      <div className="absolute bottom-3 inset-x-0 flex items-center justify-center gap-1.5 z-10">
+        {images.map((_, idx) => (
+          <button
+            key={idx}
+            onClick={(e) => {
+              e.stopPropagation();
+              setCurrentIndex(idx);
+            }}
+            className={`transition-all duration-300 rounded-full cursor-pointer ${
+              idx === currentIndex
+                ? "w-6 h-2 bg-emerald-400 shadow-[0_0_10px_rgba(16,185,129,0.8)]"
+                : "w-2 h-2 bg-white/40 hover:bg-white/80"
+            }`}
+            aria-label={`Go to slide ${idx + 1}`}
+          />
+        ))}
+      </div>
+    </div>
+  );
+}
+
+function ProjectMedia({ project }: { project: ProjectItem }) {
+  if (project.mediaType === "slideshow" && project.mediaImages?.length) {
+    return <ProjectSlideshow images={project.mediaImages} title={project.title} />;
+  }
+
+  if (project.mediaType === "gif" && project.mediaUrl) {
+    return (
+      <div className="relative w-full aspect-[16/10] rounded-2xl overflow-hidden bg-black/60 border border-white/10 group shadow-2xl">
+        <img
+          src={project.mediaUrl}
+          alt={`${project.title} GIF Demo`}
+          className="w-full h-full object-cover object-top transition-all duration-500 ease-out transform group-hover:scale-105"
+        />
+        <div className="absolute top-3 right-3 px-3 py-1 rounded-full bg-emerald-500/20 backdrop-blur-md border border-emerald-500/30 text-emerald-400 text-xs font-mono font-medium z-10 flex items-center gap-1.5">
+          <span className="w-2 h-2 rounded-full bg-emerald-400 animate-ping" />
+          <span>LIVE GIF DEMO</span>
         </div>
       </div>
-      <p className="project-description">{project.description}</p>
-      <ProjectVisual variant={project.variant} />
-      <div className="chip-list">
-        {project.tags.map((tag) => (
-          <span key={tag}>{tag}</span>
-        ))}
-      </div>
-      <div className="link-row">
-        {project.links.map((link) => (
-          <ExternalLink key={link.href} href={link.href}>
-            {link.label}
-          </ExternalLink>
-        ))}
-      </div>
-    </Card>
-  );
-}
+    );
+  }
 
-function ProjectVisual({ variant }: { variant: string }) {
-  if (variant === "apex") return <ApexVisual />;
-  if (variant === "uniquizz") return <UniQuizzVisual />;
-  if (variant === "xenow") return <XeNowVisual />;
-  if (variant === "daiduongsanca") return <DaiduongsancaVisual />;
-  return <MazeVisual />;
-}
-
-function MazeVisual() {
+  // Fallback / Placeholder Media Component for Movie DoubleT
   return (
-    <div className="maze-visual">
-      <div className="maze-demo-main">
-        <img src={mazeDemoGifs[0].src} alt={`MazeHunter ${mazeDemoGifs[0].label} demo`} loading="lazy" />
-        <span>{mazeDemoGifs[0].label}</span>
-      </div>
-      <div className="maze-demo-strip">
-        {mazeDemoGifs.slice(1).map((gif) => (
-          <div key={gif.label} className="maze-demo-tile">
-            <img src={gif.src} alt={`MazeHunter ${gif.label} demo`} loading="lazy" />
-            <span>{gif.label}</span>
+    <div className="relative w-full aspect-[16/10] rounded-2xl overflow-hidden bg-gradient-to-br from-slate-900 via-neutral-900 to-black border border-white/10 group shadow-2xl flex flex-col items-center justify-center p-6 text-center">
+      {project.mediaUrl ? (
+        <img
+          src={project.mediaUrl}
+          alt={`${project.title} Media`}
+          className="w-full h-full object-cover object-top transition-all duration-500 ease-out transform group-hover:scale-105"
+        />
+      ) : (
+        <div className="relative z-10 flex flex-col items-center gap-3">
+          <div className="p-4 rounded-2xl bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 group-hover:scale-110 transition-transform duration-300">
+            <Film className="w-8 h-8" />
           </div>
-        ))}
-      </div>
-    </div>
-  );
-}
-
-function Qbit({ className = "", shirt = "shirt-aiute.svg", pants = "pants-cargo.svg", hat = "hat-frog.svg" }: { className?: string; shirt?: string; pants?: string; hat?: string }) {
-  return (
-    <div className={`qbit ${className}`} aria-hidden="true">
-      <img src="/showcase/uniquizz/body.svg" alt="" className="qbit-layer qbit-body" />
-      <img src={`/showcase/uniquizz/${pants}`} alt="" className="qbit-layer qbit-pants" />
-      <img src="/showcase/uniquizz/shoes-jordans.svg" alt="" className="qbit-layer qbit-shoes" />
-      <img src={`/showcase/uniquizz/${shirt}`} alt="" className="qbit-layer qbit-shirt" />
-      <img src="/showcase/uniquizz/head.svg" alt="" className="qbit-layer qbit-head" />
-      <img src={`/showcase/uniquizz/${hat}`} alt="" className="qbit-layer qbit-hat" />
-    </div>
-  );
-}
-
-function UniQuizzVisual() {
-  const closetItems = [
-    "shirt-mu.svg",
-    "shirt-ueh.svg",
-    "shirt-aiute.svg",
-    "shirt-asn.svg",
-    "shirt-brazil.svg",
-    "shirt-aohub.svg",
-    "pants-dino.svg",
-    "pants-cargo.svg",
-    "hat-frog.svg",
-    "shoes-jordans.svg",
-  ];
-
-  return (
-    <div className="uniquizz-visual">
-      <div className="uniquizz-stage">
-        <Qbit shirt="shirt-aiute.svg" pants="pants-cargo.svg" hat="hat-frog.svg" />
-      </div>
-      <div className="uniquizz-closet">
-        {closetItems.map((item) => (
-          <div key={item} className="closet-tile">
-            <img src={`/showcase/uniquizz/${item}`} alt={item} />
+          <div>
+            <h4 className="text-base font-bold text-white mb-1">{project.title} Preview</h4>
+            <p className="text-xs text-white/50 max-w-xs leading-relaxed">
+              GIF Media Placeholder. Copy Giphy link into <code>mediaUrl</code> property in <code>projects</code> array.
+            </p>
           </div>
-        ))}
-      </div>
-    </div>
-  );
-}
-
-function ApexVisual() {
-  const fighters = [
-    ["Vex", "autobattler-fighter-1.png"],
-    ["Sylas", "autobattler-fighter-2.png"],
-    ["Akali", "autobattler-fighter-3.png"],
-    ["Darius", "autobattler-fighter-4.png"],
-    ["Sett", "autobattler-fighter-5.png"],
-    ["Lux", "autobattler-fighter-6.png"],
-    ["Ahri", "autobattler-fighter-7.png"],
-    ["Jinx", "autobattler-fighter-8.png"],
-  ];
-
-  return (
-    <div className="apex-visual">
-      <div className="apex-roster">
-        {fighters.map(([name, file]) => (
-          <div key={name} className="fighter-tile">
-            <img src={`/showcase/apexchaos/${file}`} alt={name} loading="lazy" />
-            <span>{name}</span>
-          </div>
-        ))}
-      </div>
-    </div>
-  );
-}
-
-function XeNowVisual() {
-  return (
-    <div className="xenow-visual">
-      <div className="xenow-mockup">
-        <div className="xenow-header">
-          <span className="xenow-dot red" />
-          <span className="xenow-dot yellow" />
-          <span className="xenow-dot green" />
-          <span className="xenow-title">XeNow Mobility Platform</span>
+          <span className="mt-2 text-[10px] font-mono px-3 py-1.5 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-300">
+            Paste Giphy Link in App.tsx line ~145
+          </span>
         </div>
-        <div className="xenow-grid">
-          <div className="xenow-card">
-            <h4>EV Scooter Sedan</h4>
-            <p>120 km/h • Electric</p>
-            <span className="xenow-badge">Available</span>
+      )}
+    </div>
+  );
+}
+
+function ScrollProjectCard({ project, index }: { project: ProjectItem; index: number }) {
+  const cardRef = useRef<HTMLDivElement>(null);
+  const [isInFocus, setIsInFocus] = useState(false);
+
+  useEffect(() => {
+    const el = cardRef.current;
+    if (!el) return;
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        setIsInFocus(entry.isIntersecting);
+      },
+      {
+        root: null,
+        rootMargin: "-15% 0px -15% 0px", // Active focus zone is middle 70% of viewport
+        threshold: 0.15,
+      }
+    );
+
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, []);
+
+  const isEven = index % 2 === 0;
+
+  return (
+    <div
+      ref={cardRef}
+      className={`relative w-full rounded-3xl p-6 sm:p-8 md:p-10 transition-all duration-700 cubic-bezier(0.16, 1, 0.3, 1) transform border ${
+        isInFocus
+          ? "opacity-100 scale-100 translate-y-0 bg-[#0d0d12]/90 border-emerald-500/30 shadow-[0_20px_60px_rgba(0,0,0,0.7)]"
+          : "opacity-40 scale-[0.93] translate-y-6 bg-[#07070a]/50 border-white/5 shadow-none"
+      }`}
+    >
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center">
+        {/* MEDIA COLUMN (Alternates left/right based on index) */}
+        <div className={`w-full lg:col-span-7 ${isEven ? "lg:order-1" : "lg:order-2"}`}>
+          <ProjectMedia project={project} />
+        </div>
+
+        {/* DETAILS COLUMN */}
+        <div className={`w-full lg:col-span-5 flex flex-col justify-between space-y-6 ${isEven ? "lg:order-2" : "lg:order-1"}`}>
+          <div>
+            <div className="flex items-center gap-2 mb-2">
+              <span className="px-3 py-1 rounded-full bg-emerald-500/10 text-emerald-400 text-xs font-mono font-medium border border-emerald-500/20">
+                0{index + 1} • {project.subtitle}
+              </span>
+            </div>
+            <h3 className="text-2xl sm:text-3xl font-extrabold text-white tracking-tight mb-4 leading-snug">
+              {project.title}
+            </h3>
+            <p className="text-sm sm:text-base text-white/70 font-normal leading-relaxed mb-6">
+              {project.description}
+            </p>
+
+            {/* Tag List */}
+            <div className="flex flex-wrap gap-2 mb-6">
+              {project.tags.map((tag) => (
+                <span
+                  key={tag}
+                  className="px-3 py-1 rounded-lg bg-white/5 border border-white/10 text-white/80 text-xs font-medium hover:border-emerald-500/30 transition-colors"
+                >
+                  {tag}
+                </span>
+              ))}
+            </div>
           </div>
-          <div className="xenow-card">
-            <h4>City Cruiser SUV</h4>
-            <p>Automatic • 5 Seats</p>
-            <span className="xenow-badge">Booked</span>
+
+          {/* Action Buttons: Live Demo & GitHub */}
+          <div className="flex items-center gap-4 pt-2">
+            {project.links.map((link) => (
+              <a
+                key={link.label}
+                href={link.href}
+                target="_blank"
+                rel="noreferrer"
+                className={`inline-flex items-center gap-2 px-6 py-3 rounded-full font-semibold text-xs transition-all duration-300 cursor-pointer ${
+                  link.label.toLowerCase().includes("demo")
+                    ? "bg-emerald-400 text-black hover:bg-emerald-300 hover:scale-105 shadow-[0_0_20px_rgba(16,185,129,0.4)]"
+                    : "bg-white/10 text-white border border-white/20 hover:bg-white/20 hover:border-white/40 hover:scale-105"
+                }`}
+              >
+                <span>{link.label}</span>
+                <ExternalIcon className="w-3.5 h-3.5" />
+              </a>
+            ))}
           </div>
         </div>
-      </div>
-    </div>
-  );
-}
-
-function DaiduongsancaVisual() {
-  const demos = [
-    [
-      "Gameplay",
-      "https://media4.giphy.com/media/v1.Y2lkPTc5MGI3NjExOHYxcXV1bTV6ZXljZWQ3ZXdwcjZqMXE0NWtpaXV5eDlndjJ3dXNpdCZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/VlTspk3l4xQzW6y99t/giphy.gif",
-    ],
-    [
-      "Boss Battle",
-      "https://media2.giphy.com/media/v1.Y2lkPTc5MGI3NjExZjkxdW9reDh5MThnZzU1eXR2d2ZuN2lsZmQ0OWtyd24xMXJqa3lhbSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/IsEJWcJEOwyWTyDQ2k/giphy.gif",
-    ],
-    [
-      "Start Menu",
-      "https://media0.giphy.com/media/v1.Y2lkPTc5MGI3NjExZ2huMG1ncWZycXprbG91MjRvcXc5amVxcHkyanpnYTh2djBjaTZheiZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/KNWv19m2kr2XwP3OHc/giphy.gif",
-    ],
-  ];
-
-  return (
-    <div className="daiduongsanca-visual">
-      <div className="daiduongsanca-demo-main">
-        <img src={demos[0][1]} alt="Daiduongsanca gameplay demo" loading="lazy" />
-        <span>{demos[0][0]}</span>
-      </div>
-      <div className="daiduongsanca-demo-strip">
-        {demos.slice(1).map(([label, src]) => (
-          <div key={label} className="daiduongsanca-demo-tile">
-            <img src={src} alt={`Daiduongsanca ${label} demo`} loading="lazy" />
-            <span>{label}</span>
-          </div>
-        ))}
       </div>
     </div>
   );
@@ -576,23 +632,14 @@ export default function App() {
         <section id="projects" className="scroll-mt-24 py-16">
           <SectionHeader
             eyebrow="PORTFOLIO SHOWCASE"
-            title="Featured Projects & Demos"
-            description="Explore the software, AI applications, and interactive products I've designed, developed, and deployed."
+            title="Featured Projects & Case Studies"
+            description="Explore the AI vision systems, real-time multiplayer platforms, and full-stack web applications I've engineered."
           />
 
-          <div className="featured-projects mt-8 space-y-8">
-            {featuredProjects.map((project) => (
-              <ProjectCard key={project.id} project={project} />
+          <div className="featured-projects mt-12 space-y-12 sm:space-y-16 lg:space-y-20">
+            {projects.map((project, idx) => (
+              <ScrollProjectCard key={project.id} project={project} index={idx} />
             ))}
-          </div>
-
-          <div className="supporting-projects mt-12">
-            <h3 className="text-lg font-bold mb-6">Additional Web & AI Platforms</h3>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              {supportingProjects.map((project) => (
-                <ProjectCard key={project.id} project={project} />
-              ))}
-            </div>
           </div>
         </section>
 
