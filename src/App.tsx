@@ -399,38 +399,21 @@ function ScrollProjectCard({ project, index }: { project: ProjectItem; index: nu
   return (
     <div
       ref={cardRef}
-      className={`relative w-full rounded-[2.8rem] p-6 sm:p-10 lg:p-14 transition-all duration-700 cubic-bezier(0.16, 1, 0.3, 1) transform border overflow-hidden ${
+      className={`relative w-full rounded-[2.5rem] p-6 sm:p-10 lg:p-14 transition-all duration-700 cubic-bezier(0.16, 1, 0.3, 1) transform overflow-hidden ${
         isInFocus
-          ? "opacity-100 scale-100 translate-y-0 bg-[#0d101a]/95 border-white/15 shadow-[0_30px_90px_rgba(0,0,0,0.85)]"
-          : "opacity-40 scale-[0.93] translate-y-8 bg-[#070910]/60 border-white/5 shadow-none"
+          ? "opacity-100 scale-100 translate-y-0 shadow-[0_30px_90px_rgba(0,0,0,0.85)] border border-white/15"
+          : "opacity-40 scale-[0.93] translate-y-8 shadow-none border border-white/5"
       }`}
     >
-      {/* Abstract 3D Background Graphic Accent (bg1.webp, Bg2.webp, bg3.webp) */}
-      <div
-        className={`absolute top-0 bottom-0 ${
-          isEven ? "left-0 w-full sm:w-[52%]" : "right-0 w-full sm:w-[52%]"
-        } h-full pointer-events-none z-0 overflow-hidden`}
-      >
-        <img
-          src={project.bgGraphic}
-          alt=""
-          className={`w-full h-full object-cover opacity-75 filter contrast-125 brightness-110 ${
-            isEven
-              ? "[mask-image:linear-gradient(to_right,black_60%,transparent_100%)]"
-              : "[mask-image:linear-gradient(to_left,black_60%,transparent_100%)]"
-          }`}
-        />
-      </div>
-
-      {/* Ambient Gradient Glow */}
-      <div
-        className={`absolute w-[450px] h-[450px] rounded-full blur-[130px] pointer-events-none opacity-25 z-0 ${
-          isEven ? "-top-28 -left-28 bg-indigo-500/30" : "-bottom-28 -right-28 bg-purple-500/30"
-        }`}
+      {/* Full Background Card Image (bg1.webp, Bg2.webp, bg3.webp) */}
+      <img
+        src={project.bgGraphic}
+        alt=""
+        className="absolute inset-0 w-full h-full object-cover z-0 pointer-events-none"
       />
 
       <div className="relative z-10 grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center">
-        {/* MEDIA COLUMN WITH SINGLE CLEAN MEDIA CARD */}
+        {/* MEDIA COLUMN */}
         <div className={`w-full lg:col-span-6 ${isEven ? "lg:order-1" : "lg:order-2"}`}>
           <div className="relative flex items-center justify-center p-1 sm:p-3 w-full">
             {/* Primary Media Card Mockup */}
@@ -446,7 +429,7 @@ function ScrollProjectCard({ project, index }: { project: ProjectItem; index: nu
             <h3 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-white tracking-tight mb-4 leading-[1.15]">
               {project.title}
             </h3>
-            <p className="text-sm sm:text-base text-slate-300 font-normal leading-relaxed mb-6 max-w-xl">
+            <p className="text-sm sm:text-base text-slate-200 font-normal leading-relaxed mb-6 max-w-xl">
               {project.description}
             </p>
 
@@ -455,7 +438,7 @@ function ScrollProjectCard({ project, index }: { project: ProjectItem; index: nu
               {project.tags.map((tag) => (
                 <span
                   key={tag}
-                  className="px-3.5 py-1.5 rounded-xl bg-white/5 border border-white/10 text-white/80 text-xs font-medium hover:border-emerald-500/40 transition-colors"
+                  className="px-3.5 py-1.5 rounded-xl bg-white/10 backdrop-blur-md border border-white/15 text-white text-xs font-medium hover:border-emerald-500/40 transition-colors"
                 >
                   {tag}
                 </span>
@@ -476,7 +459,7 @@ function ScrollProjectCard({ project, index }: { project: ProjectItem; index: nu
                   className={`inline-flex items-center gap-2 transition-all duration-300 cursor-pointer ${
                     isDemo
                       ? "px-7 py-3.5 rounded-full bg-white text-black font-bold text-xs sm:text-sm hover:bg-emerald-400 hover:text-black hover:scale-105 shadow-[0_0_30px_rgba(255,255,255,0.25)] hover:shadow-[0_0_40px_rgba(16,185,129,0.5)] active:scale-95"
-                      : "text-slate-300 hover:text-white text-xs sm:text-sm font-medium hover:underline flex items-center gap-1.5 px-3 py-2"
+                      : "text-slate-200 hover:text-white text-xs sm:text-sm font-medium hover:underline flex items-center gap-1.5 px-3 py-2"
                   }`}
                 >
                   <span>{link.label}</span>
