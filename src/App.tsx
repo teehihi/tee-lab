@@ -543,7 +543,8 @@ const supportingProjects: SecondaryProjectItem[] = [
     description:
       "Connect customers with authentic Vietnamese specialty products through a modern e-commerce platform designed for smooth shopping and efficient store management.",
     tags: ["React", "NodeJS", "E-Commerce", "MongoDB"],
-    mediaUrl: "",
+    mediaUrl:
+      "https://media2.giphy.com/media/v1.Y2lkPTc5MGI3NjExaXZvZGFleGkyM240Nm9mcnUwcmVvOGhsdHB6ZTZ2N2ZwdWllMXh3NCZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/bLKKAGW24Mbg0bhHD5/giphy.gif",
     linkHref: "https://github.com/teehihi",
   },
   {
