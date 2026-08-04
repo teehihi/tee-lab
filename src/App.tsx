@@ -407,6 +407,7 @@ export default function App() {
   const [copied, setCopied] = useState(false);
   const [activeSection, setActiveSection] = useState("about");
   const [showIntro, setShowIntro] = useState(true);
+  const [isHeroRevealed, setIsHeroRevealed] = useState(false);
 
   React.useEffect(() => {
     const handleScroll = () => {
@@ -438,8 +439,22 @@ export default function App() {
 
   return (
     <>
-      {showIntro && <IntroShowcase onEnterPortfolio={() => setShowIntro(false)} />}
-      <main className="page-grid-shell">
+      {showIntro && (
+        <IntroShowcase
+          onMidTransition={() => setIsHeroRevealed(true)}
+          onEnterPortfolio={() => {
+            setShowIntro(false);
+            setIsHeroRevealed(true);
+          }}
+        />
+      )}
+      <main
+        className={`page-grid-shell transition-all duration-1000 cubic-bezier(0.16,1,0.3,1) transform ${
+          showIntro && !isHeroRevealed
+            ? "opacity-0 translate-y-12 pointer-events-none"
+            : "opacity-100 translate-y-0"
+        }`}
+      >
       <ScrollProgress />
       <InteractiveGrid
         clickInteraction
