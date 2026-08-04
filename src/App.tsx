@@ -73,6 +73,7 @@ export interface ProjectItem {
   description: string;
   tags: string[];
   mediaType: "slideshow" | "gif" | "placeholder";
+  bgGraphic: string;
   mediaImages?: string[];
   mediaUrl?: string;
   links: { label: string; href: string }[];
@@ -87,6 +88,7 @@ const projects: ProjectItem[] = [
       "Improve fire safety using real-time computer vision that detects smoke and flames instantly, helping reduce response time and support early intervention.",
     tags: ["Computer Vision", "YOLOv11", "Real-Time AI", "PyTorch", "Fire Detection"],
     mediaType: "slideshow",
+    bgGraphic: "/bgLeft.avif",
     mediaImages: [
       "https://files.catbox.moe/brqvrv.png",
       "https://files.catbox.moe/nxdu8v.png",
@@ -109,6 +111,7 @@ const projects: ProjectItem[] = [
       "Create engaging classroom and event experiences with instant quizzes, live leaderboards, and synchronized multiplayer participation.",
     tags: ["React", "NodeJS", "Socket.io", "MongoDB", "Real-Time Quiz"],
     mediaType: "gif",
+    bgGraphic: "/bgRight1.avif",
     mediaUrl:
       "https://media1.giphy.com/media/v1.Y2lkPTc5MGI3NjExN25kb20ybWI3b282dmF1djN3a2NiaHh0N3A1NmxzZnRweTZtbjJ0ZiZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/HcPgPBQKj7LoUYJG0H/giphy.gif",
     links: [
@@ -124,6 +127,7 @@ const projects: ProjectItem[] = [
       "Book cars and motorcycles through a seamless rental experience featuring smart search, identity verification, secure payments, and intuitive booking management.",
     tags: ["React", "Vite", "NodeJS", "Express", "Vehicle Rental"],
     mediaType: "slideshow",
+    bgGraphic: "/bgLeft2.avif",
     mediaImages: [
       "https://files.catbox.moe/oe3tyt.png",
       "https://files.catbox.moe/ygh8o2.png",
@@ -145,6 +149,7 @@ const projects: ProjectItem[] = [
       "Explore thousands of movies through a fast, responsive interface with personalized recommendations, intelligent search, and a seamless browsing experience.",
     tags: ["React", "TMDB API", "Tailwind CSS", "Search & Discovery"],
     mediaType: "placeholder",
+    bgGraphic: "/bgRight2.avif",
     // =========================================================================
     // HƯỚNG DẪN DÀNH CHO BẠN (USER):
     // Thay thế link GIF (Giphy URL) của project Movie DoubleT vào mediaUrl dưới đây:
@@ -265,7 +270,7 @@ function ProjectSlideshow({ images, title }: { images: string[]; title: string }
   };
 
   return (
-    <div className="relative w-full aspect-[16/10] rounded-2xl overflow-hidden bg-black/60 border border-white/10 group shadow-2xl">
+    <div className="relative w-full h-full min-h-[240px] sm:min-h-[300px] overflow-hidden bg-black/80 group rounded-2xl border border-white/10">
       <img
         src={images[currentIndex]}
         alt={`${title} screenshot ${currentIndex + 1}`}
@@ -323,7 +328,7 @@ function ProjectMedia({ project }: { project: ProjectItem }) {
 
   if (project.mediaType === "gif" && project.mediaUrl) {
     return (
-      <div className="relative w-full aspect-[16/10] rounded-2xl overflow-hidden bg-black/60 border border-white/10 group shadow-2xl">
+      <div className="relative w-full h-full min-h-[240px] sm:min-h-[300px] overflow-hidden bg-black/80 group rounded-2xl border border-white/10">
         <img
           src={project.mediaUrl}
           alt={`${project.title} GIF Demo`}
@@ -331,7 +336,7 @@ function ProjectMedia({ project }: { project: ProjectItem }) {
         />
         <div className="absolute top-3 right-3 px-3 py-1 rounded-full bg-emerald-500/20 backdrop-blur-md border border-emerald-500/30 text-emerald-400 text-xs font-mono font-medium z-10 flex items-center gap-1.5">
           <span className="w-2 h-2 rounded-full bg-emerald-400 animate-ping" />
-          <span>LIVE GIF DEMO</span>
+          <span>LIVE DEMO</span>
         </div>
       </div>
     );
@@ -339,7 +344,7 @@ function ProjectMedia({ project }: { project: ProjectItem }) {
 
   // Fallback / Placeholder Media Component for Movie DoubleT
   return (
-    <div className="relative w-full aspect-[16/10] rounded-2xl overflow-hidden bg-gradient-to-br from-slate-900 via-neutral-900 to-black border border-white/10 group shadow-2xl flex flex-col items-center justify-center p-6 text-center">
+    <div className="relative w-full h-full min-h-[240px] sm:min-h-[300px] overflow-hidden bg-gradient-to-br from-slate-900 via-neutral-900 to-black group rounded-2xl border border-white/10 flex flex-col items-center justify-center p-6 text-center">
       {project.mediaUrl ? (
         <img
           src={project.mediaUrl}
@@ -348,8 +353,8 @@ function ProjectMedia({ project }: { project: ProjectItem }) {
         />
       ) : (
         <div className="relative z-10 flex flex-col items-center gap-3">
-          <div className="p-4 rounded-2xl bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 group-hover:scale-110 transition-transform duration-300">
-            <Film className="w-8 h-8" />
+          <div className="p-3.5 rounded-2xl bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 group-hover:scale-110 transition-transform duration-300">
+            <Film className="w-7 h-7" />
           </div>
           <div>
             <h4 className="text-base font-bold text-white mb-1">{project.title} Preview</h4>
@@ -357,7 +362,7 @@ function ProjectMedia({ project }: { project: ProjectItem }) {
               GIF Media Placeholder. Copy Giphy link into <code>mediaUrl</code> property in <code>projects</code> array.
             </p>
           </div>
-          <span className="mt-2 text-[10px] font-mono px-3 py-1.5 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-300">
+          <span className="mt-1 text-[10px] font-mono px-3 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-300">
             Paste Giphy Link in App.tsx line ~145
           </span>
         </div>
@@ -380,7 +385,7 @@ function ScrollProjectCard({ project, index }: { project: ProjectItem; index: nu
       },
       {
         root: null,
-        rootMargin: "-15% 0px -15% 0px", // Active focus zone is middle 70% of viewport
+        rootMargin: "-15% 0px -15% 0px",
         threshold: 0.15,
       }
     );
@@ -394,39 +399,87 @@ function ScrollProjectCard({ project, index }: { project: ProjectItem; index: nu
   return (
     <div
       ref={cardRef}
-      className={`relative w-full rounded-3xl p-6 sm:p-8 md:p-10 transition-all duration-700 cubic-bezier(0.16, 1, 0.3, 1) transform border ${
+      className={`relative w-full rounded-[2.5rem] p-6 sm:p-10 lg:p-14 transition-all duration-700 cubic-bezier(0.16, 1, 0.3, 1) transform border overflow-hidden ${
         isInFocus
-          ? "opacity-100 scale-100 translate-y-0 bg-[#0d0d12]/90 border-emerald-500/30 shadow-[0_20px_60px_rgba(0,0,0,0.7)]"
-          : "opacity-40 scale-[0.93] translate-y-6 bg-[#07070a]/50 border-white/5 shadow-none"
+          ? "opacity-100 scale-100 translate-y-0 bg-[#0a0b12]/95 border-emerald-500/30 shadow-[0_30px_90px_rgba(0,0,0,0.85)]"
+          : "opacity-40 scale-[0.93] translate-y-8 bg-[#06060a]/60 border-white/5 shadow-none"
       }`}
     >
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center">
-        {/* MEDIA COLUMN (Alternates left/right based on index) */}
+      {/* Background Texture Overlay: bgintro.avif */}
+      <img
+        src="/bgintro.avif"
+        alt=""
+        className="absolute inset-0 w-full h-full object-cover opacity-25 pointer-events-none mix-blend-overlay z-0"
+      />
+
+      {/* Ambient Radial Gradient Glow */}
+      <div
+        className={`absolute w-[500px] h-[500px] rounded-full blur-[130px] pointer-events-none opacity-20 z-0 ${
+          isEven ? "-top-32 -left-32 bg-emerald-500" : "-bottom-32 -right-32 bg-cyan-500"
+        }`}
+      />
+
+      <div className="relative z-10 grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-14 items-center">
+        {/* MEDIA COLUMN WITH GRAPHIC ACCENT & MULTI-LAYER FLOATING CARDS */}
         <div className={`w-full lg:col-span-7 ${isEven ? "lg:order-1" : "lg:order-2"}`}>
-          <ProjectMedia project={project} />
+          <div className="relative flex items-center justify-center p-3 sm:p-6 min-h-[340px] sm:min-h-[420px]">
+            {/* 1. Background Graphic Accent (/bgLeft.avif, /bgRight1.avif, etc.) */}
+            <img
+              src={project.bgGraphic}
+              alt=""
+              className="absolute inset-0 w-full h-full object-contain pointer-events-none opacity-85 z-0 scale-110 filter drop-shadow-[0_15px_35px_rgba(0,0,0,0.6)]"
+            />
+
+            {/* 2. Secondary Offset Card in Back (Inspired by reference mockup layout) */}
+            <div className="absolute -top-3 -left-3 sm:-top-6 sm:-left-6 w-[88%] aspect-[16/10] rounded-2xl bg-black/70 border border-white/10 overflow-hidden opacity-60 scale-95 z-10 shadow-2xl pointer-events-none hidden sm:block">
+              {project.mediaImages && project.mediaImages.length > 1 ? (
+                <img
+                  src={project.mediaImages[1]}
+                  alt=""
+                  className="w-full h-full object-cover object-top filter blur-[0.5px]"
+                />
+              ) : project.mediaUrl ? (
+                <img
+                  src={project.mediaUrl}
+                  alt=""
+                  className="w-full h-full object-cover object-top filter blur-[0.5px]"
+                />
+              ) : (
+                <div className="w-full h-full bg-slate-900/80" />
+              )}
+              <div className="absolute top-3 left-3 px-3 py-1 rounded-full bg-emerald-500/30 backdrop-blur-md border border-emerald-500/40 text-emerald-300 text-[10px] font-mono font-medium">
+                System Active
+              </div>
+            </div>
+
+            {/* 3. Primary Floating Card in Front */}
+            <div className="relative z-20 w-full sm:w-[92%] aspect-[16/10] rounded-2xl overflow-hidden border border-white/20 bg-black/90 shadow-[0_25px_65px_rgba(0,0,0,0.9)] group transition-transform duration-500 hover:scale-[1.02]">
+              <ProjectMedia project={project} />
+            </div>
+          </div>
         </div>
 
         {/* DETAILS COLUMN */}
         <div className={`w-full lg:col-span-5 flex flex-col justify-between space-y-6 ${isEven ? "lg:order-2" : "lg:order-1"}`}>
           <div>
-            <div className="flex items-center gap-2 mb-2">
-              <span className="px-3 py-1 rounded-full bg-emerald-500/10 text-emerald-400 text-xs font-mono font-medium border border-emerald-500/20">
+            <div className="flex items-center gap-2 mb-3">
+              <span className="px-3.5 py-1 rounded-full bg-emerald-500/10 text-emerald-400 text-xs font-mono font-medium border border-emerald-500/20">
                 0{index + 1} • {project.subtitle}
               </span>
             </div>
-            <h3 className="text-2xl sm:text-3xl font-extrabold text-white tracking-tight mb-4 leading-snug">
+            <h3 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-white tracking-tight mb-5 leading-[1.15]">
               {project.title}
             </h3>
-            <p className="text-sm sm:text-base text-white/70 font-normal leading-relaxed mb-6">
+            <p className="text-sm sm:text-base text-white/75 font-normal leading-relaxed mb-6">
               {project.description}
             </p>
 
             {/* Tag List */}
-            <div className="flex flex-wrap gap-2 mb-6">
+            <div className="flex flex-wrap gap-2 mb-8">
               {project.tags.map((tag) => (
                 <span
                   key={tag}
-                  className="px-3 py-1 rounded-lg bg-white/5 border border-white/10 text-white/80 text-xs font-medium hover:border-emerald-500/30 transition-colors"
+                  className="px-3.5 py-1.5 rounded-xl bg-white/5 border border-white/10 text-white/80 text-xs font-medium hover:border-emerald-500/40 transition-colors"
                 >
                   {tag}
                 </span>
@@ -436,22 +489,25 @@ function ScrollProjectCard({ project, index }: { project: ProjectItem; index: nu
 
           {/* Action Buttons: Live Demo & GitHub */}
           <div className="flex items-center gap-4 pt-2">
-            {project.links.map((link) => (
-              <a
-                key={link.label}
-                href={link.href}
-                target="_blank"
-                rel="noreferrer"
-                className={`inline-flex items-center gap-2 px-6 py-3 rounded-full font-semibold text-xs transition-all duration-300 cursor-pointer ${
-                  link.label.toLowerCase().includes("demo")
-                    ? "bg-emerald-400 text-black hover:bg-emerald-300 hover:scale-105 shadow-[0_0_20px_rgba(16,185,129,0.4)]"
-                    : "bg-white/10 text-white border border-white/20 hover:bg-white/20 hover:border-white/40 hover:scale-105"
-                }`}
-              >
-                <span>{link.label}</span>
-                <ExternalIcon className="w-3.5 h-3.5" />
-              </a>
-            ))}
+            {project.links.map((link) => {
+              const isDemo = link.label.toLowerCase().includes("demo");
+              return (
+                <a
+                  key={link.label}
+                  href={link.href}
+                  target="_blank"
+                  rel="noreferrer"
+                  className={`inline-flex items-center gap-2 px-7 py-3.5 rounded-full font-bold text-xs sm:text-sm transition-all duration-300 cursor-pointer ${
+                    isDemo
+                      ? "bg-white text-black hover:bg-emerald-400 hover:text-black hover:scale-105 shadow-[0_0_30px_rgba(255,255,255,0.25)] hover:shadow-[0_0_40px_rgba(16,185,129,0.5)] active:scale-95"
+                      : "bg-white/10 text-white border border-white/20 hover:bg-white/20 hover:border-white/40 hover:scale-105 active:scale-95"
+                  }`}
+                >
+                  <span>{link.label}</span>
+                  <ExternalIcon className="w-4 h-4" />
+                </a>
+              );
+            })}
           </div>
         </div>
       </div>
@@ -632,18 +688,23 @@ export default function App() {
           </div>
         </section>
 
-        {/* PROJECTS SECTION */}
-        <section id="projects" className="scroll-mt-24 py-16">
-          <SectionHeader
-            eyebrow="PORTFOLIO SHOWCASE"
-            title="Featured Projects & Case Studies"
-            description="Explore the AI vision systems, real-time multiplayer platforms, and full-stack web applications I've engineered."
-          />
+        {/* PROJECTS SECTION (Expanded to full screen width with 5-8% side padding) */}
+        <section
+          id="projects"
+          className="scroll-mt-24 py-16 w-screen relative left-1/2 right-1/2 -ml-[50vw] -mr-[50vw] px-[5vw] lg:px-[6vw] xl:px-[8vw] max-w-screen overflow-x-hidden"
+        >
+          <div className="mx-auto w-full max-w-[1550px]">
+            <SectionHeader
+              eyebrow="PORTFOLIO SHOWCASE"
+              title="Featured Projects & Case Studies"
+              description="Explore the AI vision systems, real-time multiplayer platforms, and full-stack web applications I've engineered."
+            />
 
-          <div className="featured-projects mt-12 space-y-12 sm:space-y-16 lg:space-y-20">
-            {projects.map((project, idx) => (
-              <ScrollProjectCard key={project.id} project={project} index={idx} />
-            ))}
+            <div className="featured-projects mt-12 space-y-12 sm:space-y-16 lg:space-y-20">
+              {projects.map((project, idx) => (
+                <ScrollProjectCard key={project.id} project={project} index={idx} />
+              ))}
+            </div>
           </div>
         </section>
 
