@@ -3,6 +3,7 @@ import React, { useState, useEffect, useRef } from "react";
 import {
   ArrowUpRight,
   ArrowRight,
+  Github,
   Bot,
   Briefcase,
   Code2,
@@ -533,7 +534,8 @@ interface SecondaryProjectItem {
   description: string;
   tags: string[];
   mediaUrl?: string;
-  linkHref?: string;
+  demoUrl?: string;
+  githubUrl?: string;
 }
 
 const supportingProjects: SecondaryProjectItem[] = [
@@ -546,7 +548,8 @@ const supportingProjects: SecondaryProjectItem[] = [
     tags: ["React", "NodeJS", "E-Commerce", "MongoDB"],
     mediaUrl:
       "https://media2.giphy.com/media/v1.Y2lkPTc5MGI3NjExaXZvZGFleGkyM240Nm9mcnUwcmVvOGhsdHB6ZTZ2N2ZwdWllMXh3NCZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/bLKKAGW24Mbg0bhHD5/giphy.gif",
-    linkHref: "https://github.com/teehihi",
+    demoUrl: "https://www.dacsanviet.site/",
+    githubUrl: "",
   },
   {
     id: "chayngaydi",
@@ -557,7 +560,8 @@ const supportingProjects: SecondaryProjectItem[] = [
     tags: ["Pygame", "Pathfinding AI", "Maze Logic", "Python"],
     mediaUrl:
       "https://media3.giphy.com/media/v1.Y2lkPTc5MGI3NjExOGQ3NjU3dHplYWlxcTV1ZGw0aDYzdzUxZXVseHE3bGhweTVhMG1tdSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/CTF3ctDQNVei069FBQ/giphy.gif",
-    linkHref: "https://github.com/teehihi",
+    demoUrl: "https://github.com/teehihi/ChayNgayDi_MazeHunter",
+    githubUrl: "https://github.com/teehihi/ChayNgayDi_MazeHunter",
   },
   {
     id: "apex",
@@ -568,7 +572,8 @@ const supportingProjects: SecondaryProjectItem[] = [
     tags: ["React", "HTML5 Canvas", "Game Mechanics", "Vite"],
     mediaUrl:
       "https://media3.giphy.com/media/v1.Y2lkPTc5MGI3NjExaXUzeHpvcmRwbHFrampuaDdhMWlocjRtc3yxcG1hMWp5MWNud21leCZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/xGJhfJEIVrRScFvCUF/giphy.gif",
-    linkHref: "https://github.com/teehihi",
+    demoUrl: "https://apexchaos.vercel.app/",
+    githubUrl: "https://github.com/Khanh-glitch/APEX-CHAOS",
   },
   {
     id: "coravamaris",
@@ -579,14 +584,15 @@ const supportingProjects: SecondaryProjectItem[] = [
     tags: ["Unity", "C#", "Pathfinding", "VNG Prompt to Play"],
     mediaUrl:
       "https://media0.giphy.com/media/v1.Y2lkPTc5MGI3NjExY3N5eXR1OTZrbGdteDVxMWQ4cDhjNnN4bGc4OXR2dHI3OHA5MGc2aiZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/pSvAezoMonh5SPcZJl/giphy.gif",
-    linkHref: "https://teehihi.itch.io/corava-maris",
+    demoUrl: "https://teehihi.itch.io/corava-maris",
+    githubUrl: "https://github.com/teehihi/corava-maris",
   },
 ];
 
 function Flip3DProjectCard({ project }: { project: SecondaryProjectItem }) {
   return (
     <a
-      href={project.linkHref || "#"}
+      href={project.demoUrl || "#"}
       target="_blank"
       rel="noreferrer"
       className="group relative shrink-0 w-[300px] sm:w-[340px] flex flex-col rounded-2xl overflow-hidden bg-[#121318] border border-white/10 shadow-xl transition-all duration-500 hover:scale-[1.03] hover:shadow-[0_12px_35px_rgba(16,185,129,0.25)] hover:border-emerald-500/40 cursor-pointer select-none"
@@ -613,10 +619,25 @@ function Flip3DProjectCard({ project }: { project: SecondaryProjectItem }) {
         {/* 3D FLIP CONTENT BOX ON HOVER (rotateX(-90deg) -> rotateX(0deg)) */}
         <div className="absolute inset-0 w-full h-full p-5 bg-[#161824] text-left border-b border-emerald-500/30 origin-bottom [transform:rotateX(-90deg)] group-hover:[transform:rotateX(0deg)] transition-all duration-600 ease-[cubic-bezier(0.175,0.885,0.32,1.275)] flex flex-col justify-between z-10">
           <div>
-            <span className="text-[11px] font-mono text-emerald-400 font-bold uppercase tracking-wider block mb-1.5">
-              {project.subtitle}
-            </span>
-            <p className="text-xs text-slate-300 leading-relaxed line-clamp-4 font-normal">
+            <div className="flex items-center justify-between gap-2 mb-1.5">
+              <span className="text-[11px] font-mono text-emerald-400 font-bold uppercase tracking-wider block">
+                {project.subtitle}
+              </span>
+              {project.githubUrl && (
+                <a
+                  href={project.githubUrl}
+                  target="_blank"
+                  rel="noreferrer"
+                  onClick={(e) => e.stopPropagation()}
+                  className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-emerald-500/20 hover:bg-emerald-400 border border-emerald-500/40 text-emerald-300 hover:text-black text-[10px] font-mono font-bold transition-all shadow-sm shrink-0"
+                >
+                  <Github className="w-3 h-3" />
+                  <span>Repo</span>
+                  <ArrowUpRight className="w-2.5 h-2.5" />
+                </a>
+              )}
+            </div>
+            <p className="text-xs text-slate-300 leading-relaxed line-clamp-3 font-normal">
               {project.description}
             </p>
           </div>
