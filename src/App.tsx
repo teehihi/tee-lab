@@ -399,7 +399,7 @@ function ScrollProjectCard({ project, index }: { project: ProjectItem; index: nu
   return (
     <div
       ref={cardRef}
-      className={`relative w-full max-w-[1232px] mx-auto aspect-[1232/638] rounded-[2.5rem] sm:rounded-[3rem] overflow-hidden transition-all duration-700 cubic-bezier(0.16, 1, 0.3, 1) transform flex items-center p-6 sm:p-10 lg:p-14 ${
+      className={`relative w-full max-w-[1232px] mx-auto aspect-auto lg:aspect-[1232/540] min-h-[380px] rounded-[2.2rem] sm:rounded-[2.8rem] overflow-hidden transition-all duration-700 cubic-bezier(0.16, 1, 0.3, 1) transform flex items-center p-5 sm:p-8 lg:p-10 ${
         isInFocus
           ? "opacity-100 scale-100 translate-y-0 shadow-[0_30px_90px_rgba(0,0,0,0.85)]"
           : "opacity-40 scale-[0.93] translate-y-8 shadow-none"
