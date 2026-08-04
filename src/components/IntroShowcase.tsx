@@ -34,25 +34,27 @@ export function IntroShowcase({ onEnterPortfolio, onMidTransition }: IntroShowca
   const handleStartTransition = () => {
     if (isSlidingUp) return;
 
-    // Phase 1 (t = 0ms): Unified slide UP for phone, text, and background curtain
+    // Phase 1 (t = 0ms): Start cross-fade blend transition
     setIsSlidingUp(true);
 
-    // Phase 2 (t = 500ms): At mid-screen point, trigger portfolio hero section fade in
+    // Phase 2 (t = 150ms): Trigger portfolio hero section cross-fade in
     setTimeout(() => {
       onMidTransition?.();
-    }, 500);
+    }, 150);
 
-    // Phase 3 (t = 1400ms): Intro showcase finishes sliding off top of screen, unmount completely
+    // Phase 3 (t = 1200ms): Intro showcase fully dissolved into portfolio, unmount cleanly
     setTimeout(() => {
       document.body.style.overflow = "";
       onEnterPortfolio();
-    }, 1400);
+    }, 1200);
   };
 
   return (
     <div
-      className={`fixed inset-0 z-50 flex flex-col justify-between overflow-hidden bg-[#07070a] text-white select-none transition-transform duration-[1400ms] cubic-bezier(0.16,1,0.3,1) transform ${
-        isSlidingUp ? "-translate-y-full" : "translate-y-0"
+      className={`fixed inset-0 z-50 flex flex-col justify-between overflow-hidden bg-[#07070a] text-white select-none transition-all duration-[1200ms] cubic-bezier(0.16,1,0.3,1) transform ${
+        isSlidingUp
+          ? "opacity-0 -translate-y-[45vh] pointer-events-none"
+          : "opacity-100 translate-y-0"
       }`}
     >
       {/* Full-Screen Macbook Isometric Loading Overlay */}
@@ -71,7 +73,7 @@ export function IntroShowcase({ onEnterPortfolio, onMidTransition }: IntroShowca
         </div>
       </div>
 
-      {/* Background Images Layer (Attached to container, rolls up in 100% sync with elements) */}
+      {/* Background Images Layer (Cross-fades and rolls up smoothly) */}
       <div className="absolute inset-0 pointer-events-none overflow-hidden">
         {/* Base Background: Fill screen */}
         <img
@@ -91,10 +93,10 @@ export function IntroShowcase({ onEnterPortfolio, onMidTransition }: IntroShowca
 
       {/* Main Content Area */}
       <main className="relative z-10 flex-1 flex flex-col items-center justify-center text-center px-4 pt-6 sm:pt-10 max-w-5xl mx-auto w-full">
-        {/* Hero Title & Subtitle (Slides UP smoothly) */}
+        {/* Hero Title & Subtitle (Cross-fades & slides up) */}
         <div
-          className={`relative z-30 transition-all duration-[1200ms] cubic-bezier(0.16,1,0.3,1) transform ${
-            isSlidingUp ? "opacity-20 -translate-y-[80vh]" : "opacity-100 translate-y-0"
+          className={`relative z-30 transition-all duration-[1000ms] cubic-bezier(0.16,1,0.3,1) transform ${
+            isSlidingUp ? "opacity-0 -translate-y-[55vh] scale-95" : "opacity-100 translate-y-0 scale-100"
           }`}
         >
           {/* 1. Main Title ("Ideas Into Software.") */}
@@ -131,10 +133,10 @@ export function IntroShowcase({ onEnterPortfolio, onMidTransition }: IntroShowca
           </div>
         </div>
 
-        {/* 3D iPhone 17 Pro Max Canvas Container & Gentle Tech Bubbles (Leads slide-up smoothly) */}
+        {/* 3D iPhone 17 Pro Max Canvas Container & Tech Bubbles (Cross-fades & floats up) */}
         <div
-          className={`w-full max-w-4xl relative z-10 -mt-2 sm:-mt-4 flex items-center justify-center transition-all duration-[1400ms] cubic-bezier(0.16,1,0.3,1) transform ${
-            isSlidingUp ? "-translate-y-[115vh] scale-95" : "translate-y-0 scale-100"
+          className={`w-full max-w-4xl relative z-10 -mt-2 sm:-mt-4 flex items-center justify-center transition-all duration-[1200ms] cubic-bezier(0.16,1,0.3,1) transform ${
+            isSlidingUp ? "opacity-0 -translate-y-[70vh] scale-95" : "opacity-100 translate-y-0 scale-100"
           }`}
         >
           {/* 1. React Bubble (Top Left - Smooth Fade/Slide) */}

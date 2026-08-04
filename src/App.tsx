@@ -449,9 +449,9 @@ export default function App() {
         />
       )}
       <main
-        className={`page-grid-shell transition-all duration-1000 cubic-bezier(0.16,1,0.3,1) transform ${
+        className={`page-grid-shell transition-all duration-[1200ms] cubic-bezier(0.16,1,0.3,1) transform ${
           showIntro && !isHeroRevealed
-            ? "opacity-0 translate-y-12 pointer-events-none"
+            ? "opacity-0 translate-y-16 pointer-events-none"
             : "opacity-100 translate-y-0"
         }`}
       >
