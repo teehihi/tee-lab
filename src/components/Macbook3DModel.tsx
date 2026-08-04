@@ -75,14 +75,15 @@ export function Macbook3DModel({ screenImage, className = "" }: Macbook3DModelPr
     let frameNode: THREE.Object3D | null = null;
     let isViewportVisible = false;
 
-    // IntersectionObserver to trigger lid opening animation when scrolling into viewport
+    // IntersectionObserver to trigger lid opening animation when scrolling into middle of viewport (~50%)
     const observer = new IntersectionObserver(
       ([entry]) => {
-        if (entry.isIntersecting) {
-          isViewportVisible = true;
-        }
+        isViewportVisible = entry.isIntersecting;
       },
-      { threshold: 0.15 }
+      {
+        threshold: 0.45, // Triggers lid opening when model is ~50% into viewport
+        rootMargin: "-10% 0px -10% 0px",
+      }
     );
     observer.observe(container);
 
