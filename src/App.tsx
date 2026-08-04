@@ -687,7 +687,7 @@ export default function App() {
             setIsCarouselVisible(true);
           }
         },
-        { threshold: 0.1 }
+        { threshold: 0.2, rootMargin: "0px 0px -80px 0px" }
       );
       carouselObserver.observe(carouselEl);
     }
@@ -899,10 +899,10 @@ export default function App() {
         {/* SUPPORTING & EXPERIMENTAL PROJECTS MARQUEE CAROUSEL */}
         <section
           ref={carouselRef}
-          className={`py-12 w-screen relative left-1/2 right-1/2 -ml-[50vw] -mr-[50vw] overflow-hidden my-4 transition-all duration-1000 ease-[cubic-bezier(0.16,1,0.3,1)] transform ${
+          className={`py-12 w-screen relative left-1/2 right-1/2 -ml-[50vw] -mr-[50vw] overflow-hidden my-4 transition-all duration-[1200ms] cubic-bezier(0.16,1,0.3,1) transform ${
             isCarouselVisible
-              ? "opacity-100 translate-y-0"
-              : "opacity-0 translate-y-12 pointer-events-none"
+              ? "opacity-100 translate-y-0 scale-100"
+              : "opacity-0 translate-y-16 scale-[0.97] pointer-events-none"
           }`}
         >
           <div className="mx-auto w-full max-w-[1550px] px-[5vw] lg:px-[6vw] xl:px-[8vw] mb-8">
