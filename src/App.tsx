@@ -405,11 +405,11 @@ function ScrollProjectCard({ project, index }: { project: ProjectItem; index: nu
           : "opacity-40 scale-[0.93] translate-y-8 shadow-none"
       }`}
     >
-      {/* Full Background Card Image (bg1.webp, Bg2.webp, bg3.webp) */}
+      {/* Full Background Card Image with 85% Opacity (bg1.webp, Bg2.webp, bg3.webp) */}
       <img
         src={project.bgGraphic}
         alt=""
-        className="absolute inset-0 w-full h-full object-fill z-0 pointer-events-none"
+        className="absolute inset-0 w-full h-full object-fill z-0 pointer-events-none opacity-85"
       />
 
       <div className="relative z-10 grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-10 items-center w-full h-full">
