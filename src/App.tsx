@@ -274,7 +274,7 @@ function ProjectSlideshow({ images, title }: { images: string[]; title: string }
       <img
         src={images[currentIndex]}
         alt={`${title} screenshot ${currentIndex + 1}`}
-        className="w-full h-full object-cover object-top transition-all duration-500 ease-out transform group-hover:scale-105"
+        className="w-full h-full object-cover object-top"
       />
 
       {/* Prev / Next Controls */}
@@ -294,7 +294,7 @@ function ProjectSlideshow({ images, title }: { images: string[]; title: string }
         <ChevronRight className="w-5 h-5" />
       </button>
 
-      {/* Glass Pill Dot Pagination Control (Matching User Screenshot) */}
+      {/* Glass Pill Dot Pagination Control */}
       <div className="absolute bottom-3 inset-x-0 flex items-center justify-center z-10 pointer-events-auto">
         <div className="px-3.5 py-1.5 rounded-full bg-black/65 backdrop-blur-md border border-white/15 flex items-center gap-2 shadow-xl">
           {images.map((_, idx) => (
@@ -329,7 +329,7 @@ function ProjectMedia({ project }: { project: ProjectItem }) {
         <img
           src={project.mediaUrl}
           alt={`${project.title} GIF Demo`}
-          className="w-full h-full object-cover object-top transition-all duration-500 ease-out transform group-hover:scale-105"
+          className="w-full h-full object-cover object-top"
         />
         <div className="absolute top-3 right-3 px-3 py-1 rounded-full bg-emerald-500/20 backdrop-blur-md border border-emerald-500/30 text-emerald-400 text-xs font-mono font-medium z-10 flex items-center gap-1.5">
           <span className="w-2 h-2 rounded-full bg-emerald-400 animate-ping" />
@@ -346,7 +346,7 @@ function ProjectMedia({ project }: { project: ProjectItem }) {
         <img
           src={project.mediaUrl}
           alt={`${project.title} Media`}
-          className="w-full h-full object-cover object-top transition-all duration-500 ease-out transform group-hover:scale-105"
+          className="w-full h-full object-cover object-top"
         />
       ) : (
         <div className="relative z-10 flex flex-col items-center gap-3">
@@ -371,6 +371,8 @@ function ProjectMedia({ project }: { project: ProjectItem }) {
 function ScrollProjectCard({ project, index }: { project: ProjectItem; index: number }) {
   const cardRef = useRef<HTMLDivElement>(null);
   const [isInFocus, setIsInFocus] = useState(false);
+  const [tilt, setTilt] = useState({ x: 0, y: 0 });
+  const [isHovered, setIsHovered] = useState(false);
 
   useEffect(() => {
     const el = cardRef.current;
@@ -391,15 +393,49 @@ function ScrollProjectCard({ project, index }: { project: ProjectItem; index: nu
     return () => observer.disconnect();
   }, []);
 
+  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
+    const el = cardRef.current;
+    if (!el) return;
+
+    const rect = el.getBoundingClientRect();
+    const x = (e.clientX - rect.left) / rect.width - 0.5;
+    const y = (e.clientY - rect.top) / rect.height - 0.5;
+
+    // 12-degree tilt maximum for rich 3D corner response
+    const maxTilt = 12;
+    setTilt({
+      x: -y * maxTilt,
+      y: x * maxTilt,
+    });
+  };
+
+  const handleMouseEnter = () => {
+    setIsHovered(true);
+  };
+
+  const handleMouseLeave = () => {
+    setIsHovered(false);
+    setTilt({ x: 0, y: 0 });
+  };
+
   const isEven = index % 2 === 0;
 
   return (
     <div
       ref={cardRef}
-      className={`relative w-full max-w-[1232px] mx-auto aspect-auto lg:aspect-[1232/540] min-h-[380px] rounded-[2.2rem] sm:rounded-[2.8rem] overflow-hidden transition-all duration-700 cubic-bezier(0.16, 1, 0.3, 1) transform flex items-center p-5 sm:p-8 lg:p-10 ${
+      onMouseMove={handleMouseMove}
+      onMouseEnter={handleMouseEnter}
+      onMouseLeave={handleMouseLeave}
+      style={{
+        transformStyle: "preserve-3d",
+        transform: isHovered
+          ? `perspective(1000px) rotateX(${tilt.x}deg) rotateY(${tilt.y}deg) scale3d(1.015, 1.015, 1.015)`
+          : undefined,
+      }}
+      className={`relative w-full max-w-[1232px] mx-auto aspect-auto lg:aspect-[1232/540] min-h-[380px] rounded-[2.2rem] sm:rounded-[2.8rem] overflow-hidden transition-all duration-300 ease-out flex items-center p-5 sm:p-8 lg:p-10 ${
         isInFocus
-          ? "opacity-100 scale-100 translate-y-0 shadow-[0_30px_90px_rgba(0,0,0,0.85)]"
-          : "opacity-40 scale-[0.93] translate-y-8 shadow-none"
+          ? "opacity-100 translate-y-0 shadow-[0_30px_90px_rgba(0,0,0,0.85)]"
+          : "opacity-40 translate-y-8 shadow-none"
       }`}
     >
       {/* Full Background Card Image with 85% Opacity (bg1.webp, Bg2.webp, bg3.webp) */}
@@ -413,8 +449,8 @@ function ScrollProjectCard({ project, index }: { project: ProjectItem; index: nu
         {/* MEDIA COLUMN (Balanced 6 columns, compact frame) */}
         <div className={`w-full lg:col-span-6 ${isEven ? "lg:order-1" : "lg:order-2"}`}>
           <div className="relative flex items-center justify-center w-full">
-            {/* Primary Media Card Mockup (Compact size) */}
-            <div className="relative z-10 w-full sm:w-[94%] aspect-[16/10] rounded-xl overflow-hidden border border-white/20 bg-black/90 shadow-[0_20px_50px_rgba(0,0,0,0.8)] group transition-transform duration-500 hover:scale-[1.02]">
+            {/* Primary Media Card Mockup */}
+            <div className="relative z-10 w-full sm:w-[94%] aspect-[16/10] rounded-xl overflow-hidden border border-white/20 bg-black/90 shadow-[0_20px_50px_rgba(0,0,0,0.8)]">
               <ProjectMedia project={project} />
             </div>
           </div>
