@@ -277,11 +277,6 @@ function ProjectSlideshow({ images, title }: { images: string[]; title: string }
         className="w-full h-full object-cover object-top transition-all duration-500 ease-out transform group-hover:scale-105"
       />
 
-      {/* Top Slide Counter Badge */}
-      <div className="absolute top-3 right-3 px-3 py-1 rounded-full bg-black/75 backdrop-blur-md border border-white/10 text-white/90 text-xs font-mono font-medium z-10 shadow-lg">
-        {currentIndex + 1} / {images.length}
-      </div>
-
       {/* Prev / Next Controls */}
       <button
         onClick={prevSlide}
@@ -299,23 +294,25 @@ function ProjectSlideshow({ images, title }: { images: string[]; title: string }
         <ChevronRight className="w-5 h-5" />
       </button>
 
-      {/* Bottom Dots Navigation */}
-      <div className="absolute bottom-3 inset-x-0 flex items-center justify-center gap-1.5 z-10">
-        {images.map((_, idx) => (
-          <button
-            key={idx}
-            onClick={(e) => {
-              e.stopPropagation();
-              setCurrentIndex(idx);
-            }}
-            className={`transition-all duration-300 rounded-full cursor-pointer ${
-              idx === currentIndex
-                ? "w-6 h-2 bg-emerald-400 shadow-[0_0_10px_rgba(16,185,129,0.8)]"
-                : "w-2 h-2 bg-white/40 hover:bg-white/80"
-            }`}
-            aria-label={`Go to slide ${idx + 1}`}
-          />
-        ))}
+      {/* Glass Pill Dot Pagination Control (Matching User Screenshot) */}
+      <div className="absolute bottom-3 inset-x-0 flex items-center justify-center z-10 pointer-events-auto">
+        <div className="px-3.5 py-1.5 rounded-full bg-black/65 backdrop-blur-md border border-white/15 flex items-center gap-2 shadow-xl">
+          {images.map((_, idx) => (
+            <button
+              key={idx}
+              onClick={(e) => {
+                e.stopPropagation();
+                setCurrentIndex(idx);
+              }}
+              className={`transition-all duration-300 rounded-full cursor-pointer ${
+                idx === currentIndex
+                  ? "w-2.5 h-2.5 bg-white scale-125 shadow-[0_0_8px_rgba(255,255,255,0.95)]"
+                  : "w-2 h-2 bg-white/35 hover:bg-white/70"
+              }`}
+              aria-label={`Go to slide ${idx + 1}`}
+            />
+          ))}
+        </div>
       </div>
     </div>
   );
