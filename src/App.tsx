@@ -634,18 +634,16 @@ function Flip3DProjectCard({ project }: { project: SecondaryProjectItem }) {
       </div>
 
       {/* BOTTOM LABEL BAR (TÊN DỰ ÁN) */}
-      <div className="w-full px-5 py-3.5 bg-[#171922] border-t border-white/5 flex items-center justify-between min-h-[64px]">
-        <div className="pr-2 flex flex-col justify-center">
-          <h4 className="text-base font-bold text-white tracking-wide group-hover:text-emerald-400 transition-colors leading-snug">
+      <div className="w-full px-5 py-4 bg-[#171922] border-t border-white/5 flex items-center justify-between">
+        <div className="pr-3 flex flex-col justify-center">
+          <h4 className="text-base font-bold text-white tracking-wide group-hover:text-emerald-400 transition-colors">
             {project.title}
           </h4>
           <p className="text-xs text-slate-400 font-mono mt-0.5 truncate max-w-[210px]">
             {project.subtitle}
           </p>
         </div>
-        <div className="w-8.5 h-8.5 rounded-full bg-white/5 group-hover:bg-emerald-500 group-hover:text-black text-white/70 flex items-center justify-center transition-all duration-300 shrink-0 self-center">
-          <ArrowRight className="w-4 h-4 group-hover:translate-x-0.5 transition-transform" />
-        </div>
+        <ArrowRight className="w-5 h-5 text-slate-400 group-hover:text-emerald-400 group-hover:translate-x-1 transition-all shrink-0" />
       </div>
     </a>
   );
@@ -659,6 +657,8 @@ export default function App() {
   const [isMacOpen, setIsMacOpen] = useState(false);
   const [isSkillsVisible, setIsSkillsVisible] = useState(false);
   const skillsRef = useRef<HTMLElement>(null);
+  const [isCarouselVisible, setIsCarouselVisible] = useState(false);
+  const carouselRef = useRef<HTMLElement>(null);
 
   React.useEffect(() => {
     // Proactively preload 3D models and textures in background
@@ -667,19 +667,30 @@ export default function App() {
 
   React.useEffect(() => {
     const el = skillsRef.current;
-    if (!el) return;
+    if (el) {
+      const observer = new IntersectionObserver(
+        ([entry]) => {
+          if (entry.isIntersecting) {
+            setIsSkillsVisible(true);
+          }
+        },
+        { threshold: 0.15 }
+      );
+      observer.observe(el);
+    }
 
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          setIsSkillsVisible(true);
-        }
-      },
-      { threshold: 0.15 }
-    );
-
-    observer.observe(el);
-    return () => observer.disconnect();
+    const carouselEl = carouselRef.current;
+    if (carouselEl) {
+      const carouselObserver = new IntersectionObserver(
+        ([entry]) => {
+          if (entry.isIntersecting) {
+            setIsCarouselVisible(true);
+          }
+        },
+        { threshold: 0.1 }
+      );
+      carouselObserver.observe(carouselEl);
+    }
   }, []);
 
   React.useEffect(() => {
@@ -886,7 +897,14 @@ export default function App() {
         </section>
 
         {/* SUPPORTING & EXPERIMENTAL PROJECTS MARQUEE CAROUSEL */}
-        <section className="py-12 w-screen relative left-1/2 right-1/2 -ml-[50vw] -mr-[50vw] overflow-hidden my-4">
+        <section
+          ref={carouselRef}
+          className={`py-12 w-screen relative left-1/2 right-1/2 -ml-[50vw] -mr-[50vw] overflow-hidden my-4 transition-all duration-1000 ease-[cubic-bezier(0.16,1,0.3,1)] transform ${
+            isCarouselVisible
+              ? "opacity-100 translate-y-0"
+              : "opacity-0 translate-y-12 pointer-events-none"
+          }`}
+        >
           <div className="mx-auto w-full max-w-[1550px] px-[5vw] lg:px-[6vw] xl:px-[8vw] mb-8">
             <div className="flex flex-col sm:flex-row items-start sm:items-end justify-between gap-4">
               <div>
