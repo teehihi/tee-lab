@@ -384,37 +384,12 @@ export function InteractiveGrid({
 }
 
 export function ClickEffects() {
-  const audioRef = useRef(null);
-
   useEffect(() => {
-    const playClick = () => {
-      try {
-        const AudioContext = window.AudioContext || window.webkitAudioContext;
-        if (!AudioContext) return;
-        const ctx = audioRef.current || new AudioContext();
-        audioRef.current = ctx;
-        const oscillator = ctx.createOscillator();
-        const gain = ctx.createGain();
-        oscillator.type = "triangle";
-        oscillator.frequency.setValueAtTime(520, ctx.currentTime);
-        oscillator.frequency.exponentialRampToValueAtTime(180, ctx.currentTime + 0.08);
-        gain.gain.setValueAtTime(0.025, ctx.currentTime);
-        gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.09);
-        oscillator.connect(gain);
-        gain.connect(ctx.destination);
-        oscillator.start();
-        oscillator.stop(ctx.currentTime + 0.1);
-      } catch {
-        // Audio is a small enhancement; ignore unsupported browsers.
-      }
-    };
-
-    const onPointerDown = (event) => {
+    const onPointerDown = (event: PointerEvent) => {
       document.documentElement.style.setProperty("--click-x", `${event.clientX}px`);
       document.documentElement.style.setProperty("--click-y", `${event.clientY}px`);
       document.documentElement.classList.remove("click-pulse-active");
       window.requestAnimationFrame(() => document.documentElement.classList.add("click-pulse-active"));
-      playClick();
     };
 
     window.addEventListener("pointerdown", onPointerDown, { passive: true });

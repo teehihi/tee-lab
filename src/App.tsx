@@ -1,3 +1,4 @@
+// Cache Invalidation Timestamp: 2026-08-04T21:53:00Z
 import React, { useState, useEffect, useRef } from "react";
 import {
   ArrowUpRight,
@@ -686,8 +687,7 @@ export default function App() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  const featuredProjects = projects.filter((project) => project.featured);
-  const supportingProjects = projects.filter((project) => !project.featured);
+  const featuredProjects = projects;
 
   const handleCopyEmail = () => {
     navigator.clipboard.writeText(personalInfo.email);
@@ -720,15 +720,15 @@ export default function App() {
       <ScrollProgress />
       <InteractiveGrid
         clickInteraction
-        clickForce={0.8}
+        clickForce={1.0}
         cursorTrail
         trailMode="hover"
         trailColor="#10b981"
         hoverColor="#10b981"
-        gridSize={58}
-        radius={310}
-        repulsionStrength={-0.66}
-        motionSpeed={0.68}
+        gridSize={52}
+        radius={360}
+        repulsionStrength={-0.8}
+        motionSpeed={0.8}
       />
       <ClickEffects />
 
