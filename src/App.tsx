@@ -213,7 +213,7 @@ const navItems = [
   ["about", "About Me"],
   ["skills", "Skills"],
   ["projects", "Projects"],
-  ["experience", "Experience"],
+  ["experience", "Education"],
   ["honors", "My Achievements"],
   ["contact", "Contact"],
 ];
@@ -954,54 +954,59 @@ export default function App() {
         </section>
 
         {/* EXPERIENCE & EDUCATION SECTION */}
-        <section id="experience" className="scroll-mt-24 py-16">
-          <SectionHeader
-            eyebrow="BACKGROUND"
-            title="Education & Technical Journey"
-            description="Academic milestones and hands-on software development experience."
-          />
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center mt-8">
-            {/* LEFT COLUMN: Dual 3D iPhone Display */}
-            <div className="lg:col-span-6 flex items-center justify-center relative min-h-[440px] sm:min-h-[520px] select-none">
-              <DualIphone3DModel
-                screenImageFront="/phone-screen.png"
-                screenImageBack="/phone-screen.png"
-              />
-            </div>
+        <section
+          id="experience"
+          className="scroll-mt-24 py-16 w-screen relative left-1/2 right-1/2 -ml-[50vw] -mr-[50vw] px-[5vw] lg:px-[6vw] xl:px-[8vw] max-w-screen overflow-x-hidden"
+        >
+          <div className="mx-auto w-full max-w-[1550px]">
+            <SectionHeader
+              eyebrow="BACKGROUND"
+              title="Education & Technical Journey"
+              description="Academic milestones and hands-on software development experience."
+            />
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center mt-8">
+              {/* LEFT COLUMN: Dual 3D iPhone Display */}
+              <div className="lg:col-span-6 flex items-center justify-center lg:justify-start relative min-h-[460px] sm:min-h-[540px] select-none">
+                <DualIphone3DModel
+                  screenImageFront="/phone-screen.png"
+                  screenImageBack="/screenMapUTE.png"
+                />
+              </div>
 
-            {/* RIGHT COLUMN: Education & Experience Cards */}
-            <div className="lg:col-span-6 space-y-6">
-              <Card className="p-6">
-                <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2 mb-4">
-                  <div>
-                    <h3 className="text-lg font-bold">{personalInfo.school}</h3>
-                    <p className="text-sm text-emerald-500 font-medium">Bachelor of Science in Information Technology</p>
+              {/* RIGHT COLUMN: Education & Experience Cards */}
+              <div className="lg:col-span-6 space-y-6">
+                <Card className="p-6 sm:p-7">
+                  <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2 mb-4">
+                    <div>
+                      <h3 className="text-lg font-bold">{personalInfo.school}</h3>
+                      <p className="text-sm text-emerald-500 font-medium">Bachelor of Science in Information Technology</p>
+                    </div>
+                    <span className="text-xs px-3 py-1 rounded-full bg-muted text-muted-foreground font-mono">
+                      2023 - 2027 (Expected)
+                    </span>
                   </div>
-                  <span className="text-xs px-3 py-1 rounded-full bg-muted text-muted-foreground font-mono">
-                    2023 - 2027 (Expected)
-                  </span>
-                </div>
-                <p className="text-sm text-muted-foreground leading-relaxed">
-                  Currently maintaining a cumulative <strong>GPA of {personalInfo.gpa}</strong>. Specialized coursework in Data Structures & Algorithms, Database Management Systems, Software Architecture, Machine Learning, and Computer Vision.
-                </p>
-              </Card>
+                  <p className="text-sm text-muted-foreground leading-relaxed">
+                    Currently maintaining a cumulative <strong>GPA of {personalInfo.gpa}</strong>. Specialized coursework in Data Structures & Algorithms, Database Management Systems, Software Architecture, Machine Learning, and Computer Vision.
+                  </p>
+                </Card>
 
-              <Card className="p-6">
-                <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2 mb-4">
-                  <div>
-                    <h3 className="text-lg font-bold">Full-Stack Developer</h3>
-                    <p className="text-sm text-emerald-500 font-medium">Independent & Team Projects</p>
+                <Card className="p-6 sm:p-7">
+                  <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2 mb-4">
+                    <div>
+                      <h3 className="text-lg font-bold">Full-Stack Developer</h3>
+                      <p className="text-sm text-emerald-500 font-medium">Independent & Team Projects</p>
+                    </div>
+                    <span className="text-xs px-3 py-1 rounded-full bg-muted text-muted-foreground font-mono">
+                      2023 - Present
+                    </span>
                   </div>
-                  <span className="text-xs px-3 py-1 rounded-full bg-muted text-muted-foreground font-mono">
-                    2023 - Present
-                  </span>
-                </div>
-                <ul className="text-sm text-muted-foreground space-y-2 list-disc list-inside">
-                  <li>Architected full-stack React + Node.js web applications with RESTful APIs and real-time Socket rooms.</li>
-                  <li>Trained and integrated computer vision models (YOLOv11) for real-time industrial anomaly inspection.</li>
-                  <li>Co-developed browser gameplay engines, 60fps HTML5 Canvas physics, and interactive puzzle UI loops.</li>
-                </ul>
-              </Card>
+                  <ul className="text-sm text-muted-foreground space-y-2 list-disc list-inside">
+                    <li>Architected full-stack React + Node.js web applications with RESTful APIs and real-time Socket rooms.</li>
+                    <li>Trained and integrated computer vision models (YOLOv11) for real-time industrial anomaly inspection.</li>
+                    <li>Co-developed browser gameplay engines, 60fps HTML5 Canvas physics, and interactive puzzle UI loops.</li>
+                  </ul>
+                </Card>
+              </div>
             </div>
           </div>
         </section>

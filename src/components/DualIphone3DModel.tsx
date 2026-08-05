@@ -43,11 +43,10 @@ export function DualIphone3DModel({
     renderer.setSize(width, height);
     renderer.outputColorSpace = THREE.SRGBColorSpace;
 
-    // 2. Root Group containing both Phones
+    // 2. Root Group containing both Phones (Shifted slightly left for balanced column layout)
     const dualGroup = new THREE.Group();
-    // Default angle for the dual-phone composition
-    dualGroup.position.set(0, 0, 0);
-    dualGroup.rotation.set(0.05, 0.15, 0);
+    dualGroup.position.set(-0.20, 0, 0);
+    dualGroup.rotation.set(0, 0, 0);
     scene.add(dualGroup);
 
     // 3. Studio Lighting - Pure Neutral Studio Setup for natural Space Gray / Dark Titanium body finish
@@ -121,28 +120,28 @@ export function DualIphone3DModel({
         baseScene.position.sub(center);
 
         const maxDim = Math.max(size.x, size.y, size.z);
-        const targetHeight = 2.15;
+        const targetHeight = 2.05;
         const scaleFactor = targetHeight / (maxDim || 1);
 
-        // --- PHONE 1: Back Left Phone (Positioned higher, upright facing forward) ---
+        // --- PHONE 1: Back Left Phone (Positioned higher, 100% straight upright) ---
         const backPhone = baseScene.clone(true);
         backPhone.scale.set(scaleFactor * 0.98, scaleFactor * 0.98, scaleFactor * 0.98);
         setupPhoneMaterials(backPhone, textureBack);
         
         const backContainer = new THREE.Group();
-        backContainer.position.set(-0.35, 0.42, -0.40);
-        backContainer.rotation.set(0.04, 0.08, -0.02);
+        backContainer.position.set(-0.35, 0.44, -0.40);
+        backContainer.rotation.set(0, 0, 0);
         backContainer.add(backPhone);
         dualGroup.add(backContainer);
 
-        // --- PHONE 2: Front Right Phone (Positioned lower, overlapping bottom right) ---
+        // --- PHONE 2: Front Right Phone (Positioned higher so bottom bezel is 100% visible) ---
         const frontPhone = baseScene.clone(true);
-        frontPhone.scale.set(scaleFactor * 1.05, scaleFactor * 1.05, scaleFactor * 1.05);
+        frontPhone.scale.set(scaleFactor * 1.02, scaleFactor * 1.02, scaleFactor * 1.02);
         setupPhoneMaterials(frontPhone, textureFront);
 
         const frontContainer = new THREE.Group();
-        frontContainer.position.set(0.28, -0.36, 0.40);
-        frontContainer.rotation.set(-0.02, -0.06, 0.02);
+        frontContainer.position.set(0.28, -0.22, 0.40);
+        frontContainer.rotation.set(0, 0, 0);
         frontContainer.add(frontPhone);
         dualGroup.add(frontContainer);
 
@@ -150,7 +149,7 @@ export function DualIphone3DModel({
       })
       .catch((err) => console.error("Error loading dual iphone glb:", err));
 
-    // 6. Static / Micro-Mouse Parallax Physics Loop (No Floating Animation)
+    // 6. Static / Micro-Mouse Parallax Physics Loop (100% Straight Upright)
     let mouseX = 0;
     let mouseY = 0;
     let targetRotX = 0;
@@ -170,12 +169,12 @@ export function DualIphone3DModel({
       if (!isMounted) return;
       animationFrameId = requestAnimationFrame(animate);
 
-      // Smooth Micro Mouse Lerp (Model stays stable and still)
-      targetRotY += (mouseX * 0.25 - targetRotY) * 0.05;
-      targetRotX += (-mouseY * 0.2 - targetRotX) * 0.05;
+      // Extremely subtle micro mouse tilt (phones remain virtually stationary and straight)
+      targetRotY += (mouseX * 0.03 - targetRotY) * 0.04;
+      targetRotX += (-mouseY * 0.02 - targetRotX) * 0.04;
 
-      dualGroup.rotation.y = 0.15 + targetRotY;
-      dualGroup.rotation.x = 0.05 + targetRotX;
+      dualGroup.rotation.y = targetRotY;
+      dualGroup.rotation.x = targetRotX;
       dualGroup.position.y = 0;
       dualGroup.rotation.z = 0;
 
