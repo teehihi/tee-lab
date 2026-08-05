@@ -968,7 +968,7 @@ export default function App() {
               {/* LEFT COLUMN: Dual 3D iPhone Display */}
               <div className="lg:col-span-6 flex items-center justify-center lg:justify-start relative min-h-[460px] sm:min-h-[540px] select-none">
                 <DualIphone3DModel
-                  screenImageFront="/phone-screen.png"
+                  screenImageFront="/fbUTE.png"
                   screenImageBack="/screenMapUTE.png"
                 />
               </div>

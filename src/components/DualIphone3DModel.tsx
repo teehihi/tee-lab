@@ -49,19 +49,19 @@ export function DualIphone3DModel({
     dualGroup.rotation.set(0, 0, 0);
     scene.add(dualGroup);
 
-    // 3. Studio Lighting - Pure Neutral Studio Setup for natural Space Gray / Dark Titanium body finish
-    const ambientLight = new THREE.AmbientLight(0xffffff, 2.6);
+    // 3. Studio Lighting - Balanced Studio Setup for crisp, rich screen colors and Space Gray body finish
+    const ambientLight = new THREE.AmbientLight(0xffffff, 1.6);
     scene.add(ambientLight);
 
-    const keyLight = new THREE.DirectionalLight(0xffffff, 3.2);
+    const keyLight = new THREE.DirectionalLight(0xffffff, 1.8);
     keyLight.position.set(4, 5, 4);
     scene.add(keyLight);
 
-    const fillLight = new THREE.DirectionalLight(0xe4e4e7, 1.6);
+    const fillLight = new THREE.DirectionalLight(0xd4d4d8, 1.0);
     fillLight.position.set(-4, 2, 3);
     scene.add(fillLight);
 
-    const rimLight = new THREE.DirectionalLight(0xffffff, 1.8);
+    const rimLight = new THREE.DirectionalLight(0xffffff, 1.0);
     rimLight.position.set(0, -3, -2);
     scene.add(rimLight);
 
@@ -76,23 +76,43 @@ export function DualIphone3DModel({
     textureBack.rotation = Math.PI;
     textureBack.generateMipmaps = false;
 
-    // Helper to process phone material & apply textures
+    // Helper to process phone material & apply textures cleanly
     const setupPhoneMaterials = (phoneScene: THREE.Group, screenTex: THREE.Texture) => {
       phoneScene.traverse((node: any) => {
         if (node.isMesh && node.material) {
           const processMat = (mat: any) => {
             const matName = (mat?.name || "").toLowerCase();
-            if (matName === "oled" || matName === "oled off") {
+            
+            // 1. MAIN DISPLAY SCREEN (OLED) - Crisp, true-to-life colors without white glare
+            if (matName === "oled") {
               const newMat = mat.clone();
               newMat.map = screenTex;
-              if (newMat.emissiveMap !== undefined) newMat.emissiveMap = screenTex;
-              if (newMat.emissive !== undefined) newMat.emissive.setHex(0xffffff);
-              if (newMat.emissiveIntensity !== undefined) newMat.emissiveIntensity = 0.85;
+              newMat.color.setHex(0xffffff);
+              if (newMat.emissive !== undefined) newMat.emissive.setHex(0x000000);
+              if (newMat.emissiveIntensity !== undefined) newMat.emissiveIntensity = 0;
+              newMat.roughness = 0.2;
+              newMat.metalness = 0.0;
               newMat.needsUpdate = true;
               node.material = newMat;
-            } else if (matName.includes("glass")) {
+            }
+            // 2. DYNAMIC ISLAND & DISPLAY FRAME (OLED off) - Pitch black pill cutout, eliminating white gap
+            else if (matName === "oled off" || matName === "display frame") {
+              const darkMat = mat.clone();
+              darkMat.map = null;
+              darkMat.color.setHex(0x000000);
+              if (darkMat.emissive !== undefined) darkMat.emissive.setHex(0x000000);
+              if (darkMat.emissiveIntensity !== undefined) darkMat.emissiveIntensity = 0;
+              darkMat.roughness = 0.9;
+              darkMat.metalness = 0.0;
+              darkMat.needsUpdate = true;
+              node.material = darkMat;
+            }
+            // 3. FRONT SCREEN GLASS COVER - Low opacity to prevent washed out reflections
+            else if (matName.includes("glass") || matName.includes("tint")) {
               mat.transparent = true;
-              mat.opacity = 0.35;
+              mat.opacity = 0.15;
+              mat.roughness = 0.1;
+              if (mat.emissive !== undefined) mat.emissive.setHex(0x000000);
               mat.needsUpdate = true;
             }
           };
