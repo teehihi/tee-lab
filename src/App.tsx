@@ -962,7 +962,7 @@ export default function App() {
           />
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center mt-8">
             {/* LEFT COLUMN: Dual 3D iPhone Display */}
-            <div className="lg:col-span-6 flex items-center justify-center relative bg-gradient-to-b from-emerald-500/5 via-transparent to-transparent rounded-3xl border border-white/5 p-4 sm:p-6 overflow-hidden min-h-[440px] sm:min-h-[500px]">
+            <div className="lg:col-span-6 flex items-center justify-center relative min-h-[440px] sm:min-h-[520px] select-none">
               <DualIphone3DModel
                 screenImageFront="/phone-screen.png"
                 screenImageBack="/phone-screen.png"

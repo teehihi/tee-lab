@@ -50,19 +50,19 @@ export function DualIphone3DModel({
     dualGroup.rotation.set(0.05, 0.15, 0);
     scene.add(dualGroup);
 
-    // 3. Studio Lighting
-    const ambientLight = new THREE.AmbientLight(0xffffff, 2.4);
+    // 3. Studio Lighting - Pure Neutral Studio Setup for natural Space Gray / Dark Titanium body finish
+    const ambientLight = new THREE.AmbientLight(0xffffff, 2.6);
     scene.add(ambientLight);
 
-    const keyLight = new THREE.DirectionalLight(0xffffff, 3.0);
-    keyLight.position.set(3, 5, 4);
+    const keyLight = new THREE.DirectionalLight(0xffffff, 3.2);
+    keyLight.position.set(4, 5, 4);
     scene.add(keyLight);
 
-    const fillLight = new THREE.DirectionalLight(0x10b981, 1.8);
-    fillLight.position.set(-5, 2, 3);
+    const fillLight = new THREE.DirectionalLight(0xe4e4e7, 1.6);
+    fillLight.position.set(-4, 2, 3);
     scene.add(fillLight);
 
-    const rimLight = new THREE.DirectionalLight(0x38bdf8, 2.2);
+    const rimLight = new THREE.DirectionalLight(0xffffff, 1.8);
     rimLight.position.set(0, -3, -2);
     scene.add(rimLight);
 
@@ -121,30 +121,28 @@ export function DualIphone3DModel({
         baseScene.position.sub(center);
 
         const maxDim = Math.max(size.x, size.y, size.z);
-        const targetHeight = 2.1;
+        const targetHeight = 2.15;
         const scaleFactor = targetHeight / (maxDim || 1);
 
-        // --- PHONE 1: Back Left Phone ---
+        // --- PHONE 1: Back Left Phone (Positioned higher, upright facing forward) ---
         const backPhone = baseScene.clone(true);
-        backPhone.scale.set(scaleFactor * 0.95, scaleFactor * 0.95, scaleFactor * 0.95);
+        backPhone.scale.set(scaleFactor * 0.98, scaleFactor * 0.98, scaleFactor * 0.98);
         setupPhoneMaterials(backPhone, textureBack);
         
-        // Position & Rotate Back Phone (Overlapping behind on left)
         const backContainer = new THREE.Group();
-        backContainer.position.set(-0.45, 0.30, -0.45);
-        backContainer.rotation.set(0.12, -0.32, -0.15);
+        backContainer.position.set(-0.35, 0.42, -0.40);
+        backContainer.rotation.set(0.04, 0.08, -0.02);
         backContainer.add(backPhone);
         dualGroup.add(backContainer);
 
-        // --- PHONE 2: Front Right Phone ---
+        // --- PHONE 2: Front Right Phone (Positioned lower, overlapping bottom right) ---
         const frontPhone = baseScene.clone(true);
         frontPhone.scale.set(scaleFactor * 1.05, scaleFactor * 1.05, scaleFactor * 1.05);
         setupPhoneMaterials(frontPhone, textureFront);
 
-        // Position & Rotate Front Phone (Overlapping forward on right)
         const frontContainer = new THREE.Group();
-        frontContainer.position.set(0.38, -0.22, 0.35);
-        frontContainer.rotation.set(-0.08, -0.20, 0.08);
+        frontContainer.position.set(0.28, -0.36, 0.40);
+        frontContainer.rotation.set(-0.02, -0.06, 0.02);
         frontContainer.add(frontPhone);
         dualGroup.add(frontContainer);
 
