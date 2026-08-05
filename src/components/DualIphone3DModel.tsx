@@ -107,7 +107,7 @@ export function DualIphone3DModel({
     };
 
     // 5. Load GLTF Model & Clone into 2 Phones
-    loadGLTFModel("/models/iphone.glb")
+    loadGLTFModel("/models/iphone-17-pro.glb")
       .then((gltf) => {
         if (!isMounted) return;
 
@@ -150,7 +150,7 @@ export function DualIphone3DModel({
       })
       .catch((err) => console.error("Error loading dual iphone glb:", err));
 
-    // 6. Mouse Parallax & Floating Physics Loop
+    // 6. Static / Micro-Mouse Parallax Physics Loop (No Floating Animation)
     let mouseX = 0;
     let mouseY = 0;
     let targetRotX = 0;
@@ -165,26 +165,19 @@ export function DualIphone3DModel({
     window.addEventListener("pointermove", handlePointerMove, { passive: true });
 
     let animationFrameId: number;
-    let clock = new THREE.Clock();
 
     const animate = () => {
       if (!isMounted) return;
       animationFrameId = requestAnimationFrame(animate);
 
-      const elapsedTime = clock.getElapsedTime();
-
-      // Smooth Mouse Lerp Parallax
-      targetRotY += (mouseX * 0.4 - targetRotY) * 0.05;
-      targetRotX += (-mouseY * 0.3 - targetRotX) * 0.05;
-
-      // Gentle Sine Wave Float
-      const floatY = Math.sin(elapsedTime * 1.4) * 0.06;
-      const floatRotZ = Math.cos(elapsedTime * 1.2) * 0.02;
+      // Smooth Micro Mouse Lerp (Model stays stable and still)
+      targetRotY += (mouseX * 0.25 - targetRotY) * 0.05;
+      targetRotX += (-mouseY * 0.2 - targetRotX) * 0.05;
 
       dualGroup.rotation.y = 0.15 + targetRotY;
       dualGroup.rotation.x = 0.05 + targetRotX;
-      dualGroup.position.y = floatY;
-      dualGroup.rotation.z = floatRotZ;
+      dualGroup.position.y = 0;
+      dualGroup.rotation.z = 0;
 
       renderer.render(scene, camera);
     };

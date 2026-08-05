@@ -84,7 +84,7 @@ export function loadCachedTexture(url: string): THREE.Texture {
  * Preload all critical 3D assets in the background during app startup.
  */
 export function preload3DAssets() {
-  const modelsToPreload = ["/models/macbook-pro.glb", "/models/iphone.glb"];
+  const modelsToPreload = ["/models/macbook-pro.glb", "/models/iphone-17-pro.glb", "/models/iphone.glb"];
   const texturesToPreload = ["/bannerMac.png", "/phone-screen.png", "/bg1.webp", "/Bg2.webp", "/bg3.webp"];
 
   // Preload GLTF Models in parallel background tasks
