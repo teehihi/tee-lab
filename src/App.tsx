@@ -40,6 +40,7 @@ import { DualIphone3DModel } from "./components/DualIphone3DModel";
 import { InteractiveHorizontalTimeline } from "./components/InteractiveHorizontalTimeline";
 import { IntroShowcase } from "./components/IntroShowcase";
 import { HonorsAchievementsCards } from "./components/HonorsAchievementsCards";
+import { ContactSection } from "./components/ContactSection";
 import { preload3DAssets } from "./utils/modelCache";
 
 function Github({ className = "h-4 w-4" }: { className?: string }) {
@@ -833,7 +834,7 @@ export default function App() {
                   </div>
                   <div className="hero-actions">
                     <Button href="#projects">Showcase & Case Studies</Button>
-                    <Button href="#contact" variant="secondary">Get In Touch</Button>
+                    <Button href="#honors" variant="secondary">My Achievements</Button>
                   </div>
                 </div>
               </div>
@@ -982,82 +983,7 @@ export default function App() {
           </section>
 
           {/* CONTACT SECTION */}
-          <section id="contact" className="scroll-mt-24 pt-10 sm:pt-12 pb-16">
-            <SectionHeader
-              eyebrow="GET IN TOUCH"
-              title="Let's Build Something Together"
-              description="Open for software engineering opportunities, AI projects, and technical collaborations."
-            />
-            <div className="mt-8 grid grid-cols-1 md:grid-cols-2 gap-8">
-              <Card className="p-6 space-y-4">
-                <h3 className="text-lg font-bold">Contact Details</h3>
-                <div className="space-y-3">
-                  <div className="flex items-center gap-3 text-muted-foreground">
-                    <Mail className="h-4 w-4 text-emerald-500" />
-                    <span>{personalInfo.email}</span>
-                  </div>
-                  <div className="flex items-center gap-3 text-muted-foreground">
-                    <Phone className="h-4 w-4 text-emerald-500" />
-                    <span>{personalInfo.phone}</span>
-                  </div>
-                  <div className="flex items-center gap-3 text-muted-foreground">
-                    <GraduationCap className="h-4 w-4 text-emerald-500" />
-                    <span>{personalInfo.school}</span>
-                  </div>
-                </div>
-
-                <div className="pt-4 flex gap-3">
-                  <button
-                    onClick={handleCopyEmail}
-                    className="flex items-center gap-2 px-4 py-2 rounded-lg bg-emerald-500 text-black font-semibold text-xs hover:bg-emerald-400 transition"
-                  >
-                    {copied ? <Check className="h-4 w-4" /> : <Copy className="h-4 w-4" />}
-                    {copied ? "Email Copied!" : "Copy Email"}
-                  </button>
-                  <a
-                    href={`mailto:${personalInfo.email}`}
-                    className="flex items-center gap-2 px-4 py-2 rounded-lg border border-line text-xs font-semibold hover:bg-muted transition"
-                  >
-                    Send Direct Email
-                  </a>
-                </div>
-              </Card>
-
-              <Card className="p-6 space-y-4">
-                <h3 className="text-lg font-bold">Connect Online</h3>
-                <p className="text-sm text-muted-foreground">
-                  Check out my open source repositories, live project demos, and professional career profile:
-                </p>
-                <div className="space-y-3 pt-2">
-                  <a
-                    href={personalInfo.github}
-                    target="_blank"
-                    rel="noreferrer"
-                    className="flex items-center justify-between p-3 rounded-lg border border-line hover:border-emerald-500 transition"
-                  >
-                    <div className="flex items-center gap-3">
-                      <Github className="h-5 w-5 text-emerald-500" />
-                      <span className="font-medium text-xs">GitHub Repository</span>
-                    </div>
-                    <ExternalIcon className="h-4 w-4 text-muted-foreground" />
-                  </a>
-
-                  <a
-                    href={personalInfo.linkedin}
-                    target="_blank"
-                    rel="noreferrer"
-                    className="flex items-center justify-between p-3 rounded-lg border border-line hover:border-emerald-500 transition"
-                  >
-                    <div className="flex items-center gap-3">
-                      <Linkedin className="h-5 w-5 text-emerald-500" />
-                      <span className="font-medium text-xs">LinkedIn Profile</span>
-                    </div>
-                    <ExternalIcon className="h-4 w-4 text-muted-foreground" />
-                  </a>
-                </div>
-              </Card>
-            </div>
-          </section>
+          <ContactSection personalInfo={personalInfo} />
 
           {/* FOOTER */}
           <footer className="py-8 border-t border-line text-center text-xs text-muted-foreground">

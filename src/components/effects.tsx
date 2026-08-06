@@ -399,8 +399,8 @@ export function ClickEffects() {
 
 export function ThemeToggle({ className = "" }) {
   const [theme, setTheme] = useState(() => {
-    if (typeof window === "undefined") return "light";
-    return localStorage.getItem("portfolio-theme") || "light";
+    if (typeof window === "undefined") return "dark";
+    return localStorage.getItem("portfolio-theme") || "dark";
   });
 
   useEffect(() => {
