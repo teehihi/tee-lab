@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { Mail, Phone, GraduationCap, Copy, Check, Globe } from "lucide-react";
 import { Card, SectionHeader } from "./ui";
 
@@ -38,6 +38,26 @@ interface ContactSectionProps {
 
 export function ContactSection({ personalInfo }: ContactSectionProps) {
   const [copied, setCopied] = useState(false);
+  const [isVisible, setIsVisible] = useState(false);
+  const sectionRef = useRef<HTMLElement>(null);
+
+  useEffect(() => {
+    const el = sectionRef.current;
+    if (!el) return;
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setIsVisible(true);
+          observer.disconnect();
+        }
+      },
+      { threshold: 0.15, rootMargin: "0px 0px -5% 0px" }
+    );
+
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, []);
 
   const handleCopyEmail = () => {
     navigator.clipboard.writeText(personalInfo.email);
@@ -46,7 +66,7 @@ export function ContactSection({ personalInfo }: ContactSectionProps) {
   };
 
   return (
-    <section id="contact" className="scroll-mt-24 pt-10 sm:pt-14 pb-16 relative z-30">
+    <section ref={sectionRef} id="contact" className="scroll-mt-24 pt-10 sm:pt-14 pb-16 relative z-30 overflow-hidden">
       <style>{`
         .qr-card-hover {
           width: 185px;
@@ -131,15 +151,21 @@ export function ContactSection({ personalInfo }: ContactSectionProps) {
         }
       `}</style>
 
-      <SectionHeader
-        eyebrow="GET IN TOUCH"
-        title="Let's Build Something Together"
-        description="Open for software engineering opportunities, AI projects, and technical collaborations."
-      />
+      {/* Section Header with Reveal */}
+      <div className={`transition-all duration-700 cubic-bezier(0.16, 1, 0.3, 1) transform ${isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"}`}>
+        <SectionHeader
+          eyebrow="GET IN TOUCH"
+          title="Let's Build Something Together"
+          description="Open for software engineering opportunities, AI projects, and technical collaborations."
+        />
+      </div>
+
       <div className="mt-8 grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-8">
-        {/* Contact Details Card */}
+        {/* Contact Details Card - 1st Card Reveal */}
         <Card
-          className="p-6 sm:p-8 border border-white/20 bg-slate-950/40 backdrop-blur-xl rounded-2xl shadow-2xl flex flex-col justify-between gap-8 relative overflow-hidden"
+          className={`p-6 sm:p-8 border border-white/20 bg-slate-950/40 backdrop-blur-xl rounded-2xl shadow-2xl flex flex-col justify-between gap-8 relative overflow-hidden transition-all duration-1000 cubic-bezier(0.16, 1, 0.3, 1) transform ${
+            isVisible ? "opacity-100 translate-y-0 scale-100" : "opacity-0 translate-y-14 scale-95 pointer-events-none"
+          }`}
           style={{
             backgroundImage: "linear-gradient(to bottom, rgba(10, 11, 18, 0.45), rgba(10, 11, 18, 0.82)), url('/bgintro.avif')",
             backgroundSize: "cover",
@@ -147,11 +173,13 @@ export function ContactSection({ personalInfo }: ContactSectionProps) {
           }}
         >
           <div className="flex flex-col gap-6">
-            <h3 className="text-xl font-bold text-white tracking-tight">Contact Details</h3>
+            <h3 className={`text-xl font-bold text-white tracking-tight transition-all duration-600 delay-200 transform ${isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"}`}>
+              Contact Details
+            </h3>
 
             <div className="flex flex-col gap-5">
               {/* Email */}
-              <div className="flex items-center gap-4 group">
+              <div className={`flex items-center gap-4 group transition-all duration-500 delay-350 transform ${isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"}`}>
                 <Mail className="w-6 h-6 text-emerald-400 block shrink-0 transition-all group-hover:text-emerald-300 group-hover:scale-110" />
                 <span className="text-sm sm:text-base font-mono text-gray-200 leading-none tracking-wide select-all transition-colors group-hover:text-white">
                   {personalInfo.email}
@@ -159,7 +187,7 @@ export function ContactSection({ personalInfo }: ContactSectionProps) {
               </div>
 
               {/* Phone */}
-              <div className="flex items-center gap-4 group">
+              <div className={`flex items-center gap-4 group transition-all duration-500 delay-450 transform ${isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"}`}>
                 <Phone className="w-6 h-6 text-emerald-400 block shrink-0 transition-all group-hover:text-emerald-300 group-hover:scale-110" />
                 <span className="text-sm sm:text-base font-mono text-gray-200 leading-none tracking-wide transition-colors group-hover:text-white">
                   {personalInfo.phone}
@@ -167,7 +195,7 @@ export function ContactSection({ personalInfo }: ContactSectionProps) {
               </div>
 
               {/* School */}
-              <div className="flex items-center gap-4 group">
+              <div className={`flex items-center gap-4 group transition-all duration-500 delay-550 transform ${isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"}`}>
                 <GraduationCap className="w-6 h-6 text-emerald-400 block shrink-0 transition-all group-hover:text-emerald-300 group-hover:scale-110" />
                 <span className="text-sm sm:text-base font-mono text-gray-200 leading-none tracking-wide transition-colors group-hover:text-white">
                   {personalInfo.school}
@@ -175,7 +203,7 @@ export function ContactSection({ personalInfo }: ContactSectionProps) {
               </div>
 
               {/* Website */}
-              <div className="flex items-center gap-4 group">
+              <div className={`flex items-center gap-4 group transition-all duration-500 delay-650 transform ${isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"}`}>
                 <Globe className="w-6 h-6 text-emerald-400 block shrink-0 transition-all group-hover:text-emerald-300 group-hover:scale-110" />
                 <a
                   href="https://nteelab.vercel.app"
@@ -190,7 +218,7 @@ export function ContactSection({ personalInfo }: ContactSectionProps) {
           </div>
 
           {/* Action Buttons */}
-          <div className="pt-2 flex flex-wrap items-center gap-3">
+          <div className={`pt-2 flex flex-wrap items-center gap-3 transition-all duration-600 delay-750 transform ${isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"}`}>
             <button
               onClick={handleCopyEmail}
               type="button"
@@ -208,16 +236,18 @@ export function ContactSection({ personalInfo }: ContactSectionProps) {
           </div>
         </Card>
 
-        {/* Connect Online Card */}
+        {/* Connect Online Card - 2nd Card Reveal */}
         <Card
-          className="p-6 sm:p-8 border border-white/20 bg-slate-950/40 backdrop-blur-xl rounded-2xl shadow-2xl flex flex-col justify-between gap-6 relative overflow-hidden"
+          className={`p-6 sm:p-8 border border-white/20 bg-slate-950/40 backdrop-blur-xl rounded-2xl shadow-2xl flex flex-col justify-between gap-6 relative overflow-hidden transition-all duration-1000 delay-200 cubic-bezier(0.16, 1, 0.3, 1) transform ${
+            isVisible ? "opacity-100 translate-y-0 scale-100" : "opacity-0 translate-y-14 scale-95 pointer-events-none"
+          }`}
           style={{
             backgroundImage: "linear-gradient(to bottom, rgba(10, 11, 18, 0.45), rgba(10, 11, 18, 0.82)), url('/bgintro.avif')",
             backgroundSize: "cover",
             backgroundPosition: "center",
           }}
         >
-          <div className="flex flex-col gap-4">
+          <div className={`flex flex-col gap-4 transition-all duration-600 delay-350 transform ${isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"}`}>
             <h3 className="text-xl font-bold text-white tracking-tight">Connect Online</h3>
             <p className="text-sm text-gray-400 font-light leading-relaxed">
               Explore my work and professional profile.
@@ -231,7 +261,9 @@ export function ContactSection({ personalInfo }: ContactSectionProps) {
               target="_blank"
               rel="noreferrer"
               title="GitHub Profile - Scan QR or Click"
-              className="qr-card-hover group"
+              className={`qr-card-hover group transition-all duration-700 delay-500 transform ${
+                isVisible ? "opacity-100 translate-y-0 scale-100" : "opacity-0 translate-y-6 scale-90"
+              }`}
             >
               <svg className="qr-svg w-full h-full" xmlns="http://www.w3.org/2000/svg" viewBox="0 -0.5 33 33" shapeRendering="crispEdges">
                 <path d={GITHUB_QR_PATH} />
@@ -256,7 +288,9 @@ export function ContactSection({ personalInfo }: ContactSectionProps) {
               target="_blank"
               rel="noreferrer"
               title="LinkedIn Profile - Scan QR or Click"
-              className="qr-card-hover group"
+              className={`qr-card-hover group transition-all duration-700 delay-650 transform ${
+                isVisible ? "opacity-100 translate-y-0 scale-100" : "opacity-0 translate-y-6 scale-90"
+              }`}
             >
               <svg className="qr-svg w-full h-full" xmlns="http://www.w3.org/2000/svg" viewBox="0 -0.5 33 33" shapeRendering="crispEdges">
                 <path d={LINKEDIN_QR_PATH} />
