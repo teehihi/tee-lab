@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 
 interface AchievementCardData {
   id: string;
@@ -6,6 +7,8 @@ interface AchievementCardData {
   badge: string;
   description: string;
   images: string[];
+  initialDelayMs: number; // Staggered start delay for async carousel
+  slideIntervalMs: number; // Staggered interval for async carousel
 }
 
 const achievementsCardsData: AchievementCardData[] = [
@@ -20,13 +23,15 @@ const achievementsCardsData: AchievementCardData[] = [
       "/uteHackathon/585915464_846801601332492_5060789366056943701_n (1).webp",
       "/uteHackathon/586361700_846804211332231_121506387420572198_n (1).webp",
     ],
+    initialDelayMs: 0,
+    slideIntervalMs: 3600,
   },
   {
     id: "projects",
     title: "Production Projects",
     badge: "5+ Production Deployments",
     description:
-      "Successfully deployed real-world applications including XeNow, Uniquizz, Apex Chaos, Corava Maris, and Phoenix Vision.",
+      "Successfully deployed real-world applications including XeNow, Uniquizz, Apex Chaos, Corava Maris, and Phoenix Vision...",
     images: [
       "/project/Apex-Chaos.webp",
       "/project/CoravaMaris.webp",
@@ -34,10 +39,12 @@ const achievementsCardsData: AchievementCardData[] = [
       "/project/XeNow.webp",
       "/project/MovieDoubleT.webp",
     ],
+    initialDelayMs: 1400,
+    slideIntervalMs: 4300,
   },
   {
     id: "promptToPlay",
-    title: "🎮 VNG Prompt To Play 2026",
+    title: "VNG Prompt To Play 2026",
     badge: "Top 28 Finalist Teams",
     description:
       "Selected as one of the Top 28 finalist teams in VNGGames Prompt To Play 2026, building an AI-powered puzzle game within a 24-hour game jam.",
@@ -48,50 +55,70 @@ const achievementsCardsData: AchievementCardData[] = [
       "/promptToPlay/4.webp",
       "/promptToPlay/5.webp",
     ],
+    initialDelayMs: 2800,
+    slideIntervalMs: 3900,
   },
 ];
 
 interface CardItemProps {
   card: AchievementCardData;
+  index: number;
 }
 
-const SingleAchievementCard: React.FC<CardItemProps> = ({ card }) => {
+const SingleAchievementCard: React.FC<CardItemProps> = ({ card, index }) => {
   const [currentIdx, setCurrentIdx] = useState(0);
 
-  // Auto carousel slide every 3.0 seconds
+  // Asynchronous carousel slide timer with staggered initial delay
   useEffect(() => {
     if (card.images.length <= 1) return;
-    const timer = setInterval(() => {
-      setCurrentIdx((prev) => (prev + 1) % card.images.length);
-    }, 3000);
 
-    return () => clearInterval(timer);
-  }, [card.images.length]);
+    let intervalTimer: NodeJS.Timeout;
+    const startTimeout = setTimeout(() => {
+      setCurrentIdx((prev) => (prev + 1) % card.images.length);
+
+      intervalTimer = setInterval(() => {
+        setCurrentIdx((prev) => (prev + 1) % card.images.length);
+      }, card.slideIntervalMs);
+    }, card.initialDelayMs);
+
+    return () => {
+      clearTimeout(startTimeout);
+      if (intervalTimer) clearInterval(intervalTimer);
+    };
+  }, [card.images.length, card.initialDelayMs, card.slideIntervalMs]);
 
   return (
-    <div className="achievements-stacked-card group relative w-full">
+    <motion.div
+      initial={{ opacity: 0, y: 60 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, amount: 0.15 }}
+      transition={{
+        duration: 0.9,
+        delay: index * 0.25, // Staggered entrance animation: 0s, 0.25s, 0.5s
+        ease: [0.22, 1, 0.36, 1],
+      }}
+      className="achievements-stacked-card group relative w-full"
+    >
       {/* STRICT 16:9 ASPECT RATIO CONTAINER */}
       <div className="achievements-stacked-card-content relative w-full aspect-[16/9] rounded-3xl bg-[#121318] border border-white/12 shadow-2xl">
-        
+
         {/* INNER IMAGE & OVERLAY CONTAINER */}
         <div className="relative z-10 w-full h-full rounded-[22px] overflow-hidden">
-          {/* Background Image Carousel */}
-          <div className="absolute inset-0 w-full h-full bg-[#0d0e12]">
-            {card.images.map((imgSrc, idx) => {
-              const isActive = idx === currentIdx;
-              return (
-                <img
-                  key={imgSrc}
-                  src={imgSrc}
-                  alt={`${card.title} screenshot ${idx + 1}`}
-                  style={{ zIndex: isActive ? 10 : 1 }}
-                  className={`absolute inset-0 w-full h-full object-cover object-center transition-all duration-700 ease-in-out transform ${
-                    isActive ? "opacity-100 scale-100" : "opacity-0 scale-105"
-                  }`}
-                  loading="lazy"
-                />
-              );
-            })}
+          {/* Background Image Carousel (Framer Motion AnimatePresence Silk-Smooth Crossfade) */}
+          <div className="relative w-full h-full bg-[#0d0e12]">
+            <AnimatePresence initial={false}>
+              <motion.img
+                key={currentIdx}
+                src={card.images[currentIdx]}
+                alt={`${card.title} screenshot ${currentIdx + 1}`}
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: 1.1, ease: [0.4, 0, 0.2, 1] }}
+                className="absolute inset-0 w-full h-full object-cover object-center"
+                loading="lazy"
+              />
+            </AnimatePresence>
           </div>
 
           {/* CENTERED CAROUSEL PAGINATION DOTS (Positioned at BOTTOM-CENTER) */}
@@ -99,11 +126,10 @@ const SingleAchievementCard: React.FC<CardItemProps> = ({ card }) => {
             {card.images.map((_, idx) => (
               <div
                 key={idx}
-                className={`h-1.5 rounded-full transition-all duration-500 ${
-                  idx === currentIdx
-                    ? "w-4 bg-[#8DFF5A] shadow-[0_0_8px_#8DFF5A]"
-                    : "w-1.5 bg-white/40"
-                }`}
+                className={`h-1.5 rounded-full transition-all duration-500 ${idx === currentIdx
+                  ? "w-4 bg-[#8DFF5A] shadow-[0_0_8px_#8DFF5A]"
+                  : "w-1.5 bg-white/40"
+                  }`}
               />
             ))}
           </div>
@@ -132,11 +158,10 @@ const SingleAchievementCard: React.FC<CardItemProps> = ({ card }) => {
                 {card.images.map((_, idx) => (
                   <div
                     key={idx}
-                    className={`h-1 rounded-full transition-all duration-500 ${
-                      idx === currentIdx
-                        ? "w-4 bg-[#8DFF5A] shadow-[0_0_8px_#8DFF5A]"
-                        : "w-1 bg-white/30"
-                    }`}
+                    className={`h-1 rounded-full transition-all duration-500 ${idx === currentIdx
+                      ? "w-4 bg-[#8DFF5A] shadow-[0_0_8px_#8DFF5A]"
+                      : "w-1 bg-white/30"
+                      }`}
                   />
                 ))}
               </div>
@@ -145,15 +170,19 @@ const SingleAchievementCard: React.FC<CardItemProps> = ({ card }) => {
         </div>
 
       </div>
-    </div>
+    </motion.div>
   );
 };
 
 export const HonorsAchievementsCards: React.FC = () => {
   return (
     <div className="grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-8 w-full py-4">
-      {achievementsCardsData.map((card) => (
-        <SingleAchievementCard key={card.id} card={card} />
+      {achievementsCardsData.map((card, idx) => (
+        <SingleAchievementCard
+          key={card.id}
+          card={card}
+          index={idx}
+        />
       ))}
     </div>
   );
