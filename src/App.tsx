@@ -39,6 +39,7 @@ import { Macbook3DModel } from "./components/Macbook3DModel";
 import { DualIphone3DModel } from "./components/DualIphone3DModel";
 import { InteractiveHorizontalTimeline } from "./components/InteractiveHorizontalTimeline";
 import { IntroShowcase } from "./components/IntroShowcase";
+import { HonorsAchievementsCards } from "./components/HonorsAchievementsCards";
 import { preload3DAssets } from "./utils/modelCache";
 
 function Github({ className = "h-4 w-4" }: { className?: string }) {
@@ -967,37 +968,21 @@ export default function App() {
           </section>
 
           {/* HONORS & ACHIEVEMENTS SECTION */}
-          <section id="honors" className="scroll-mt-24 py-16">
-            <SectionHeader
-              eyebrow="MILESTONES"
-              title="Honors & Achievements"
-              description="Recognition and key milestones achieved during university and personal projects."
-            />
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-8">
-              <Card className="p-6">
-                <div className="flex items-center gap-3 mb-3">
-                  <Trophy className="h-6 w-6 text-yellow-500" />
-                  <h3 className="text-base font-bold">High Academic Standing</h3>
-                </div>
-                <p className="text-sm text-muted-foreground">
-                  Consistently maintained a <strong>3.24 / 4.00 GPA</strong> in Information Technology at HCMUTE.
-                </p>
-              </Card>
-
-              <Card className="p-6">
-                <div className="flex items-center gap-3 mb-3">
-                  <Rocket className="h-6 w-6 text-emerald-500" />
-                  <h3 className="text-base font-bold">6+ Shipped Web & AI Products</h3>
-                </div>
-                <p className="text-sm text-muted-foreground">
-                  Successfully deployed production projects across Vercel, Netlify, and GitHub pages serving live users.
-                </p>
-              </Card>
+          <section id="honors" className="scroll-mt-24 pt-2 pb-6 sm:pb-8 w-screen relative left-1/2 right-1/2 -ml-[50vw] -mr-[50vw] px-6 sm:px-10 lg:px-16 xl:px-24">
+            <div className="w-full max-w-[1750px] mx-auto">
+              <SectionHeader
+                eyebrow="MILESTONES"
+                title="Honors & Achievements"
+                description="Recognition and key milestones achieved during university and personal projects."
+              />
+              <div className="mt-10 sm:mt-12 w-full">
+                <HonorsAchievementsCards />
+              </div>
             </div>
           </section>
 
           {/* CONTACT SECTION */}
-          <section id="contact" className="scroll-mt-24 py-16">
+          <section id="contact" className="scroll-mt-24 pt-10 sm:pt-12 pb-16">
             <SectionHeader
               eyebrow="GET IN TOUCH"
               title="Let's Build Something Together"

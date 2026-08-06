@@ -2577,6 +2577,87 @@ a {
   transform: scale(0.95);
 }
 
+/* ================= STACKED ACHIEVEMENTS CARDS (LANDSCAPE ASPECT RATIO) ================= */
+.achievements-stacked-card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  border-radius: 24px;
+  transition: all 0.48s cubic-bezier(0.23, 1, 0.32, 1);
+  cursor: pointer;
+}
+
+.achievements-stacked-card-content {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  border-radius: 22px;
+  overflow: visible;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: #121318;
+  transition: all 0.48s cubic-bezier(0.23, 1, 0.32, 1);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+}
+
+.achievements-stacked-card-content::before {
+  position: absolute;
+  content: "";
+  top: -4%;
+  left: 50%;
+  width: 92%;
+  height: 92%;
+  transform: translate(-50%);
+  background: rgba(141, 255, 90, 0.18);
+  border: 1px solid rgba(141, 255, 90, 0.35);
+  backdrop-filter: blur(8px);
+  z-index: -1;
+  transform-origin: bottom;
+  border-radius: inherit;
+  transition: all 0.48s cubic-bezier(0.23, 1, 0.32, 1);
+}
+
+.achievements-stacked-card-content::after {
+  position: absolute;
+  content: "";
+  top: -8%;
+  left: 50%;
+  width: 84%;
+  height: 84%;
+  transform: translate(-50%);
+  background: rgba(141, 255, 90, 0.10);
+  border: 1px solid rgba(141, 255, 90, 0.22);
+  backdrop-filter: blur(6px);
+  z-index: -2;
+  transform-origin: bottom;
+  border-radius: inherit;
+  transition: all 0.48s cubic-bezier(0.23, 1, 0.32, 1);
+}
+
+.achievements-stacked-card:hover {
+  transform: translate(0px, -14px);
+}
+
+.achievements-stacked-card:hover .achievements-stacked-card-content::before {
+  rotate: -6deg;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(141, 255, 90, 0.28);
+  border-color: rgba(141, 255, 90, 0.5);
+  box-shadow: 0 0 25px rgba(141, 255, 90, 0.35);
+}
+
+.achievements-stacked-card:hover .achievements-stacked-card-content::after {
+  rotate: 6deg;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(141, 255, 90, 0.18);
+  border-color: rgba(141, 255, 90, 0.35);
+  box-shadow: 0 0 20px rgba(141, 255, 90, 0.25);
+}
+
+
 
 
 
