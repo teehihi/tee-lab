@@ -2415,3 +2415,170 @@ a {
   0% { transform: translate(80px, -80px); opacity: 0; }
   100% { transform: translate(0px, 0px); opacity: 1; }
 }
+
+/* ================= EXPLORE MORE ANIMATED CHEVRON BUTTON (NO BORDER / NO BACKGROUND) ================= */
+.explore-more-animated-btn {
+  background: transparent !important;
+  border: none !important;
+  outline: none !important;
+  box-shadow: none !important;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+  font-family: inherit;
+  font-weight: 700;
+  color: #ffffff;
+  transition: color 0.5s ease;
+  padding: 0;
+}
+
+.explore-more-animated-btn span {
+  margin-right: 0.35em;
+  transition: all 0.5s ease;
+}
+
+.explore-more-animated-btn:hover span {
+  color: #8DFF5A;
+  text-shadow: 0 0 10px rgba(141, 255, 90, 0.6);
+}
+
+.explore-more-animated-btn svg {
+  height: 0.85em;
+  width: auto;
+  fill: #8DFF5A !important;
+  margin-right: -0.16em;
+  position: relative;
+  transition: all 0.5s ease;
+  display: inline-block;
+  vertical-align: middle;
+}
+
+.explore-more-animated-btn:hover svg {
+  margin-right: 0.2em;
+  filter: drop-shadow(0 0 6px rgba(141, 255, 90, 0.8));
+}
+
+.explore-more-animated-btn svg polygon:nth-child(1) {
+  transition: transform 0.4s ease;
+  transform: translateX(-60%);
+}
+
+.explore-more-animated-btn svg polygon:nth-child(2) {
+  transition: transform 0.5s ease;
+  transform: translateX(-30%);
+}
+
+.explore-more-animated-btn:hover svg polygon:nth-child(1) {
+  transform: translateX(0%);
+  animation: chevronOpacity 1s infinite 0.6s;
+}
+
+.explore-more-animated-btn:hover svg polygon:nth-child(2) {
+  transform: translateX(0%);
+  animation: chevronOpacity 1s infinite 0.4s;
+}
+
+.explore-more-animated-btn:hover svg polygon:nth-child(3) {
+  animation: chevronOpacity 1s infinite 0.2s;
+}
+
+@keyframes chevronOpacity {
+  0% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.15;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+
+/* ================= COLLAPSE VIEW ANIMATED BUTTON (LAYS 100% ON TOP OF MESH GRID) ================= */
+.collapse-view-animated-btn {
+  font-family: inherit;
+  font-size: 0.75rem;
+  background: #121318 !important;
+  border: 1px solid rgba(141, 255, 90, 0.35);
+  color: #ffffff;
+  padding: 0.45rem 1rem 0.45rem 0.8rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  border-radius: 9999px;
+  font-weight: 700;
+  position: relative !important;
+  z-index: 50 !important;
+  isolation: isolate;
+  overflow: hidden;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.9), 0 0 15px rgba(141, 255, 90, 0.15);
+  transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+  min-width: 140px;
+}
+
+.collapse-view-animated-btn .svg-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  flex-shrink: 0;
+  position: relative;
+  left: 0;
+  z-index: 10;
+}
+
+.collapse-view-animated-btn svg {
+  display: block;
+  transform-origin: center center;
+  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), color 0.3s ease;
+  color: #8DFF5A;
+}
+
+.collapse-view-animated-btn span {
+  display: block;
+  margin-left: 0.4rem;
+  transition: opacity 0.35s ease, transform 0.35s ease;
+  white-space: nowrap;
+  z-index: 10;
+}
+
+.collapse-view-animated-btn:hover {
+  background: #8DFF5A !important;
+  border-color: #8DFF5A;
+  color: #000000;
+  box-shadow: 0 0 25px rgba(141, 255, 90, 0.6);
+}
+
+.collapse-view-animated-btn:hover .svg-wrapper {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%) scale(1.25);
+  background: transparent !important;
+  border: none !important;
+}
+
+.collapse-view-animated-btn:hover svg {
+  color: #000000;
+}
+
+.collapse-view-animated-btn:hover span {
+  opacity: 0;
+  transform: scale(0.8);
+}
+
+.collapse-view-animated-btn:active {
+  transform: scale(0.95);
+}
+
+
+
+
+
+

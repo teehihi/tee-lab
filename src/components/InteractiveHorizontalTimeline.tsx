@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
-import { ArrowRight, RotateCcw } from "lucide-react";
+import { ArrowLeft, ArrowRight } from "lucide-react";
 import { DualIphone3DModel } from "./DualIphone3DModel";
 
 interface Milestone {
@@ -51,7 +51,7 @@ export const InteractiveHorizontalTimeline: React.FC = () => {
   useEffect(() => {
     const observer = new IntersectionObserver(
       ([entry]) => {
-        // Trigger ONLY when section enters center of viewport (50% threshold)
+        // Trigger ONLY when section enters center of viewport (45% threshold)
         if (entry.isIntersecting) {
           setIsVisible(true);
         } else {
@@ -128,9 +128,9 @@ export const InteractiveHorizontalTimeline: React.FC = () => {
       ref={containerRef}
       className="w-full relative transition-all duration-700 cubic-bezier(0.16,1,0.3,1) py-4"
     >
-      {/* Top Bar: Collapse View Button (Positioned inline on top right next to Section Title) */}
+      {/* Top Bar: Collapse View Button (Always visible on top right when expanded) */}
       <div
-        className={`absolute -top-20 sm:-top-24 md:-top-28 right-0 z-30 transition-all duration-500 ease-in-out ${
+        className={`absolute -top-20 sm:-top-24 md:-top-28 right-0 z-[100] transition-all duration-500 ease-in-out ${
           isExpanded
             ? "opacity-100 translate-y-0"
             : "opacity-0 -translate-y-4 pointer-events-none"
@@ -138,20 +138,23 @@ export const InteractiveHorizontalTimeline: React.FC = () => {
       >
         <button
           onClick={handleCollapse}
-          className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/5 border border-white/10 text-xs font-mono text-gray-300 hover:text-white hover:bg-white/10 hover:border-[#8DFF5A]/50 transition-all duration-300 cursor-pointer group shadow-lg"
+          className="collapse-view-animated-btn shadow-2xl relative z-[100]"
+          aria-label="Collapse View"
         >
-          <RotateCcw className="w-3.5 h-3.5 text-[#8DFF5A] group-hover:rotate-[-90deg] transition-transform duration-300" />
+          <div className="svg-wrapper">
+            <ArrowLeft className="w-4 h-4 text-[#8DFF5A] stroke-[2.8]" />
+          </div>
           <span>Collapse View</span>
         </button>
       </div>
 
-      {/* Main Track Wrapper: Wider Spaced Horizontal Layout */}
-      <div className="flex items-center w-full relative transition-all duration-700 cubic-bezier(0.16,1,0.3,1)">
+      {/* Main Track Wrapper: Inner container has overflow-hidden to prevent scrollviews without clipping top button */}
+      <div className="flex items-center w-full relative transition-all duration-700 cubic-bezier(0.16,1,0.3,1) overflow-hidden">
         {/* STEP 1: Left 3D iPhone Model */}
         <div
           className={`transition-all duration-700 cubic-bezier(0.16,1,0.3,1) shrink-0 select-none ${
             animStep >= 1
-              ? "-translate-x-full opacity-0 pointer-events-none absolute left-0 top-0 h-0 overflow-hidden lg:h-auto"
+              ? "-translate-x-full opacity-0 pointer-events-none absolute left-0 top-0 h-0 w-0 overflow-hidden"
               : "translate-x-0 opacity-100 w-full lg:w-[35%] min-w-[280px] lg:mr-6 relative"
           }`}
         >
@@ -165,13 +168,13 @@ export const InteractiveHorizontalTimeline: React.FC = () => {
 
         {/* STEP 2, 3, 4, 5: Timeline Container */}
         <div
-          className={`transition-all duration-700 cubic-bezier(0.16,1,0.3,1) flex-1 w-full ${
+          className={`transition-all duration-700 cubic-bezier(0.16,1,0.3,1) flex-1 w-full overflow-hidden ${
             animStep >= 1 ? "w-full" : "w-full lg:w-[63%]"
           }`}
         >
           {animStep === 0 ? (
             /* ================= INITIAL PREVIEW STATE (Node 1 always visible, Nodes 2 & 3 reveal at center of viewport) ================= */
-            <div className="w-full relative flex flex-col transition-all duration-700 ease-in-out">
+            <div className="w-full relative flex flex-col transition-all duration-700 ease-in-out overflow-hidden">
               {/* Row 1: Years */}
               <div className="grid grid-cols-3 gap-4 sm:gap-6 lg:gap-8 mb-3 w-full">
                 {/* Year 1 (2023) - ALWAYS VISIBLE */}
@@ -234,20 +237,20 @@ export const InteractiveHorizontalTimeline: React.FC = () => {
                     <div className="w-8 h-8 rounded-full bg-[#8DFF5A] shadow-[0_0_18px_#8DFF5A] border-2 border-black" />
                   </div>
 
-                  {/* Node 3 Dot: Explore More Button - Reveals ONLY when centered in viewport */}
+                  {/* Node 3 Dot: Explore More Circular Dot */}
                   <div
                     className={`flex items-center justify-center transition-all duration-700 ease-out ${
                       isVisible ? "opacity-100 scale-100 translate-y-0" : "opacity-0 scale-50 translate-y-4"
                     }`}
                     style={{ transitionDelay: "700ms" }}
                   >
-                    <button
+                    <div
                       onClick={handleExpand}
                       className="w-8 h-8 rounded-full bg-[#8DFF5A] shadow-[0_0_22px_#8DFF5A] border-2 border-black flex items-center justify-center cursor-pointer group"
                       aria-label="Explore More Timeline"
                     >
                       <ArrowRight className="w-4 h-4 text-black group-hover:translate-x-0.5 transition-transform" />
-                    </button>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -279,7 +282,7 @@ export const InteractiveHorizontalTimeline: React.FC = () => {
                   </p>
                 </div>
 
-                {/* Node 3 Text - Reveals ONLY when centered in viewport */}
+                {/* Node 3 Text - ANIMATED TRIPLE CHEVRON ARROW BUTTON (EXACT STYLED CODE, NO BORDER / NO BACKGROUND) */}
                 <div
                   className={`text-center px-1 space-y-1 flex flex-col items-center transition-all duration-700 ease-out ${
                     isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
@@ -288,17 +291,22 @@ export const InteractiveHorizontalTimeline: React.FC = () => {
                 >
                   <button
                     onClick={handleExpand}
-                    className="inline-flex items-center gap-1.5 text-sm sm:text-base font-bold text-white hover:text-[#8DFF5A] transition-colors cursor-pointer group mt-0.5 whitespace-nowrap"
+                    className="explore-more-animated-btn mt-0.5 whitespace-nowrap text-sm sm:text-base font-bold"
+                    aria-label="Explore More Timeline"
                   >
                     <span>Explore More</span>
-                    <ArrowRight className="w-4 h-4 text-[#8DFF5A] group-hover:translate-x-1 transition-transform" />
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 66 43">
+                      <polygon points="39.58,4.46 44.11,0 66,21.5 44.11,43 39.58,38.54 56.94,21.5" />
+                      <polygon points="19.79,4.46 24.32,0 46.21,21.5 24.32,43 19.79,38.54 37.15,21.5" />
+                      <polygon points="0,4.46 4.53,0 26.42,21.5 4.53,43 0,38.54 17.36,21.5" />
+                    </svg>
                   </button>
                 </div>
               </div>
             </div>
           ) : (
             /* ================= EXPANDED DISCRETE STEP STATE MACHINE ================= */
-            <div className="w-full relative flex flex-col transition-all duration-700 cubic-bezier(0.16,1,0.3,1) py-2">
+            <div className="w-full relative flex flex-col transition-all duration-700 cubic-bezier(0.16,1,0.3,1) py-2 overflow-hidden">
               {/* Row 1: Years */}
               <div className="grid grid-cols-5 gap-2 mb-3 w-full">
                 {fullMilestones.map((item, idx) => {
@@ -316,7 +324,7 @@ export const InteractiveHorizontalTimeline: React.FC = () => {
                         transitionDelay: isNewItem ? `${(idx - 2) * 150}ms` : "0ms",
                       }}
                     >
-                      <span className="text-xl sm:text-2xl font-extrabold text-white tracking-tight">
+                      <span className="text-xs sm:text-lg md:text-xl lg:text-2xl font-extrabold text-white tracking-tight whitespace-nowrap">
                         {item.year}
                       </span>
                     </div>
@@ -350,7 +358,7 @@ export const InteractiveHorizontalTimeline: React.FC = () => {
                           transitionDelay: isNewDot ? `${(idx - 2) * 150}ms` : "0ms",
                         }}
                       >
-                        <div className="w-8 h-8 rounded-full bg-[#8DFF5A] shadow-[0_0_18px_#8DFF5A] border-2 border-black cursor-pointer" />
+                        <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-[#8DFF5A] shadow-[0_0_18px_#8DFF5A] border-2 border-black cursor-pointer" />
                       </div>
                     );
                   })}
@@ -358,14 +366,14 @@ export const InteractiveHorizontalTimeline: React.FC = () => {
               </div>
 
               {/* Row 3: Titles & Subtitles */}
-              <div className="grid grid-cols-5 gap-2 w-full">
+              <div className="grid grid-cols-5 gap-1 sm:gap-2 w-full">
                 {fullMilestones.map((item, idx) => {
                   const isNewDesc = idx >= 2;
                   const showDesc = !isNewDesc || animStep >= 5;
                   return (
                     <div
                       key={`desc-${item.year}`}
-                      className={`text-center px-1 space-y-1 flex flex-col items-center transition-all duration-500 ease-out transform ${
+                      className={`text-center px-0.5 sm:px-1 space-y-1 flex flex-col items-center transition-all duration-500 ease-out transform ${
                         showDesc
                           ? "opacity-100 translate-y-0"
                           : "opacity-0 translate-y-8"
@@ -374,10 +382,10 @@ export const InteractiveHorizontalTimeline: React.FC = () => {
                         transitionDelay: isNewDesc ? `${(idx - 2) * 150}ms` : "0ms",
                       }}
                     >
-                      <h4 className="text-sm sm:text-base font-bold text-white leading-snug whitespace-nowrap">
+                      <h4 className="text-xs sm:text-sm md:text-base font-bold text-white leading-snug break-words">
                         {item.title}
                       </h4>
-                      <p className="text-xs sm:text-sm text-gray-400 font-normal leading-relaxed whitespace-nowrap">
+                      <p className="text-[10px] sm:text-xs md:text-sm text-gray-400 font-normal leading-relaxed break-words">
                         {item.subtitle}
                       </p>
                     </div>
