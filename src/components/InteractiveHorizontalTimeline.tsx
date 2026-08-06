@@ -12,7 +12,7 @@ const fullMilestones: Milestone[] = [
   {
     year: "2023",
     title: "Started at HCMUTE",
-    subtitle: "B.Eng. in Information Technology",
+    subtitle: "B.Eng. in InformationTechnology",
   },
   {
     year: "2024",
@@ -130,11 +130,10 @@ export const InteractiveHorizontalTimeline: React.FC = () => {
     >
       {/* Top Bar: Collapse View Button (Always visible on top right when expanded) */}
       <div
-        className={`absolute -top-20 sm:-top-24 md:-top-28 right-0 z-[100] transition-all duration-500 ease-in-out ${
-          isExpanded
-            ? "opacity-100 translate-y-0"
-            : "opacity-0 -translate-y-4 pointer-events-none"
-        }`}
+        className={`absolute -top-20 sm:-top-24 md:-top-28 right-0 z-[100] transition-all duration-500 ease-in-out ${isExpanded
+          ? "opacity-100 translate-y-0"
+          : "opacity-0 -translate-y-4 pointer-events-none"
+          }`}
       >
         <button
           onClick={handleCollapse}
@@ -150,13 +149,12 @@ export const InteractiveHorizontalTimeline: React.FC = () => {
 
       {/* Main Track Wrapper: Inner container has overflow-hidden to prevent scrollviews without clipping top button */}
       <div className="flex items-center w-full relative transition-all duration-700 cubic-bezier(0.16,1,0.3,1) overflow-hidden">
-        {/* STEP 1: Left 3D iPhone Model */}
+        {/* STEP 1: Left 3D iPhone Model (Fades and collapses smoothly) */}
         <div
-          className={`transition-all duration-700 cubic-bezier(0.16,1,0.3,1) shrink-0 select-none ${
-            animStep >= 1
-              ? "-translate-x-full opacity-0 pointer-events-none absolute left-0 top-0 h-0 w-0 overflow-hidden"
-              : "translate-x-0 opacity-100 w-full lg:w-[35%] min-w-[280px] lg:mr-6 relative"
-          }`}
+          className={`transition-all duration-700 cubic-bezier(0.16,1,0.3,1) shrink-0 select-none relative z-10 ${animStep >= 1
+            ? "w-0 min-w-0 mr-0 opacity-0 overflow-hidden pointer-events-none -translate-x-full"
+            : "translate-x-0 opacity-100 w-full lg:w-[35%] min-w-[280px] lg:mr-6"
+            }`}
         >
           <div className="w-full min-h-[460px] sm:min-h-[540px] flex items-center justify-center lg:justify-start relative">
             <DualIphone3DModel
@@ -166,15 +164,14 @@ export const InteractiveHorizontalTimeline: React.FC = () => {
           </div>
         </div>
 
-        {/* STEP 2, 3, 4, 5: Timeline Container */}
+        {/* STEP 2, 3, 4, 5: Timeline Container (Higher z-index z-20 than 3D Model) */}
         <div
-          className={`transition-all duration-700 cubic-bezier(0.16,1,0.3,1) flex-1 w-full overflow-hidden ${
-            animStep >= 1 ? "w-full" : "w-full lg:w-[63%]"
-          }`}
+          className={`transition-all duration-700 cubic-bezier(0.16,1,0.3,1) flex-1 w-full relative z-20 ${animStep >= 1 ? "w-full overflow-hidden" : "w-full lg:w-[63%] overflow-visible px-2 sm:px-4"
+            }`}
         >
           {animStep === 0 ? (
             /* ================= INITIAL PREVIEW STATE (Node 1 always visible, Nodes 2 & 3 reveal at center of viewport) ================= */
-            <div className="w-full relative flex flex-col transition-all duration-700 ease-in-out overflow-hidden">
+            <div className="w-full relative flex flex-col transition-all duration-700 ease-in-out overflow-visible">
               {/* Row 1: Years */}
               <div className="grid grid-cols-3 gap-4 sm:gap-6 lg:gap-8 mb-3 w-full">
                 {/* Year 1 (2023) - ALWAYS VISIBLE */}
@@ -186,9 +183,8 @@ export const InteractiveHorizontalTimeline: React.FC = () => {
 
                 {/* Year 2 (2024) - Reveals ONLY when centered in viewport */}
                 <div
-                  className={`text-center transition-all duration-700 ease-out ${
-                    isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"
-                  }`}
+                  className={`text-center transition-all duration-700 ease-out ${isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"
+                    }`}
                   style={{ transitionDelay: "350ms" }}
                 >
                   <span className="text-xl sm:text-2xl font-extrabold text-white tracking-tight">
@@ -198,9 +194,8 @@ export const InteractiveHorizontalTimeline: React.FC = () => {
 
                 {/* Spacer Year */}
                 <div
-                  className={`text-center transition-all duration-700 ease-out ${
-                    isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"
-                  }`}
+                  className={`text-center transition-all duration-700 ease-out ${isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"
+                    }`}
                   style={{ transitionDelay: "650ms" }}
                 >
                   <span className="text-xl sm:text-2xl font-extrabold text-transparent select-none">
@@ -214,9 +209,8 @@ export const InteractiveHorizontalTimeline: React.FC = () => {
                 {/* Green Progress Line: Extends from Node 1 to Node 3 when centered in viewport */}
                 <div className="absolute left-[16.66%] right-[16.66%] top-1/2 -translate-y-1/2 h-[3px] bg-[#8DFF5A]/30 rounded-full z-0 overflow-hidden">
                   <div
-                    className={`h-full bg-[#8DFF5A] rounded-full shadow-[0_0_14px_#8DFF5A] transition-all duration-1000 ease-out ${
-                      isVisible ? "w-full opacity-100" : "w-0 opacity-0"
-                    }`}
+                    className={`h-full bg-[#8DFF5A] rounded-full shadow-[0_0_14px_#8DFF5A] transition-all duration-1000 ease-out ${isVisible ? "w-full opacity-100" : "w-0 opacity-0"
+                      }`}
                     style={{ transitionDelay: "150ms" }}
                   />
                 </div>
@@ -229,9 +223,8 @@ export const InteractiveHorizontalTimeline: React.FC = () => {
 
                   {/* Node 2 Dot - Reveals ONLY when centered in viewport */}
                   <div
-                    className={`flex items-center justify-center transition-all duration-700 ease-out ${
-                      isVisible ? "opacity-100 scale-100 translate-y-0" : "opacity-0 scale-50 translate-y-4"
-                    }`}
+                    className={`flex items-center justify-center transition-all duration-700 ease-out ${isVisible ? "opacity-100 scale-100 translate-y-0" : "opacity-0 scale-50 translate-y-4"
+                      }`}
                     style={{ transitionDelay: "400ms" }}
                   >
                     <div className="w-8 h-8 rounded-full bg-[#8DFF5A] shadow-[0_0_18px_#8DFF5A] border-2 border-black" />
@@ -239,9 +232,8 @@ export const InteractiveHorizontalTimeline: React.FC = () => {
 
                   {/* Node 3 Dot: Explore More Circular Dot */}
                   <div
-                    className={`flex items-center justify-center transition-all duration-700 ease-out ${
-                      isVisible ? "opacity-100 scale-100 translate-y-0" : "opacity-0 scale-50 translate-y-4"
-                    }`}
+                    className={`flex items-center justify-center transition-all duration-700 ease-out ${isVisible ? "opacity-100 scale-100 translate-y-0" : "opacity-0 scale-50 translate-y-4"
+                      }`}
                     style={{ transitionDelay: "700ms" }}
                   >
                     <div
@@ -269,9 +261,8 @@ export const InteractiveHorizontalTimeline: React.FC = () => {
 
                 {/* Node 2 Text - Reveals ONLY when centered in viewport */}
                 <div
-                  className={`text-center px-1 space-y-1 flex flex-col items-center transition-all duration-700 ease-out ${
-                    isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
-                  }`}
+                  className={`text-center px-1 space-y-1 flex flex-col items-center transition-all duration-700 ease-out ${isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
+                    }`}
                   style={{ transitionDelay: "450ms" }}
                 >
                   <h4 className="text-sm sm:text-base font-bold text-white leading-snug whitespace-nowrap">
@@ -284,9 +275,8 @@ export const InteractiveHorizontalTimeline: React.FC = () => {
 
                 {/* Node 3 Text - ANIMATED TRIPLE CHEVRON ARROW BUTTON (EXACT STYLED CODE, NO BORDER / NO BACKGROUND) */}
                 <div
-                  className={`text-center px-1 space-y-1 flex flex-col items-center transition-all duration-700 ease-out ${
-                    isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
-                  }`}
+                  className={`text-center px-1 space-y-1 flex flex-col items-center transition-all duration-700 ease-out ${isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
+                    }`}
                   style={{ transitionDelay: "750ms" }}
                 >
                   <button
@@ -315,11 +305,10 @@ export const InteractiveHorizontalTimeline: React.FC = () => {
                   return (
                     <div
                       key={`year-${item.year}`}
-                      className={`text-center transition-all duration-500 ease-out ${
-                        showYear
-                          ? "opacity-100 translate-y-0"
-                          : "opacity-0 translate-y-6"
-                      }`}
+                      className={`text-center transition-all duration-500 ease-out ${showYear
+                        ? "opacity-100 translate-y-0"
+                        : "opacity-0 translate-y-6"
+                        }`}
                       style={{
                         transitionDelay: isNewItem ? `${(idx - 2) * 150}ms` : "0ms",
                       }}
@@ -336,9 +325,8 @@ export const InteractiveHorizontalTimeline: React.FC = () => {
               <div className="relative w-full h-10 flex items-center mb-4">
                 <div className="absolute left-[10%] right-[10%] top-1/2 -translate-y-1/2 h-[3px] bg-[#8DFF5A]/30 rounded-full z-0 overflow-hidden">
                   <div
-                    className={`h-full bg-[#8DFF5A] rounded-full shadow-[0_0_16px_#8DFF5A] transition-all duration-700 ease-out ${
-                      animStep >= 2 ? "w-full opacity-100" : "w-0 opacity-0"
-                    }`}
+                    className={`h-full bg-[#8DFF5A] rounded-full shadow-[0_0_16px_#8DFF5A] transition-all duration-700 ease-out ${animStep >= 2 ? "w-full opacity-100" : "w-0 opacity-0"
+                      }`}
                   />
                 </div>
 
@@ -349,11 +337,10 @@ export const InteractiveHorizontalTimeline: React.FC = () => {
                     return (
                       <div
                         key={`dot-${item.year}`}
-                        className={`flex items-center justify-center transition-all duration-500 ease-out transform ${
-                          showDot
-                            ? "opacity-100 scale-100 translate-y-0"
-                            : "opacity-0 scale-50 translate-y-4"
-                        }`}
+                        className={`flex items-center justify-center transition-all duration-500 ease-out transform ${showDot
+                          ? "opacity-100 scale-100 translate-y-0"
+                          : "opacity-0 scale-50 translate-y-4"
+                          }`}
                         style={{
                           transitionDelay: isNewDot ? `${(idx - 2) * 150}ms` : "0ms",
                         }}
@@ -373,11 +360,10 @@ export const InteractiveHorizontalTimeline: React.FC = () => {
                   return (
                     <div
                       key={`desc-${item.year}`}
-                      className={`text-center px-0.5 sm:px-1 space-y-1 flex flex-col items-center transition-all duration-500 ease-out transform ${
-                        showDesc
-                          ? "opacity-100 translate-y-0"
-                          : "opacity-0 translate-y-8"
-                      }`}
+                      className={`text-center px-0.5 sm:px-1 space-y-1 flex flex-col items-center transition-all duration-500 ease-out transform ${showDesc
+                        ? "opacity-100 translate-y-0"
+                        : "opacity-0 translate-y-8"
+                        }`}
                       style={{
                         transitionDelay: isNewDesc ? `${(idx - 2) * 150}ms` : "0ms",
                       }}

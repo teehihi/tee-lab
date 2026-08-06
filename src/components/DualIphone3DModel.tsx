@@ -39,7 +39,7 @@ export function DualIphone3DModel({
       powerPreference: "high-performance",
     });
     renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-    renderer.setSize(width, height);
+    renderer.setSize(width, height, false);
     renderer.outputColorSpace = THREE.SRGBColorSpace;
 
     // 2. Root Group containing both Phones
@@ -48,7 +48,7 @@ export function DualIphone3DModel({
     dualGroup.rotation.set(0, 0, 0);
     scene.add(dualGroup);
 
-    // 3. Studio Lighting - Balanced Studio Setup for crisp, rich screen colors and Space Gray body finish
+    // 3. Studio Lighting - Balanced Studio Setup
     const ambientLight = new THREE.AmbientLight(0xffffff, 1.6);
     scene.add(ambientLight);
 
@@ -82,7 +82,6 @@ export function DualIphone3DModel({
           const processMat = (mat: any) => {
             const matName = (mat?.name || "").toLowerCase();
 
-            // 1. MAIN DISPLAY SCREEN (OLED) - Crisp, true-to-life colors without white glare
             if (matName === "oled") {
               const newMat = mat.clone();
               newMat.map = screenTex;
@@ -93,9 +92,7 @@ export function DualIphone3DModel({
               newMat.metalness = 0.0;
               newMat.needsUpdate = true;
               node.material = newMat;
-            }
-            // 2. DYNAMIC ISLAND & DISPLAY FRAME (OLED off) - Pitch black pill cutout, eliminating white gap
-            else if (matName === "oled off" || matName === "display frame") {
+            } else if (matName === "oled off" || matName === "display frame") {
               const darkMat = mat.clone();
               darkMat.map = null;
               darkMat.color.setHex(0x000000);
@@ -105,9 +102,7 @@ export function DualIphone3DModel({
               darkMat.metalness = 0.0;
               darkMat.needsUpdate = true;
               node.material = darkMat;
-            }
-            // 3. FRONT SCREEN GLASS COVER - Low opacity to prevent washed out reflections
-            else if (matName.includes("glass") || matName.includes("tint")) {
+            } else if (matName.includes("glass") || matName.includes("tint")) {
               mat.transparent = true;
               mat.opacity = 0.15;
               mat.roughness = 0.1;
@@ -129,7 +124,6 @@ export function DualIphone3DModel({
       .then((gltf) => {
         if (!isMounted) return;
 
-        // Base Phone model setup
         const baseScene = gltf.scene;
         baseScene.rotation.y = Math.PI;
 
@@ -142,7 +136,7 @@ export function DualIphone3DModel({
         const targetHeight = 2.05;
         const scaleFactor = targetHeight / (maxDim || 1);
 
-        // --- PHONE 1: Back Left Phone (Positioned higher, 100% straight upright) ---
+        // Phone 1: Back Left Phone
         const backPhone = baseScene.clone(true);
         backPhone.scale.set(scaleFactor * 0.98, scaleFactor * 0.98, scaleFactor * 0.98);
         setupPhoneMaterials(backPhone, textureBack);
@@ -153,7 +147,7 @@ export function DualIphone3DModel({
         backContainer.add(backPhone);
         dualGroup.add(backContainer);
 
-        // --- PHONE 2: Front Right Phone (Positioned higher so bottom bezel is 100% visible) ---
+        // Phone 2: Front Right Phone
         const frontPhone = baseScene.clone(true);
         frontPhone.scale.set(scaleFactor * 1.02, scaleFactor * 1.02, scaleFactor * 1.02);
         setupPhoneMaterials(frontPhone, textureFront);
@@ -165,10 +159,11 @@ export function DualIphone3DModel({
         dualGroup.add(frontContainer);
 
         setLoaded(true);
+        handleResize();
       })
       .catch((err) => console.error("Error loading dual iphone glb:", err));
 
-    // 6. Static / Micro-Mouse Parallax Physics Loop (100% Straight Upright)
+    // 6. Mouse Parallax Setup
     let mouseX = 0;
     let mouseY = 0;
     let targetRotX = 0;
@@ -176,6 +171,7 @@ export function DualIphone3DModel({
 
     const handlePointerMove = (event: PointerEvent) => {
       const rect = container.getBoundingClientRect();
+      if (!rect.width || !rect.height) return;
       mouseX = (event.clientX - rect.left) / rect.width - 0.5;
       mouseY = (event.clientY - rect.top) / rect.height - 0.5;
     };
@@ -184,21 +180,36 @@ export function DualIphone3DModel({
 
     let animationFrameId: number;
 
+    const handleResize = () => {
+      if (!container || !canvas || !renderer || !camera) return;
+      const w = container.clientWidth;
+      const h = container.clientHeight;
+      if (w > 0 && h > 0) {
+        camera.aspect = w / h;
+        camera.updateProjectionMatrix();
+        renderer.setSize(w, h, false);
+        canvas.style.width = `${w}px`;
+        canvas.style.height = `${h}px`;
+      }
+    };
+
     const animate = () => {
       if (!isMounted) return;
       animationFrameId = requestAnimationFrame(animate);
 
-      // Auto-recheck viewport dimensions to ensure WebGL canvas is always rendered
+      // Auto-recheck viewport dimensions whenever container becomes visible (> 0)
       if (container.clientWidth > 0 && container.clientHeight > 0) {
-        if (
-          canvas.width !== Math.floor(container.clientWidth * Math.min(window.devicePixelRatio, 2)) ||
-          canvas.height !== Math.floor(container.clientHeight * Math.min(window.devicePixelRatio, 2))
-        ) {
+        const expectedW = container.clientWidth;
+        const expectedH = container.clientHeight;
+        const currentW = parseInt(canvas.style.width || "0", 10);
+        const currentH = parseInt(canvas.style.height || "0", 10);
+
+        if (currentW !== expectedW || currentH !== expectedH) {
           handleResize();
         }
       }
 
-      // Extremely subtle micro mouse tilt (phones remain virtually stationary and straight)
+      // Micro mouse tilt
       targetRotY += (mouseX * 0.03 - targetRotY) * 0.04;
       targetRotX += (-mouseY * 0.02 - targetRotX) * 0.04;
 
@@ -211,18 +222,6 @@ export function DualIphone3DModel({
     };
 
     animate();
-
-    // 7. Resize Observer
-    const handleResize = () => {
-      if (!container) return;
-      const w = container.clientWidth;
-      const h = container.clientHeight;
-      if (w > 0 && h > 0) {
-        camera.aspect = w / h;
-        camera.updateProjectionMatrix();
-        renderer.setSize(w, h);
-      }
-    };
 
     const resizeObserver = new ResizeObserver(handleResize);
     resizeObserver.observe(container);
