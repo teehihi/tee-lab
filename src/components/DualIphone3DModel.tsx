@@ -1,6 +1,5 @@
 import React, { useRef, useEffect, useState } from "react";
 import * as THREE from "three";
-import { MacbookLoader } from "./MacbookLoader";
 import { loadGLTFModel, loadCachedTexture } from "../utils/modelCache";
 
 interface DualIphone3DModelProps {
@@ -10,8 +9,8 @@ interface DualIphone3DModelProps {
 }
 
 export function DualIphone3DModel({
-  screenImageFront = "/phone-screen.png",
-  screenImageBack = "/phone-screen.png",
+  screenImageFront = "/fbUTE.png",
+  screenImageBack = "/screenMapUTE.png",
   className = "",
 }: DualIphone3DModelProps) {
   const containerRef = useRef<HTMLDivElement>(null);
@@ -43,7 +42,7 @@ export function DualIphone3DModel({
     renderer.setSize(width, height);
     renderer.outputColorSpace = THREE.SRGBColorSpace;
 
-    // 2. Root Group containing both Phones (Shifted slightly left for balanced column layout)
+    // 2. Root Group containing both Phones
     const dualGroup = new THREE.Group();
     dualGroup.position.set(-0.20, 0, 0);
     dualGroup.rotation.set(0, 0, 0);
@@ -82,7 +81,7 @@ export function DualIphone3DModel({
         if (node.isMesh && node.material) {
           const processMat = (mat: any) => {
             const matName = (mat?.name || "").toLowerCase();
-            
+
             // 1. MAIN DISPLAY SCREEN (OLED) - Crisp, true-to-life colors without white glare
             if (matName === "oled") {
               const newMat = mat.clone();
@@ -147,7 +146,7 @@ export function DualIphone3DModel({
         const backPhone = baseScene.clone(true);
         backPhone.scale.set(scaleFactor * 0.98, scaleFactor * 0.98, scaleFactor * 0.98);
         setupPhoneMaterials(backPhone, textureBack);
-        
+
         const backContainer = new THREE.Group();
         backContainer.position.set(-0.35, 0.44, -0.40);
         backContainer.rotation.set(0, 0, 0);
@@ -188,6 +187,16 @@ export function DualIphone3DModel({
     const animate = () => {
       if (!isMounted) return;
       animationFrameId = requestAnimationFrame(animate);
+
+      // Auto-recheck viewport dimensions to ensure WebGL canvas is always rendered
+      if (container.clientWidth > 0 && container.clientHeight > 0) {
+        if (
+          canvas.width !== Math.floor(container.clientWidth * Math.min(window.devicePixelRatio, 2)) ||
+          canvas.height !== Math.floor(container.clientHeight * Math.min(window.devicePixelRatio, 2))
+        ) {
+          handleResize();
+        }
+      }
 
       // Extremely subtle micro mouse tilt (phones remain virtually stationary and straight)
       targetRotY += (mouseX * 0.03 - targetRotY) * 0.04;
@@ -233,13 +242,13 @@ export function DualIphone3DModel({
       className={`relative w-full flex items-center justify-center min-h-[420px] sm:min-h-[480px] lg:min-h-[520px] select-none ${className}`}
     >
       {!loaded && (
-        <div className="absolute inset-0 z-20 flex items-center justify-center bg-black/40 backdrop-blur-sm rounded-3xl">
-          <MacbookLoader />
+        <div className="absolute inset-0 z-20 flex items-center justify-center">
+          <div className="w-8 h-8 rounded-full border-2 border-emerald-500/30 border-t-emerald-500 animate-spin" />
         </div>
       )}
       <canvas
         ref={canvasRef}
-        className={`w-full h-full cursor-grab active:cursor-grabbing transition-opacity duration-1000 ${
+        className={`w-full h-full cursor-grab active:cursor-grabbing transition-opacity duration-700 ${
           loaded ? "opacity-100" : "opacity-0"
         }`}
       />

@@ -37,6 +37,7 @@ import {
 import { Button, Card, SectionHeader, Stat } from "./components/ui";
 import { Macbook3DModel } from "./components/Macbook3DModel";
 import { DualIphone3DModel } from "./components/DualIphone3DModel";
+import { InteractiveHorizontalTimeline } from "./components/InteractiveHorizontalTimeline";
 import { IntroShowcase } from "./components/IntroShowcase";
 import { preload3DAssets } from "./utils/modelCache";
 
@@ -213,7 +214,7 @@ const navItems = [
   ["about", "About Me"],
   ["skills", "Skills"],
   ["projects", "Projects"],
-  ["experience", "Education"],
+  ["education", "Education"],
   ["honors", "My Achievements"],
   ["contact", "Contact"],
 ];
@@ -333,11 +334,10 @@ function ProjectSlideshow({ images, title }: { images: string[]; title: string }
                 e.stopPropagation();
                 goToSlide(idx);
               }}
-              className={`w-2.5 h-2.5 rounded-full transition-all duration-300 cursor-pointer shrink-0 ${
-                isSelected
-                  ? "bg-emerald-500 scale-125 shadow-[0_0_10px_rgba(16,185,129,0.85)]"
-                  : "bg-[#B2B2B2] hover:bg-emerald-400/70"
-              }`}
+              className={`w-2.5 h-2.5 rounded-full transition-all duration-300 cursor-pointer shrink-0 ${isSelected
+                ? "bg-emerald-500 scale-125 shadow-[0_0_10px_rgba(16,185,129,0.85)]"
+                : "bg-[#B2B2B2] hover:bg-emerald-400/70"
+                }`}
               aria-label={`Go to slide ${idx + 1}`}
             />
           );
@@ -458,11 +458,10 @@ function ScrollProjectCard({ project, index }: { project: ProjectItem; index: nu
           ? "transform 0.15s ease-out, opacity 0.6s ease-in-out"
           : "transform 1.15s cubic-bezier(0.16, 1, 0.3, 1), opacity 1.15s cubic-bezier(0.16, 1, 0.3, 1)",
       }}
-      className={`relative w-full max-w-[1232px] mx-auto aspect-auto lg:aspect-[1232/540] min-h-[380px] rounded-[2.5rem] overflow-hidden flex items-center p-6 sm:p-10 lg:p-12 will-change-transform ${
-        isInFocus
-          ? "shadow-[0_25px_80px_rgba(0,0,0,0.7)] pointer-events-auto z-10"
-          : "shadow-none pointer-events-none z-0"
-      }`}
+      className={`relative w-full max-w-[1232px] mx-auto aspect-auto lg:aspect-[1232/540] min-h-[380px] rounded-[2.5rem] overflow-hidden flex items-center p-6 sm:p-10 lg:p-12 will-change-transform ${isInFocus
+        ? "shadow-[0_25px_80px_rgba(0,0,0,0.7)] pointer-events-auto z-10"
+        : "shadow-none pointer-events-none z-0"
+        }`}
     >
       {/* Full Background Card Image with 85% Opacity (bg1.webp, Bg2.webp, bg3.webp) */}
       <img
@@ -717,7 +716,7 @@ export default function App() {
 
   React.useEffect(() => {
     const handleScroll = () => {
-      const sections = ["about", "skills", "projects", "experience", "honors", "contact"];
+      const sections = ["about", "skills", "projects", "education", "honors", "contact"];
       const scrollPosition = window.scrollY + 250;
 
       for (let i = sections.length - 1; i >= 0; i--) {
@@ -796,337 +795,293 @@ export default function App() {
       )}
 
       <main
-        className={`page-grid-shell transition-all duration-[1200ms] cubic-bezier(0.16,1,0.3,1) transform ${
-          showIntro && !isHeroRevealed
-            ? "opacity-0 translate-y-16 pointer-events-none"
-            : "opacity-100 translate-y-0"
-        }`}
+        className={`page-grid-shell transition-all duration-[1200ms] cubic-bezier(0.16,1,0.3,1) transform ${showIntro && !isHeroRevealed
+          ? "opacity-0 translate-y-16 pointer-events-none"
+          : "opacity-100 translate-y-0"
+          }`}
       >
         <ScrollProgress />
 
-      <div className="page-reveal mx-auto flex min-h-screen w-full max-w-5xl flex-col px-3 py-4 text-sm leading-loose sm:px-6 lg:px-8">
+        <div className="page-reveal mx-auto flex min-h-screen w-full max-w-5xl flex-col px-3 py-4 text-sm leading-loose sm:px-6 lg:px-8">
 
-        {/* HERO SECTION */}
-        <section id="about" className="scroll-mt-24">
-          <div className="hero-title">
-            <FluidGradientText text="NHAT THIEN" />
-          </div>
+          {/* HERO SECTION */}
+          <section id="about" className="scroll-mt-24">
+            <div className="hero-title">
+              <FluidGradientText text="NHAT THIEN" />
+            </div>
 
-          <div className="intro-grid">
-            <p className="eyebrow mb-4">{personalInfo.title} • {personalInfo.location}</p>
-            <div className="flex flex-col md:flex-row items-start gap-6 lg:gap-8">
-              <ElectricBorder color="#10b981" speed={0.75} chaos={0.08} borderRadius={999} className="hero-orbit-card flex-shrink-0 mt-1">
-                <ProfileAvatar />
-              </ElectricBorder>
-              <div className="intro-copy flex-1">
-                <h1>
-                  Crafting <ShimmerText>AI-driven</ShimmerText> software that makes an impact.
-                </h1>
-                <p>
-                  Senior Information Technology student at <strong>HCMUTE</strong> (GPA {personalInfo.gpa}) passionate about turning AI ideas into software that people actually use.
-                  <br />
-                  I build scalable full-stack applications, intelligent computer vision systems with YOLOv11, and Retrieval-Augmented Generation (RAG) solutions—focusing on clean architecture, real-world usability, and measurable impact rather than prototypes that never leave the lab.
-                </p>
-                <div className="stat-strip">
-                  <Stat value="3.24" label="HCMUTE GPA" />
-                  <Stat value="10+" label="Projects Built" />
-                  <Stat value="2" label="Hackathons Won" />
-                </div>
-                <div className="hero-actions">
-                  <Button href="#projects">Showcase & Case Studies</Button>
-                  <Button href="#contact" variant="secondary">Get In Touch</Button>
+            <div className="intro-grid">
+              <p className="eyebrow mb-4">{personalInfo.title} • {personalInfo.location}</p>
+              <div className="flex flex-col md:flex-row items-start gap-6 lg:gap-8">
+                <ElectricBorder color="#10b981" speed={0.75} chaos={0.08} borderRadius={999} className="hero-orbit-card flex-shrink-0 mt-1">
+                  <ProfileAvatar />
+                </ElectricBorder>
+                <div className="intro-copy flex-1">
+                  <h1>
+                    Crafting <ShimmerText>AI-driven</ShimmerText> software that makes an impact.
+                  </h1>
+                  <p>
+                    Senior Information Technology student at <strong>HCMUTE</strong> (GPA {personalInfo.gpa}) passionate about turning AI ideas into software that people actually use.
+                    <br />
+                    I build scalable full-stack applications, intelligent computer vision systems with YOLOv11, and Retrieval-Augmented Generation (RAG) solutions—focusing on clean architecture, real-world usability, and measurable impact rather than prototypes that never leave the lab.
+                  </p>
+                  <div className="stat-strip">
+                    <Stat value="3.24" label="HCMUTE GPA" />
+                    <Stat value="10+" label="Projects Built" />
+                    <Stat value="2" label="Hackathons Won" />
+                  </div>
+                  <div className="hero-actions">
+                    <Button href="#projects">Showcase & Case Studies</Button>
+                    <Button href="#contact" variant="secondary">Get In Touch</Button>
+                  </div>
                 </div>
               </div>
             </div>
-          </div>
-        </section>
+          </section>
 
-        {/* SKILLS SECTION (Expanded to ~90% screen width with 5-8% side padding) */}
-        <section
-          ref={skillsRef}
-          id="skills"
-          className="scroll-mt-24 py-16 w-screen relative left-1/2 right-1/2 -ml-[50vw] -mr-[50vw] px-[5vw] lg:px-[6vw] xl:px-[8vw] max-w-screen overflow-x-hidden"
-        >
-          <div className="mx-auto w-full max-w-[1550px]">
-            <SectionHeader
-              eyebrow="CAPABILITIES"
-              title="Technical Stack & Mindset"
-              description="Proven tools and design philosophies honed through shipping production web apps and AI systems."
-            />
+          {/* SKILLS SECTION (Expanded to ~90% screen width with 5-8% side padding) */}
+          <section
+            ref={skillsRef}
+            id="skills"
+            className="scroll-mt-24 py-16 w-screen relative left-1/2 right-1/2 -ml-[50vw] -mr-[50vw] px-[5vw] lg:px-[6vw] xl:px-[8vw] max-w-screen overflow-x-hidden"
+          >
+            <div className="mx-auto w-full max-w-[1550px]">
+              <SectionHeader
+                eyebrow="CAPABILITIES"
+                title="Technical Stack & Mindset"
+                description="Proven tools and design philosophies honed through shipping production web apps and AI systems."
+              />
 
-            <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10 items-center mt-8">
-              {/* LEFT COLUMN: 6 Columns wide for Capabilities Cards */}
-              <div className="w-full lg:col-span-6 relative z-10">
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
-                  {strengths.map((item, idx) => {
-                    const Icon = item.icon;
-                    const isCardVisible = isSkillsVisible || isMacOpen;
-                    return (
-                      <Card
-                        key={item.title}
-                        style={{
-                          transitionDelay: `${idx * 150}ms`,
-                        }}
-                        className={`p-6 flex flex-col justify-between h-full min-h-[150px] transition-opacity duration-1000 cubic-bezier(0.16, 1, 0.3, 1) ${
-                          isCardVisible ? "opacity-100" : "opacity-0 pointer-events-none"
-                        }`}
-                      >
-                        <div>
-                          <div className="flex items-center gap-3 mb-3">
-                            <div className="p-2.5 rounded-xl bg-emerald-500/10 text-emerald-500 flex-shrink-0">
-                              <Icon className="h-5 w-5" />
+              <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10 items-center mt-8">
+                {/* LEFT COLUMN: 6 Columns wide for Capabilities Cards */}
+                <div className="w-full lg:col-span-6 relative z-10">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
+                    {strengths.map((item, idx) => {
+                      const Icon = item.icon;
+                      const isCardVisible = isSkillsVisible || isMacOpen;
+                      return (
+                        <Card
+                          key={item.title}
+                          style={{
+                            transitionDelay: `${idx * 150}ms`,
+                          }}
+                          className={`p-6 flex flex-col justify-between h-full min-h-[150px] transition-opacity duration-1000 cubic-bezier(0.16, 1, 0.3, 1) ${isCardVisible ? "opacity-100" : "opacity-0 pointer-events-none"
+                            }`}
+                        >
+                          <div>
+                            <div className="flex items-center gap-3 mb-3">
+                              <div className="p-2.5 rounded-xl bg-emerald-500/10 text-emerald-500 flex-shrink-0">
+                                <Icon className="h-5 w-5" />
+                              </div>
+                              <h3 className="text-base font-bold leading-snug">{item.title}</h3>
                             </div>
-                            <h3 className="text-base font-bold leading-snug">{item.title}</h3>
+                            <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed">{item.body}</p>
                           </div>
-                          <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed">{item.body}</p>
-                        </div>
-                      </Card>
-                    );
-                  })}
+                        </Card>
+                      );
+                    })}
+                  </div>
+                </div>
+
+                {/* RIGHT COLUMN: 6 Columns wide for Large 3D Three.js WebGL Macbook Model */}
+                <div className="flex items-center justify-center w-full lg:col-span-6 relative z-20 overflow-visible">
+                  <Macbook3DModel
+                    screenImage="/bannerMac.png"
+                    className="h-[440px] sm:h-[500px] lg:h-[540px]"
+                    onLidOpenStateChange={(isOpen) => setIsMacOpen(isOpen)}
+                  />
                 </div>
               </div>
+            </div>
+          </section>
 
-              {/* RIGHT COLUMN: 6 Columns wide for Large 3D Three.js WebGL Macbook Model */}
-              <div className="flex items-center justify-center w-full lg:col-span-6 relative z-20 overflow-visible">
-                <Macbook3DModel
-                  screenImage="/bannerMac.png"
-                  className="h-[440px] sm:h-[500px] lg:h-[540px]"
-                  onLidOpenStateChange={(isOpen) => setIsMacOpen(isOpen)}
-                />
+          {/* PROJECTS SECTION (Expanded to full screen width with 5-8% side padding) */}
+          <section
+            id="projects"
+            className="scroll-mt-24 py-16 w-screen relative left-1/2 right-1/2 -ml-[50vw] -mr-[50vw] px-[5vw] lg:px-[6vw] xl:px-[8vw] max-w-screen overflow-x-hidden"
+          >
+            <div className="mx-auto w-full max-w-[1550px]">
+              <SectionHeader
+                eyebrow="PORTFOLIO SHOWCASE"
+                title="Featured Projects & Case Studies"
+                description="Explore the AI vision systems, real-time multiplayer platforms, and full-stack web applications I've engineered."
+              />
+
+              <div className="featured-projects mt-12 space-y-10 sm:space-y-12 lg:space-y-14">
+                {projects.map((project, idx) => (
+                  <ScrollProjectCard key={project.id} project={project} index={idx} />
+                ))}
               </div>
             </div>
-          </div>
-        </section>
+          </section>
 
-        {/* PROJECTS SECTION (Expanded to full screen width with 5-8% side padding) */}
-        <section
-          id="projects"
-          className="scroll-mt-24 py-16 w-screen relative left-1/2 right-1/2 -ml-[50vw] -mr-[50vw] px-[5vw] lg:px-[6vw] xl:px-[8vw] max-w-screen overflow-x-hidden"
-        >
-          <div className="mx-auto w-full max-w-[1550px]">
-            <SectionHeader
-              eyebrow="PORTFOLIO SHOWCASE"
-              title="Featured Projects & Case Studies"
-              description="Explore the AI vision systems, real-time multiplayer platforms, and full-stack web applications I've engineered."
-            />
-
-            <div className="featured-projects mt-12 space-y-10 sm:space-y-12 lg:space-y-14">
-              {projects.map((project, idx) => (
-                <ScrollProjectCard key={project.id} project={project} index={idx} />
-              ))}
-            </div>
-          </div>
-        </section>
-
-        {/* SUPPORTING & EXPERIMENTAL PROJECTS MARQUEE CAROUSEL */}
-        <section
-          ref={carouselRef}
-          className={`py-12 w-screen relative left-1/2 right-1/2 -ml-[50vw] -mr-[50vw] overflow-hidden my-4 transition-all duration-[1200ms] cubic-bezier(0.16,1,0.3,1) transform ${
-            isCarouselVisible
+          {/* SUPPORTING & EXPERIMENTAL PROJECTS MARQUEE CAROUSEL */}
+          <section
+            ref={carouselRef}
+            className={`py-12 w-screen relative left-1/2 right-1/2 -ml-[50vw] -mr-[50vw] overflow-hidden my-4 transition-all duration-[1200ms] cubic-bezier(0.16,1,0.3,1) transform ${isCarouselVisible
               ? "opacity-100 translate-y-0 scale-100"
               : "opacity-0 translate-y-16 scale-[0.97] pointer-events-none"
-          }`}
-        >
-          <div className="mx-auto w-full max-w-[1550px] px-[5vw] lg:px-[6vw] xl:px-[8vw] mb-8">
-            <div className="flex flex-col sm:flex-row items-start sm:items-end justify-between gap-4">
-              <div>
-                <span className="text-xs font-mono text-emerald-400 font-bold uppercase tracking-wider block mb-1">
-                  MORE CREATIONS
-                </span>
-                <h3 className="text-2xl sm:text-3xl font-extrabold text-white tracking-tight">
-                  Supporting & Experimental Projects
-                </h3>
+              }`}
+          >
+            <div className="mx-auto w-full max-w-[1550px] px-[5vw] lg:px-[6vw] xl:px-[8vw] mb-8">
+              <div className="flex flex-col sm:flex-row items-start sm:items-end justify-between gap-4">
+                <div>
+                  <span className="text-xs font-mono text-emerald-400 font-bold uppercase tracking-wider block mb-1">
+                    MORE CREATIONS
+                  </span>
+                  <h3 className="text-2xl sm:text-3xl font-extrabold text-white tracking-tight">
+                    Supporting & Experimental Projects
+                  </h3>
+                </div>
+                <p className="text-xs sm:text-sm text-slate-400 max-w-md font-normal">
+                  Continuous drifting carousel. Hover over any project card to halt movement and reveal 3D details.
+                </p>
               </div>
-              <p className="text-xs sm:text-sm text-slate-400 max-w-md font-normal">
-                Continuous drifting carousel. Hover over any project card to halt movement and reveal 3D details.
-              </p>
             </div>
-          </div>
 
-          {/* Marquee Track Container */}
-          <div className="relative w-full overflow-hidden flex py-4">
-            <div className="flex gap-6 animate-marquee-scroll shrink-0 min-w-full">
-              {[...supportingProjects, ...supportingProjects, ...supportingProjects, ...supportingProjects].map((proj, idx) => (
-                <Flip3DProjectCard key={`${proj.id}-${idx}`} project={proj} />
-              ))}
+            {/* Marquee Track Container */}
+            <div className="relative w-full overflow-hidden flex py-4">
+              <div className="flex gap-6 animate-marquee-scroll shrink-0 min-w-full">
+                {[...supportingProjects, ...supportingProjects, ...supportingProjects, ...supportingProjects].map((proj, idx) => (
+                  <Flip3DProjectCard key={`${proj.id}-${idx}`} project={proj} />
+                ))}
+              </div>
             </div>
-          </div>
-        </section>
+          </section>
 
-        {/* EXPERIENCE & EDUCATION SECTION */}
-        <section
-          id="experience"
-          className="scroll-mt-24 py-16 w-screen relative left-1/2 right-1/2 -ml-[50vw] -mr-[50vw] px-[5vw] lg:px-[6vw] xl:px-[8vw] max-w-screen overflow-x-hidden"
-        >
-          <div className="mx-auto w-full max-w-[1550px]">
+          {/* EXPERIENCE & EDUCATION SECTION */}
+          <section
+            id="education"
+            className="scroll-mt-24 py-16 w-screen relative left-1/2 right-1/2 -ml-[50vw] -mr-[50vw] px-[5vw] lg:px-[6vw] xl:px-[8vw] max-w-screen overflow-x-hidden"
+          >
+            <div className="mx-auto w-full max-w-[1550px]">
+              <SectionHeader
+                eyebrow="BACKGROUND"
+                title="Growth Journey"
+                description="From academic foundations to real-world software engineering and AI development."
+              />
+              <div className="mt-8">
+                <InteractiveHorizontalTimeline />
+              </div>
+            </div>
+          </section>
+
+          {/* HONORS & ACHIEVEMENTS SECTION */}
+          <section id="honors" className="scroll-mt-24 py-16">
             <SectionHeader
-              eyebrow="BACKGROUND"
-              title="Education & Technical Journey"
-              description="Academic milestones and hands-on software development experience."
+              eyebrow="MILESTONES"
+              title="Honors & Achievements"
+              description="Recognition and key milestones achieved during university and personal projects."
             />
-            <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center mt-8">
-              {/* LEFT COLUMN: Dual 3D iPhone Display */}
-              <div className="lg:col-span-6 flex items-center justify-center lg:justify-start relative min-h-[460px] sm:min-h-[540px] select-none">
-                <DualIphone3DModel
-                  screenImageFront="/fbUTE.png"
-                  screenImageBack="/screenMapUTE.png"
-                />
-              </div>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-8">
+              <Card className="p-6">
+                <div className="flex items-center gap-3 mb-3">
+                  <Trophy className="h-6 w-6 text-yellow-500" />
+                  <h3 className="text-base font-bold">High Academic Standing</h3>
+                </div>
+                <p className="text-sm text-muted-foreground">
+                  Consistently maintained a <strong>3.24 / 4.00 GPA</strong> in Information Technology at HCMUTE.
+                </p>
+              </Card>
 
-              {/* RIGHT COLUMN: Education & Experience Cards */}
-              <div className="lg:col-span-6 space-y-6">
-                <Card className="p-6 sm:p-7">
-                  <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2 mb-4">
-                    <div>
-                      <h3 className="text-lg font-bold">{personalInfo.school}</h3>
-                      <p className="text-sm text-emerald-500 font-medium">Bachelor of Science in Information Technology</p>
-                    </div>
-                    <span className="text-xs px-3 py-1 rounded-full bg-muted text-muted-foreground font-mono">
-                      2023 - 2027 (Expected)
-                    </span>
-                  </div>
-                  <p className="text-sm text-muted-foreground leading-relaxed">
-                    Currently maintaining a cumulative <strong>GPA of {personalInfo.gpa}</strong>. Specialized coursework in Data Structures & Algorithms, Database Management Systems, Software Architecture, Machine Learning, and Computer Vision.
-                  </p>
-                </Card>
-
-                <Card className="p-6 sm:p-7">
-                  <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2 mb-4">
-                    <div>
-                      <h3 className="text-lg font-bold">Full-Stack Developer</h3>
-                      <p className="text-sm text-emerald-500 font-medium">Independent & Team Projects</p>
-                    </div>
-                    <span className="text-xs px-3 py-1 rounded-full bg-muted text-muted-foreground font-mono">
-                      2023 - Present
-                    </span>
-                  </div>
-                  <ul className="text-sm text-muted-foreground space-y-2 list-disc list-inside">
-                    <li>Architected full-stack React + Node.js web applications with RESTful APIs and real-time Socket rooms.</li>
-                    <li>Trained and integrated computer vision models (YOLOv11) for real-time industrial anomaly inspection.</li>
-                    <li>Co-developed browser gameplay engines, 60fps HTML5 Canvas physics, and interactive puzzle UI loops.</li>
-                  </ul>
-                </Card>
-              </div>
+              <Card className="p-6">
+                <div className="flex items-center gap-3 mb-3">
+                  <Rocket className="h-6 w-6 text-emerald-500" />
+                  <h3 className="text-base font-bold">6+ Shipped Web & AI Products</h3>
+                </div>
+                <p className="text-sm text-muted-foreground">
+                  Successfully deployed production projects across Vercel, Netlify, and GitHub pages serving live users.
+                </p>
+              </Card>
             </div>
-          </div>
-        </section>
+          </section>
 
-        {/* HONORS & ACHIEVEMENTS SECTION */}
-        <section id="honors" className="scroll-mt-24 py-16">
-          <SectionHeader
-            eyebrow="MILESTONES"
-            title="Honors & Achievements"
-            description="Recognition and key milestones achieved during university and personal projects."
-          />
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-8">
-            <Card className="p-6">
-              <div className="flex items-center gap-3 mb-3">
-                <Trophy className="h-6 w-6 text-yellow-500" />
-                <h3 className="text-base font-bold">High Academic Standing</h3>
-              </div>
-              <p className="text-sm text-muted-foreground">
-                Consistently maintained a <strong>3.24 / 4.00 GPA</strong> in Information Technology at HCMUTE.
-              </p>
-            </Card>
-
-            <Card className="p-6">
-              <div className="flex items-center gap-3 mb-3">
-                <Rocket className="h-6 w-6 text-emerald-500" />
-                <h3 className="text-base font-bold">6+ Shipped Web & AI Products</h3>
-              </div>
-              <p className="text-sm text-muted-foreground">
-                Successfully deployed production projects across Vercel, Netlify, and GitHub pages serving live users.
-              </p>
-            </Card>
-          </div>
-        </section>
-
-        {/* CONTACT SECTION */}
-        <section id="contact" className="scroll-mt-24 py-16">
-          <SectionHeader
-            eyebrow="GET IN TOUCH"
-            title="Let's Build Something Together"
-            description="Open for software engineering opportunities, AI projects, and technical collaborations."
-          />
-          <div className="mt-8 grid grid-cols-1 md:grid-cols-2 gap-8">
-            <Card className="p-6 space-y-4">
-              <h3 className="text-lg font-bold">Contact Details</h3>
-              <div className="space-y-3">
-                <div className="flex items-center gap-3 text-muted-foreground">
-                  <Mail className="h-4 w-4 text-emerald-500" />
-                  <span>{personalInfo.email}</span>
-                </div>
-                <div className="flex items-center gap-3 text-muted-foreground">
-                  <Phone className="h-4 w-4 text-emerald-500" />
-                  <span>{personalInfo.phone}</span>
-                </div>
-                <div className="flex items-center gap-3 text-muted-foreground">
-                  <GraduationCap className="h-4 w-4 text-emerald-500" />
-                  <span>{personalInfo.school}</span>
-                </div>
-              </div>
-
-              <div className="pt-4 flex gap-3">
-                <button
-                  onClick={handleCopyEmail}
-                  className="flex items-center gap-2 px-4 py-2 rounded-lg bg-emerald-500 text-black font-semibold text-xs hover:bg-emerald-400 transition"
-                >
-                  {copied ? <Check className="h-4 w-4" /> : <Copy className="h-4 w-4" />}
-                  {copied ? "Email Copied!" : "Copy Email"}
-                </button>
-                <a
-                  href={`mailto:${personalInfo.email}`}
-                  className="flex items-center gap-2 px-4 py-2 rounded-lg border border-line text-xs font-semibold hover:bg-muted transition"
-                >
-                  Send Direct Email
-                </a>
-              </div>
-            </Card>
-
-            <Card className="p-6 space-y-4">
-              <h3 className="text-lg font-bold">Connect Online</h3>
-              <p className="text-sm text-muted-foreground">
-                Check out my open source repositories, live project demos, and professional career profile:
-              </p>
-              <div className="space-y-3 pt-2">
-                <a
-                  href={personalInfo.github}
-                  target="_blank"
-                  rel="noreferrer"
-                  className="flex items-center justify-between p-3 rounded-lg border border-line hover:border-emerald-500 transition"
-                >
-                  <div className="flex items-center gap-3">
-                    <Github className="h-5 w-5 text-emerald-500" />
-                    <span className="font-medium text-xs">GitHub Repository</span>
+          {/* CONTACT SECTION */}
+          <section id="contact" className="scroll-mt-24 py-16">
+            <SectionHeader
+              eyebrow="GET IN TOUCH"
+              title="Let's Build Something Together"
+              description="Open for software engineering opportunities, AI projects, and technical collaborations."
+            />
+            <div className="mt-8 grid grid-cols-1 md:grid-cols-2 gap-8">
+              <Card className="p-6 space-y-4">
+                <h3 className="text-lg font-bold">Contact Details</h3>
+                <div className="space-y-3">
+                  <div className="flex items-center gap-3 text-muted-foreground">
+                    <Mail className="h-4 w-4 text-emerald-500" />
+                    <span>{personalInfo.email}</span>
                   </div>
-                  <ExternalIcon className="h-4 w-4 text-muted-foreground" />
-                </a>
-
-                <a
-                  href={personalInfo.linkedin}
-                  target="_blank"
-                  rel="noreferrer"
-                  className="flex items-center justify-between p-3 rounded-lg border border-line hover:border-emerald-500 transition"
-                >
-                  <div className="flex items-center gap-3">
-                    <Linkedin className="h-5 w-5 text-emerald-500" />
-                    <span className="font-medium text-xs">LinkedIn Profile</span>
+                  <div className="flex items-center gap-3 text-muted-foreground">
+                    <Phone className="h-4 w-4 text-emerald-500" />
+                    <span>{personalInfo.phone}</span>
                   </div>
-                  <ExternalIcon className="h-4 w-4 text-muted-foreground" />
-                </a>
-              </div>
-            </Card>
-          </div>
-        </section>
+                  <div className="flex items-center gap-3 text-muted-foreground">
+                    <GraduationCap className="h-4 w-4 text-emerald-500" />
+                    <span>{personalInfo.school}</span>
+                  </div>
+                </div>
 
-        {/* FOOTER */}
-        <footer className="py-8 border-t border-line text-center text-xs text-muted-foreground">
-          <p>© {new Date().getFullYear()} {personalInfo.name}. All rights reserved.</p>
-          <p className="mt-1">Engineered with React, Vite & Tailwind CSS • Powered by prompt-to-play architecture.</p>
-        </footer>
+                <div className="pt-4 flex gap-3">
+                  <button
+                    onClick={handleCopyEmail}
+                    className="flex items-center gap-2 px-4 py-2 rounded-lg bg-emerald-500 text-black font-semibold text-xs hover:bg-emerald-400 transition"
+                  >
+                    {copied ? <Check className="h-4 w-4" /> : <Copy className="h-4 w-4" />}
+                    {copied ? "Email Copied!" : "Copy Email"}
+                  </button>
+                  <a
+                    href={`mailto:${personalInfo.email}`}
+                    className="flex items-center gap-2 px-4 py-2 rounded-lg border border-line text-xs font-semibold hover:bg-muted transition"
+                  >
+                    Send Direct Email
+                  </a>
+                </div>
+              </Card>
 
-      </div>
-    </main>
+              <Card className="p-6 space-y-4">
+                <h3 className="text-lg font-bold">Connect Online</h3>
+                <p className="text-sm text-muted-foreground">
+                  Check out my open source repositories, live project demos, and professional career profile:
+                </p>
+                <div className="space-y-3 pt-2">
+                  <a
+                    href={personalInfo.github}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="flex items-center justify-between p-3 rounded-lg border border-line hover:border-emerald-500 transition"
+                  >
+                    <div className="flex items-center gap-3">
+                      <Github className="h-5 w-5 text-emerald-500" />
+                      <span className="font-medium text-xs">GitHub Repository</span>
+                    </div>
+                    <ExternalIcon className="h-4 w-4 text-muted-foreground" />
+                  </a>
+
+                  <a
+                    href={personalInfo.linkedin}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="flex items-center justify-between p-3 rounded-lg border border-line hover:border-emerald-500 transition"
+                  >
+                    <div className="flex items-center gap-3">
+                      <Linkedin className="h-5 w-5 text-emerald-500" />
+                      <span className="font-medium text-xs">LinkedIn Profile</span>
+                    </div>
+                    <ExternalIcon className="h-4 w-4 text-muted-foreground" />
+                  </a>
+                </div>
+              </Card>
+            </div>
+          </section>
+
+          {/* FOOTER */}
+          <footer className="py-8 border-t border-line text-center text-xs text-muted-foreground">
+            <p>© {new Date().getFullYear()} {personalInfo.name}. All rights reserved.</p>
+            <p className="mt-1">Engineered with React, Vite & Tailwind CSS • Powered by prompt-to-play architecture.</p>
+          </footer>
+
+        </div>
+      </main>
     </>
   );
 }
