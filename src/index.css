@@ -2633,11 +2633,13 @@ a {
   transition: all 0.48s cubic-bezier(0.23, 1, 0.32, 1);
 }
 
-.achievements-stacked-card:hover {
+.achievements-stacked-card:hover,
+.achievements-stacked-card.is-active {
   transform: translate(0px, -14px);
 }
 
-.achievements-stacked-card:hover .achievements-stacked-card-content::before {
+.achievements-stacked-card:hover .achievements-stacked-card-content::before,
+.achievements-stacked-card.is-active .achievements-stacked-card-content::before {
   rotate: -6deg;
   top: 0;
   width: 100%;
@@ -2647,7 +2649,8 @@ a {
   box-shadow: 0 0 25px rgba(141, 255, 90, 0.35);
 }
 
-.achievements-stacked-card:hover .achievements-stacked-card-content::after {
+.achievements-stacked-card:hover .achievements-stacked-card-content::after,
+.achievements-stacked-card.is-active .achievements-stacked-card-content::after {
   rotate: 6deg;
   top: 0;
   width: 100%;
@@ -2656,10 +2659,5 @@ a {
   border-color: rgba(141, 255, 90, 0.35);
   box-shadow: 0 0 20px rgba(141, 255, 90, 0.25);
 }
-
-
-
-
-
 
 

@@ -67,6 +67,7 @@ interface CardItemProps {
 
 const SingleAchievementCard: React.FC<CardItemProps> = ({ card, index }) => {
   const [currentIdx, setCurrentIdx] = useState(0);
+  const [isActive, setIsActive] = useState(false); // Mobile tap toggle state
 
   // Asynchronous carousel slide timer with staggered initial delay
   useEffect(() => {
@@ -97,11 +98,14 @@ const SingleAchievementCard: React.FC<CardItemProps> = ({ card, index }) => {
         delay: index * 0.25, // Staggered entrance animation: 0s, 0.25s, 0.5s
         ease: [0.22, 1, 0.36, 1],
       }}
-      className="achievements-stacked-card group relative w-full"
+      onClick={() => setIsActive((prev) => !prev)}
+      className={`achievements-stacked-card group relative w-full cursor-pointer ${
+        isActive ? "is-active" : ""
+      }`}
     >
       {/* STRICT 16:9 ASPECT RATIO CONTAINER */}
       <div className="achievements-stacked-card-content relative w-full aspect-[16/9] rounded-3xl bg-[#121318] border border-white/12 shadow-2xl">
-
+        
         {/* INNER IMAGE & OVERLAY CONTAINER */}
         <div className="relative z-10 w-full h-full rounded-[22px] overflow-hidden">
           {/* Background Image Carousel (Framer Motion AnimatePresence Silk-Smooth Crossfade) */}
@@ -122,21 +126,36 @@ const SingleAchievementCard: React.FC<CardItemProps> = ({ card, index }) => {
           </div>
 
           {/* CENTERED CAROUSEL PAGINATION DOTS (Positioned at BOTTOM-CENTER) */}
-          <div className="absolute bottom-3 left-1/2 -translate-x-1/2 z-30 flex items-center justify-center gap-1.5 px-3 py-1 rounded-full bg-black/75 backdrop-blur-md border border-white/15 shadow-2xl pointer-events-none group-hover:opacity-0 transition-opacity duration-300">
+          <div
+            className={`absolute bottom-3 left-1/2 -translate-x-1/2 z-30 flex items-center justify-center gap-1.5 px-3 py-1 rounded-full bg-black/75 backdrop-blur-md border border-white/15 shadow-2xl pointer-events-none transition-opacity duration-300 ${
+              isActive ? "opacity-0" : "group-hover:opacity-0"
+            }`}
+          >
             {card.images.map((_, idx) => (
               <div
                 key={idx}
-                className={`h-1.5 rounded-full transition-all duration-500 ${idx === currentIdx
-                  ? "w-4 bg-[#8DFF5A] shadow-[0_0_8px_#8DFF5A]"
-                  : "w-1.5 bg-white/40"
-                  }`}
+                className={`h-1.5 rounded-full transition-all duration-500 ${
+                  idx === currentIdx
+                    ? "w-4 bg-[#8DFF5A] shadow-[0_0_8px_#8DFF5A]"
+                    : "w-1.5 bg-white/40"
+                }`}
               />
             ))}
           </div>
 
-          {/* Hover Overlay with Info (ONLY VISIBLE ON HOVER) */}
-          <div className="absolute inset-0 bg-gradient-to-t from-black/95 via-black/85 to-black/35 backdrop-blur-md opacity-0 group-hover:opacity-100 transition-all duration-500 ease-out p-4 sm:p-5 flex flex-col justify-end z-20">
-            <div className="transform translate-y-6 group-hover:translate-y-0 opacity-0 group-hover:opacity-100 transition-all duration-500 ease-out space-y-2">
+          {/* Hover / Tap Overlay with Info */}
+          <div
+            className={`absolute inset-0 bg-gradient-to-t from-black/95 via-black/85 to-black/35 backdrop-blur-md transition-all duration-500 ease-out p-4 sm:p-5 flex flex-col justify-end z-20 ${
+              isActive ? "opacity-100" : "opacity-0 group-hover:opacity-100"
+            }`}
+          >
+            <div
+              className={`transition-all duration-500 ease-out space-y-2 ${
+                isActive
+                  ? "translate-y-0 opacity-100"
+                  : "transform translate-y-6 group-hover:translate-y-0 opacity-0 group-hover:opacity-100"
+              }`}
+            >
               {/* Badge */}
               <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-[#8DFF5A]/10 border border-[#8DFF5A]/30 text-[#8DFF5A] text-[10px] sm:text-xs font-mono font-bold w-fit shadow-[0_0_12px_rgba(141,255,90,0.15)]">
                 <span>★</span>
@@ -158,10 +177,11 @@ const SingleAchievementCard: React.FC<CardItemProps> = ({ card, index }) => {
                 {card.images.map((_, idx) => (
                   <div
                     key={idx}
-                    className={`h-1 rounded-full transition-all duration-500 ${idx === currentIdx
-                      ? "w-4 bg-[#8DFF5A] shadow-[0_0_8px_#8DFF5A]"
-                      : "w-1 bg-white/30"
-                      }`}
+                    className={`h-1 rounded-full transition-all duration-500 ${
+                      idx === currentIdx
+                        ? "w-4 bg-[#8DFF5A] shadow-[0_0_8px_#8DFF5A]"
+                        : "w-1 bg-white/30"
+                    }`}
                   />
                 ))}
               </div>
