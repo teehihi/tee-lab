@@ -500,6 +500,8 @@ function ScrollProjectCard({
     setIsHovered(false);
   };
 
+  const isEven = index % 2 === 0;
+
   return (
     <div
       ref={cardRef}
