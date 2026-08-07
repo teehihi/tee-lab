@@ -1,4 +1,4 @@
-// Cache Invalidation Timestamp: 2026-08-04T22:23:00Z
+// Cache Invalidation Timestamp: 2026-08-07T22:54:55Z
 import React, { useState, useEffect, useRef } from "react";
 import {
   ArrowUpRight,
@@ -204,7 +204,7 @@ const projects: ProjectItem[] = [
     ],
     links: [
       { label: "Live Demo", href: "https://xenow.vercel.app/" },
-      { label: "More Info...", href: "#xenow-modal", isModal: true },
+      { label: "More Info...", href: "#", isModal: true },
     ],
   },
   {
@@ -770,119 +770,120 @@ function Flip3DProjectCard({ project }: { project: SecondaryProjectItem }) {
 }
 
 function XeNowRepoModal({ isOpen, onClose }: { isOpen: boolean; onClose: () => void }) {
-  if (!isOpen) return null;
+  const [shouldRender, setShouldRender] = useState(isOpen);
+  const [isVisible, setIsVisible] = useState(false);
+
+  useEffect(() => {
+    if (isOpen) {
+      setShouldRender(true);
+      const timer = setTimeout(() => setIsVisible(true), 20);
+      return () => clearTimeout(timer);
+    } else {
+      setIsVisible(false);
+      const timer = setTimeout(() => setShouldRender(false), 250);
+      return () => clearTimeout(timer);
+    }
+  }, [isOpen]);
+
+  const handleClose = () => {
+    setIsVisible(false);
+    setTimeout(() => {
+      onClose();
+    }, 250);
+  };
+
+  if (!shouldRender) return null;
 
   return (
     <div
-      className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/85 backdrop-blur-md animate-fade-in"
-      onClick={onClose}
+      className={`fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/80 backdrop-blur-md transition-opacity duration-300 ease-out ${
+        isVisible ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"
+      }`}
+      onClick={handleClose}
     >
+      {/* Modal Card using User's Gradient & Dual Shadow Button Styling - Expanded Size */}
       <div
-        className="relative w-full max-w-lg rounded-3xl bg-slate-900/95 border border-white/15 p-6 sm:p-8 shadow-2xl overflow-hidden"
+        className={`relative w-full max-w-xl sm:w-[560px] rounded-[24px] bg-gradient-to-tr from-[#07102d] via-[#1a2340] to-[#3a3c54] border border-[#545a6a] p-7 sm:p-10 shadow-[0_25px_80px_rgba(0,0,0,0.85)] flex flex-col text-left font-sans transition-all duration-300 cubic-bezier(0.16, 1, 0.3, 1) transform ${
+          isVisible
+            ? "scale-100 opacity-100 translate-y-0"
+            : "scale-90 opacity-0 translate-y-6"
+        }`}
         onClick={(e) => e.stopPropagation()}
       >
-        {/* Background Glow Graphics */}
-        <div className="pointer-events-none absolute -top-24 -right-24 w-64 h-64 bg-emerald-500/15 rounded-full blur-3xl" />
-        <div className="pointer-events-none absolute -bottom-24 -left-24 w-64 h-64 bg-blue-500/15 rounded-full blur-3xl" />
-
-        {/* Close Button */}
+        {/* Exit Button */}
         <button
-          onClick={onClose}
-          className="absolute top-5 right-5 w-8 h-8 rounded-full bg-white/10 hover:bg-white/20 border border-white/15 flex items-center justify-center text-slate-300 hover:text-white transition-all cursor-pointer z-20"
+          onClick={handleClose}
+          className="absolute top-6 right-6 w-9 h-9 flex items-center justify-center rounded-xl bg-white/10 hover:bg-red-500 hover:border-red-500 text-slate-300 hover:text-white transition-all border border-white/15 cursor-pointer z-20 hover:shadow-[0_0_12px_rgba(239,68,68,0.5)]"
         >
           <X className="w-4 h-4" />
         </button>
 
-        {/* Modal Header */}
-        <div className="flex items-center gap-3 mb-3">
-          <div className="w-10 h-10 rounded-xl bg-emerald-500/20 border border-emerald-500/30 flex items-center justify-center text-emerald-400 font-extrabold font-mono text-lg">
-            XN
-          </div>
-          <div>
-            <h3 className="text-xl font-bold text-white font-mono leading-tight">
-              XeNow Code Repositories
+        {/* Modal Header with Logo */}
+        <div className="flex items-center gap-4 mb-2 pr-8">
+          <img
+            src="https://files.catbox.moe/hjoj92.webp"
+            alt="XeNow Logo"
+            className="w-12 h-12 sm:w-14 sm:h-14 rounded-2xl object-cover shrink-0"
+          />
+          <div className="flex flex-col min-w-0">
+            <span className="text-sm font-bold text-emerald-400 mb-0.5 block tracking-wider font-mono">
+              XeNow Repositories
+            </span>
+            <h3 className="text-xl sm:text-2xl font-extrabold text-white leading-tight truncate">
+              Full-Stack Code Base
             </h3>
-            <p className="text-xs text-emerald-400 font-mono">
-              Full-Stack Vehicle Rental Platform
-            </p>
           </div>
         </div>
 
-        {/* Informational Text Above Repos */}
-        <div className="text-xs sm:text-sm text-slate-300 leading-relaxed mb-6 bg-slate-950/70 p-4 rounded-2xl border border-white/10 font-sans space-y-1.5">
-          <p className="font-semibold text-white flex items-center gap-1.5">
-            <span>💡</span> <span>Architecture & Multi-Repo Overview:</span>
-          </p>
-          <p className="text-slate-400 text-xs leading-normal">
-            XeNow is split into two specialized repositories to maintain clean separation of concerns between the full-stack architecture: a high-performance React + Vite frontend UI and a scalable Node.js + Express + MongoDB backend API.
-          </p>
-        </div>
+        {/* Description */}
+        <p className="text-sm sm:text-base font-medium text-[#9799a7] leading-relaxed mb-7">
+          XeNow is split into two specialized repositories to maintain a clean decoupled architecture. Select a repository below to view on GitHub:
+        </p>
 
-        {/* 2 Repo Choice Cards */}
-        <div className="space-y-3.5">
-          {/* Frontend Repo */}
+        {/* Buttons Wrapper with btn-53 letter flip animation */}
+        <div className="flex flex-col sm:flex-row items-center justify-between gap-4 pt-1">
+          {/* Frontend Repo Button */}
           <a
             href="https://github.com/teehihi/xe-now-ui"
             target="_blank"
             rel="noreferrer"
-            className="group relative overflow-hidden flex items-start gap-4 p-4 rounded-2xl bg-slate-950/90 border border-white/10 hover:border-emerald-500/60 transition-all duration-300 hover:scale-[1.01] shadow-lg cursor-pointer"
+            className="btn-53-custom w-full sm:flex-1 bg-emerald-500 hover:bg-emerald-400 text-emerald-950 shadow-[0_6px_15px_-2px_rgba(16,185,129,0.45)] no-underline"
           >
-            <ShineBorder duration={3.4} shineColor="rgba(16, 185, 129, 0.45)" />
-            <div
-              aria-hidden
-              className="pointer-events-none absolute inset-0 -translate-x-full rounded-[inherit] bg-gradient-to-r from-transparent via-white/[0.12] to-transparent transition-transform duration-700 group-hover:translate-x-full"
-            />
-            <div className="w-10 h-10 rounded-xl bg-blue-500/10 border border-blue-500/20 flex items-center justify-center text-blue-400 shrink-0 mt-0.5 group-hover:scale-110 transition-transform">
+            <div className="original text-sm font-extrabold text-emerald-950">
               <Code2 className="w-5 h-5" />
+              <span>Frontend Repo</span>
             </div>
-            <div className="flex-1 min-w-0">
-              <div className="flex items-center justify-between gap-2 mb-1">
-                <h4 className="text-sm font-bold text-white font-mono group-hover:text-emerald-400 transition-colors flex items-center gap-1.5">
-                  Frontend UI Repository <ArrowUpRight className="w-3.5 h-3.5 opacity-70 group-hover:opacity-100 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
-                </h4>
-                <span className="text-[10px] font-mono font-semibold px-2 py-0.5 rounded-full bg-blue-500/20 text-blue-300 border border-blue-500/30">
-                  Client UI
-                </span>
-              </div>
-              <p className="text-xs text-slate-400 leading-snug mb-2">
-                User interface, car & motorcycle booking flow, smart filter search, identity verification UI.
-              </p>
-              <span className="text-[11px] font-mono text-emerald-400/90 font-semibold group-hover:underline">
-                github.com/teehihi/xe-now-ui ↗
-              </span>
+            <div className="letters text-sm font-black text-emerald-950">
+              <span>F</span>
+              <span>R</span>
+              <span>O</span>
+              <span>N</span>
+              <span>T</span>
+              <span>E</span>
+              <span>N</span>
+              <span>D</span>
             </div>
           </a>
 
-          {/* Backend Repo */}
+          {/* Backend Repo Button */}
           <a
             href="https://github.com/teehihi/xe-now-be"
             target="_blank"
             rel="noreferrer"
-            className="group relative overflow-hidden flex items-start gap-4 p-4 rounded-2xl bg-slate-950/90 border border-white/10 hover:border-emerald-500/60 transition-all duration-300 hover:scale-[1.01] shadow-lg cursor-pointer"
+            className="btn-53-custom w-full sm:flex-1 bg-white hover:bg-slate-100 text-slate-950 shadow-[0_6px_15px_-2px_rgba(11,22,37,0.4)] no-underline"
           >
-            <ShineBorder duration={3.4} shineColor="rgba(16, 185, 129, 0.45)" />
-            <div
-              aria-hidden
-              className="pointer-events-none absolute inset-0 -translate-x-full rounded-[inherit] bg-gradient-to-r from-transparent via-white/[0.12] to-transparent transition-transform duration-700 group-hover:translate-x-full"
-            />
-            <div className="w-10 h-10 rounded-xl bg-purple-500/10 border border-purple-500/20 flex items-center justify-center text-purple-400 shrink-0 mt-0.5 group-hover:scale-110 transition-transform">
+            <div className="original text-sm font-extrabold text-slate-950">
               <Cpu className="w-5 h-5" />
+              <span>Backend Repo</span>
             </div>
-            <div className="flex-1 min-w-0">
-              <div className="flex items-center justify-between gap-2 mb-1">
-                <h4 className="text-sm font-bold text-white font-mono group-hover:text-emerald-400 transition-colors flex items-center gap-1.5">
-                  Backend API Repository <ArrowUpRight className="w-3.5 h-3.5 opacity-70 group-hover:opacity-100 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
-                </h4>
-                <span className="text-[10px] font-mono font-semibold px-2 py-0.5 rounded-full bg-purple-500/20 text-purple-300 border border-purple-500/30">
-                  Server API
-                </span>
-              </div>
-              <p className="text-xs text-slate-400 leading-snug mb-2">
-                RESTful APIs, JWT authentication middleware, booking management system, database schema.
-              </p>
-              <span className="text-[11px] font-mono text-emerald-400/90 font-semibold group-hover:underline">
-                github.com/teehihi/xe-now-be ↗
-              </span>
+            <div className="letters text-sm font-black text-slate-950">
+              <span>B</span>
+              <span>A</span>
+              <span>C</span>
+              <span>K</span>
+              <span>E</span>
+              <span>N</span>
+              <span>D</span>
             </div>
           </a>
         </div>
