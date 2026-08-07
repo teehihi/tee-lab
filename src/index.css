@@ -229,6 +229,41 @@ a {
   transform: rotate(45deg);
 }
 
+/* Animated Underline Effect for Secondary Links (e.g. More Info...) */
+.hover-underline-animation {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding-bottom: 3px;
+  color: #cbd5e1;
+  font-weight: 600;
+  transition: color 0.3s ease;
+  text-decoration: none !important;
+}
+
+.hover-underline-animation:hover {
+  color: #ffffff;
+}
+
+.hover-underline-animation::after {
+  content: "";
+  position: absolute;
+  width: 100%;
+  height: 2px;
+  bottom: 0;
+  left: 0;
+  background-color: #10b981;
+  transform: scaleX(0);
+  transform-origin: bottom right;
+  transition: transform 0.3s cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+.hover-underline-animation:hover::after {
+  transform: scaleX(1);
+  transform-origin: bottom left;
+}
+
 .interactive-grid {
   pointer-events: none;
   position: fixed;

@@ -515,7 +515,7 @@ function ScrollProjectCard({ project, index }: { project: ProjectItem; index: nu
                   href={link.href}
                   target="_blank"
                   rel="noreferrer"
-                  className="inline-flex items-center gap-1 text-slate-300 hover:text-white font-semibold text-sm sm:text-base hover:underline transition-colors ml-2 sm:ml-4 cursor-pointer z-20"
+                  className="hover-underline-animation text-sm sm:text-base font-semibold ml-2 sm:ml-4 cursor-pointer z-20"
                 >
                   <span>{link.label}</span>
                 </a>
