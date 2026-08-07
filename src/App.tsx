@@ -119,7 +119,7 @@ const projects: ProjectItem[] = [
       "https://files.catbox.moe/pyy1kw.jpg",
     ],
     links: [
-      { label: "GitHub Repo", href: "https://github.com/teehihi/phoenix-vision-fire-detection" },
+      { label: "GitHub", href: "https://github.com/teehihi/phoenix-vision-fire-detection" },
       { label: "More Info...", href: "https://github.com/teehihi/phoenix-vision-fire-detection" },
     ],
   },
@@ -143,7 +143,7 @@ const projects: ProjectItem[] = [
       "https://media1.giphy.com/media/v1.Y2lkPTc5MGI3NjExN25kb20ybWI3b282dmF1djN3a2NiaHh0N3A1NmxzZnRweTZtbjJ0ZiZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/HcPgPBQKj7LoUYJG0H/giphy.gif",
     links: [
       { label: "Live Demo", href: "https://uniquizzdom.vercel.app/" },
-      { label: "GitHub Repo", href: "https://github.com/teehihi/UniQuizzHackathon" },
+      { label: "More Info...", href: "https://github.com/teehihi/UniQuizzHackathon" },
     ],
   },
   {
@@ -173,8 +173,7 @@ const projects: ProjectItem[] = [
     ],
     links: [
       { label: "Live Demo", href: "https://xenow.vercel.app/" },
-      { label: "Frontend Repo", href: "https://github.com/teehihi/xe-now-ui" },
-      { label: "Backend Repo", href: "https://github.com/teehihi/xe-now-be" },
+      { label: "More Info...", href: "https://github.com/teehihi/xe-now-ui" },
     ],
   },
   {
@@ -195,7 +194,7 @@ const projects: ProjectItem[] = [
     mediaUrl:
       "https://media2.giphy.com/media/v1.Y2lkPTc5MGI3NjExdXE3MmZjN3VwdjBrbjA0bTUyZGdpN3p3Y2VvaTZyb2V4MTBrd25qYyZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/8kMQHXT5j4D9NHDxLs/giphy.gif",
     links: [
-      { label: "GitHub Repo", href: "https://github.com/teehihi/movie-double-t" },
+      { label: "GitHub", href: "https://github.com/teehihi/movie-double-t" },
       { label: "More Info...", href: "https://github.com/teehihi/movie-double-t" },
     ],
   },
