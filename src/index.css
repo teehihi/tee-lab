@@ -2857,5 +2857,163 @@ a {
 .btn-53-custom:hover .letters span:nth-child(11) { transition-delay: 0.42s; }
 .btn-53-custom:hover .letters span:nth-child(12) { transition-delay: 0.46s; }
 
+/* Radial Ripple Expansion Hover Effect (User Request) */
+.ripple-expand-btn {
+  position: relative;
+  overflow: hidden !important;
+  transition: all 0.3s cubic-bezier(0.23, 1, 0.32, 1);
+  isolation: isolate;
+}
+
+.ripple-expand-btn::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  margin: auto;
+  width: 50px;
+  height: 50px;
+  border-radius: 9999px;
+  transform: scale(0);
+  z-index: 1;
+  transition: transform 0.6s cubic-bezier(0.23, 1, 0.32, 1);
+}
+
+.ripple-expand-btn:hover::before {
+  transform: scale(7);
+}
+
+.ripple-expand-btn:hover {
+  transform: scale(1.05);
+}
+
+.ripple-expand-btn:active {
+  transform: scale(1);
+}
+
+/* Primary Button Variation */
+.ripple-expand-btn.primary-ripple {
+  background-color: #ffffff;
+  color: #090a0f;
+  border: 2px solid #ffffff;
+  box-shadow: 0 0 0 rgba(255, 255, 255, 0);
+}
+
+.ripple-expand-btn.primary-ripple::before {
+  background-color: #10b981;
+}
+
+.ripple-expand-btn.primary-ripple:hover {
+  color: #022c22;
+  border-color: #10b981;
+  box-shadow: 0 0 20px rgba(16, 185, 129, 0.4);
+}
+
+/* Secondary Button Variation */
+.ripple-expand-btn.secondary-ripple {
+  background-color: transparent;
+  color: #e2e8f0;
+  border: 2px solid rgba(255, 255, 255, 0.2);
+  box-shadow: 0 0 0 rgba(16, 185, 129, 0);
+}
+
+.ripple-expand-btn.secondary-ripple::before {
+  background-color: #ffffff;
+}
+
+.ripple-expand-btn.secondary-ripple:hover {
+  color: #090a0f;
+  border-color: #ffffff;
+  box-shadow: 0 0 20px rgba(255, 255, 255, 0.3);
+}
+
+/* User Requested Dashed Teal/Emerald Primary Button Effect */
+.btn-dashed-teal {
+  background-color: #00BFA6;
+  color: #ffffff;
+  border: 2px dashed #00BFA6;
+  box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px, rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;
+  transition: all 0.4s ease;
+  letter-spacing: 0.5px;
+}
+
+.btn-dashed-teal:hover {
+  background-color: #ffffff;
+  color: #00BFA6;
+  border: 2px dashed #00BFA6;
+  box-shadow: 0 0 18px rgba(0, 191, 166, 0.45);
+}
+
+.btn-dashed-teal:active {
+  background-color: #87dbd0;
+  color: #00BFA6;
+}
+
+/* Dashed Secondary Button Effect for My Achievements */
+.btn-dashed-secondary {
+  background-color: transparent;
+  color: #e2e8f0;
+  border: 2px dashed rgba(255, 255, 255, 0.3);
+  box-shadow: rgba(50, 50, 93, 0.15) 0px 2px 5px -1px;
+  transition: all 0.4s ease;
+  letter-spacing: 0.5px;
+}
+
+.btn-dashed-secondary:hover {
+  background-color: #ffffff;
+  color: #090a0f;
+  border: 2px dashed #ffffff;
+  box-shadow: 0 0 18px rgba(255, 255, 255, 0.4);
+}
+
+.btn-dashed-secondary:active {
+  background-color: #e2e8f0;
+  color: #090a0f;
+}
+
+/* Radial Ripple Expansion Effect for My Achievements Button (Uiverse gharsh11032000) */
+.btn-radial-ripple {
+  cursor: pointer;
+  position: relative;
+  background-color: transparent;
+  color: #e2e8f0;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  border-radius: 9999px;
+  font-weight: 700;
+  transition: all 0.3s cubic-bezier(0.23, 1, 0.32, 1);
+  overflow: hidden !important;
+  isolation: isolate;
+}
+
+.btn-radial-ripple::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  margin: auto;
+  width: 50px;
+  height: 50px;
+  border-radius: inherit;
+  transform: scale(0);
+  z-index: 1;
+  background-color: #ffffff;
+  transition: transform 0.6s cubic-bezier(0.23, 1, 0.32, 1);
+}
+
+.btn-radial-ripple:hover::before {
+  transform: scale(6);
+}
+
+.btn-radial-ripple:hover {
+  color: #090a0f;
+  border-color: #ffffff;
+  transform: scale(1.05);
+  box-shadow: 0 0px 20px rgba(255, 255, 255, 0.4);
+}
+
+.btn-radial-ripple:active {
+  transform: scale(1);
+}
+
+
+
 
 

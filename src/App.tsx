@@ -803,8 +803,8 @@ function XeNowRepoModal({ isOpen, onClose }: { isOpen: boolean; onClose: () => v
       {/* Modal Card using User's Gradient & Dual Shadow Button Styling - Expanded Size */}
       <div
         className={`relative w-full max-w-xl sm:w-[560px] rounded-[24px] bg-gradient-to-tr from-[#07102d] via-[#1a2340] to-[#3a3c54] border border-[#545a6a] p-7 sm:p-10 shadow-[0_25px_80px_rgba(0,0,0,0.85)] flex flex-col text-left font-sans transition-all duration-300 cubic-bezier(0.16, 1, 0.3, 1) transform ${isVisible
-            ? "scale-100 opacity-100 translate-y-0"
-            : "scale-90 opacity-0 translate-y-6"
+          ? "scale-100 opacity-100 translate-y-0"
+          : "scale-90 opacity-0 translate-y-6"
           }`}
         onClick={(e) => e.stopPropagation()}
       >
@@ -1052,7 +1052,7 @@ export default function App() {
                     <Stat value="2" label="Hackathons Won" />
                   </div>
                   <div className="hero-actions">
-                    <Button href="#projects">Showcase & Case Studies</Button>
+                    <Button href="#projects">Projects & Case Studies</Button>
                     <Button href="#honors" variant="secondary">My Achievements</Button>
                   </div>
                 </div>
