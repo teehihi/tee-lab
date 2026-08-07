@@ -84,7 +84,7 @@ function ShineBorder({
 
 export function Stat({ value, label }: { value: string; label: string }) {
   return (
-    <div className="group relative overflow-hidden flex flex-col justify-between p-4 sm:p-5 rounded-2xl bg-transparent border border-white/15 shadow-sm transition-colors duration-300 hover:bg-white/[0.03] cursor-default">
+    <div className="group relative overflow-hidden flex flex-col justify-between p-3.5 sm:p-4 rounded-2xl bg-transparent border border-white/15 shadow-sm transition-colors duration-300 hover:bg-white/[0.03] cursor-default">
       <ShineBorder duration={3.4} shineColor="rgba(255, 255, 255, 0.9)" />
       <div
         aria-hidden
@@ -93,7 +93,7 @@ export function Stat({ value, label }: { value: string; label: string }) {
       <p className="relative z-10 text-2xl sm:text-3xl font-extrabold font-mono text-white leading-none mb-2">
         {value}
       </p>
-      <span className="relative z-10 text-[10px] sm:text-xs font-mono font-semibold uppercase tracking-widest text-slate-400 leading-tight">
+      <span className="relative z-10 text-[10px] sm:text-[11px] font-mono font-semibold uppercase tracking-wider text-slate-400 leading-tight whitespace-nowrap">
         {label}
       </span>
     </div>
