@@ -74,12 +74,18 @@ const personalInfo = {
   tagline: "Building AI-powered software products for real users.",
 };
 
+export interface TechIconItem {
+  name: string;
+  iconUrl: string;
+}
+
 export interface ProjectItem {
   id: string;
   title: string;
   subtitle: string;
   description: string;
   tags: string[];
+  techIcons?: TechIconItem[];
   mediaType: "slideshow" | "gif" | "placeholder";
   bgGraphic: string;
   mediaImages?: string[];
@@ -95,6 +101,13 @@ const projects: ProjectItem[] = [
     description:
       "Improve fire safety using real-time computer vision that detects smoke and flames instantly, helping reduce response time and support early intervention.",
     tags: ["Computer Vision", "YOLOv11", "Real-Time AI", "PyTorch", "Fire Detection"],
+    techIcons: [
+      { name: "Python", iconUrl: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/python/python-original.svg" },
+      { name: "PyTorch", iconUrl: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/pytorch/pytorch-original.svg" },
+      { name: "OpenCV", iconUrl: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/opencv/opencv-original.svg" },
+      { name: "React", iconUrl: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/react/react-original.svg" },
+      { name: "Electron", iconUrl: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/electron/electron-original.svg" },
+    ],
     mediaType: "slideshow",
     bgGraphic: "/Bg2.webp",
     mediaImages: [
@@ -107,8 +120,8 @@ const projects: ProjectItem[] = [
       "https://files.catbox.moe/pyy1kw.jpg",
     ],
     links: [
-      { label: "GitHub", href: "https://github.com/teehihi/PhoenixVision" },
-      { label: "More Info...", href: "https://github.com/teehihi/PhoenixVision" },
+      { label: "GitHub Repo", href: "https://github.com/teehihi/phoenix-vision-fire-detection" },
+      { label: "More Info...", href: "https://github.com/teehihi/phoenix-vision-fire-detection" },
     ],
   },
   {
@@ -117,14 +130,21 @@ const projects: ProjectItem[] = [
     subtitle: "Real-Time Quiz Platform for Live Events",
     description:
       "Create engaging classroom and event experiences with instant quizzes, live leaderboards, and synchronized multiplayer participation.",
-    tags: ["React", "NodeJS", "Socket.io", "MongoDB", "Real-Time Quiz"],
+    tags: ["React", "TypeScript", "NodeJS", "Socket.io", "MongoDB"],
+    techIcons: [
+      { name: "React", iconUrl: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/react/react-original.svg" },
+      { name: "TypeScript", iconUrl: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/typescript/typescript-original.svg" },
+      { name: "Node.js", iconUrl: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/nodejs/nodejs-original.svg" },
+      { name: "Socket.io", iconUrl: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/socketio/socketio-original.svg" },
+      { name: "MongoDB", iconUrl: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/mongodb/mongodb-original.svg" },
+    ],
     mediaType: "gif",
     bgGraphic: "/bg1.webp",
     mediaUrl:
       "https://media1.giphy.com/media/v1.Y2lkPTc5MGI3NjExN25kb20ybWI3b282dmF1djN3a2NiaHh0N3A1NmxzZnRweTZtbjJ0ZiZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/HcPgPBQKj7LoUYJG0H/giphy.gif",
     links: [
       { label: "Live Demo", href: "https://uniquizzdom.vercel.app/" },
-      { label: "More Info...", href: "https://github.com/teehihi/UniQuizzFE" },
+      { label: "GitHub Repo", href: "https://github.com/teehihi/UniQuizzHackathon" },
     ],
   },
   {
@@ -133,7 +153,15 @@ const projects: ProjectItem[] = [
     subtitle: "Rent Vehicles with Confidence",
     description:
       "Book cars and motorcycles through a seamless rental experience featuring smart search, identity verification, secure payments, and intuitive booking management.",
-    tags: ["React", "Vite", "NodeJS", "Express", "Vehicle Rental"],
+    tags: ["React", "TypeScript", "Vite", "NodeJS", "Express", "MongoDB"],
+    techIcons: [
+      { name: "React", iconUrl: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/react/react-original.svg" },
+      { name: "TypeScript", iconUrl: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/typescript/typescript-original.svg" },
+      { name: "Vite", iconUrl: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/vitejs/vitejs-original.svg" },
+      { name: "Node.js", iconUrl: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/nodejs/nodejs-original.svg" },
+      { name: "Express", iconUrl: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/express/express-original.svg" },
+      { name: "MongoDB", iconUrl: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/mongodb/mongodb-original.svg" },
+    ],
     mediaType: "slideshow",
     bgGraphic: "/bg3.webp",
     mediaImages: [
@@ -146,7 +174,8 @@ const projects: ProjectItem[] = [
     ],
     links: [
       { label: "Live Demo", href: "https://xenow.vercel.app/" },
-      { label: "More Info...", href: "https://github.com/teehihi/xe-now-ui" },
+      { label: "Frontend Repo", href: "https://github.com/teehihi/xe-now-ui" },
+      { label: "Backend Repo", href: "https://github.com/teehihi/xe-now-be" },
     ],
   },
   {
@@ -155,14 +184,20 @@ const projects: ProjectItem[] = [
     subtitle: "Discover Movies Without the Noise",
     description:
       "Explore thousands of movies through a fast, responsive interface with personalized recommendations, intelligent search, and a seamless browsing experience.",
-    tags: ["React", "TMDB API", "Tailwind CSS", "Search & Discovery"],
+    tags: ["React", "JavaScript", "Tailwind CSS", "TMDB API"],
+    techIcons: [
+      { name: "React", iconUrl: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/react/react-original.svg" },
+      { name: "JavaScript", iconUrl: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/javascript/javascript-original.svg" },
+      { name: "Tailwind CSS", iconUrl: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/tailwindcss/tailwindcss-original.svg" },
+      { name: "TMDB API", iconUrl: "https://www.themoviedb.org/assets/2/v4/logos/v2/blue_square_2-d537fb228cf3ded904ef09b136fe3fec72548ebc1fea3fbbd1ad9e36364db38b.svg" },
+    ],
     mediaType: "gif",
     bgGraphic: "/bg1.webp",
     mediaUrl:
       "https://media2.giphy.com/media/v1.Y2lkPTc5MGI3NjExdXE3MmZjN3VwdjBrbjA0bTUyZGdpN3p3Y2VvaTZyb2V4MTBrd25qYyZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/8kMQHXT5j4D9NHDxLs/giphy.gif",
     links: [
-      { label: "Live Demo", href: "#" },
-      { label: "More Info...", href: "https://github.com/teehihi" },
+      { label: "GitHub Repo", href: "https://github.com/teehihi/movie-double-t" },
+      { label: "More Info...", href: "https://github.com/teehihi/movie-double-t" },
     ],
   },
 ];
@@ -494,8 +529,33 @@ function ScrollProjectCard({ project, index }: { project: ProjectItem; index: nu
             </p>
           </div>
 
+          {/* Tech Stack Icons Row (Above Action Buttons) */}
+          {project.techIcons && project.techIcons.length > 0 && (
+            <div className="flex flex-wrap items-center gap-2.5 pt-2 z-20">
+              {project.techIcons.map((tech) => (
+                <div
+                  key={tech.name}
+                  className="group/tech relative flex items-center justify-center w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-white/10 border border-white/15 backdrop-blur-md hover:bg-white/20 hover:border-emerald-400/60 hover:scale-110 transition-all duration-300 shadow-md cursor-pointer"
+                >
+                  <img
+                    src={tech.iconUrl}
+                    alt={tech.name}
+                    className="w-5 h-5 sm:w-5.5 sm:h-5.5 object-contain drop-shadow-sm group-hover/tech:scale-110 transition-transform"
+                    onError={(e) => {
+                      (e.target as HTMLElement).style.display = "none";
+                    }}
+                  />
+                  {/* Floating Tooltip */}
+                  <span className="absolute -top-9 left-1/2 -translate-x-1/2 px-2.5 py-1 rounded-md bg-slate-900 border border-white/15 text-white text-[11px] font-mono font-medium opacity-0 group-hover/tech:opacity-100 transition-opacity pointer-events-none whitespace-nowrap shadow-xl z-30">
+                    {tech.name}
+                  </span>
+                </div>
+              ))}
+            </div>
+          )}
+
           {/* Action Buttons */}
-          <div className="flex items-center gap-4 pt-1 sm:pt-2">
+          <div className="flex flex-wrap items-center gap-4 pt-1 sm:pt-2">
             {project.links.map((link, idx) => {
               const isPrimary = idx === 0 || link.label.toLowerCase().includes("demo");
               return isPrimary ? (
