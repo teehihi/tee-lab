@@ -494,31 +494,20 @@ function ScrollProjectCard({ project, index }: { project: ProjectItem; index: nu
             </p>
           </div>
 
-          {/* Action Buttons (Exact Match to Screenshot 3 & Black Text Fix) */}
-          <div className="flex items-center gap-4 pt-1 sm:pt-2">
+          {/* Action Buttons with Skew Fill Animation & Horizontal Rotating Arrow */}
+          <div className="flex flex-wrap items-center gap-4 pt-2 z-20">
             {project.links.map((link, idx) => {
-              const isDemo = idx === 0 || link.label.toLowerCase().includes("demo");
-              return isDemo ? (
+              const isPrimary = idx === 0 || link.label.toLowerCase().includes("demo");
+              return (
                 <a
                   key={link.label}
                   href={link.href}
                   target="_blank"
                   rel="noreferrer"
-                  className="inline-flex items-center gap-2 px-7 py-3 sm:px-8 sm:py-3.5 rounded-full bg-white !text-black font-bold text-sm sm:text-base hover:bg-emerald-400 hover:!text-black hover:scale-105 transition-all shadow-md active:scale-95 cursor-pointer z-20"
-                  style={{ color: "#000000" }}
-                >
-                  <span className="!text-black font-bold" style={{ color: "#000000" }}>{link.label}</span>
-                  <ArrowUpRight className="w-4 h-4 !text-black" style={{ color: "#000000" }} />
-                </a>
-              ) : (
-                <a
-                  key={link.label}
-                  href={link.href}
-                  target="_blank"
-                  rel="noreferrer"
-                  className="inline-flex items-center gap-1 text-slate-300 hover:text-white font-semibold text-sm sm:text-base hover:underline transition-colors ml-2 sm:ml-4 cursor-pointer z-20"
+                  className={`skew-fill-btn ${isPrimary ? "" : "secondary-btn"} group cursor-pointer`}
                 >
                   <span>{link.label}</span>
+                  <ArrowUpRight className="arrow-icon w-4 h-4" />
                 </a>
               );
             })}
