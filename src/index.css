@@ -229,39 +229,56 @@ a {
   transform: rotate(45deg);
 }
 
-/* Animated Underline Effect for Secondary Links (e.g. More Info...) */
-.hover-underline-animation {
+/* Color Fill Text & Underline Hover Animation for More Info Links */
+.more-info-btn {
+  --primary-color: #cbd5e1;
+  --hovered-color: #10b981;
   position: relative;
   display: inline-flex;
   align-items: center;
   gap: 0.35rem;
-  padding-bottom: 3px;
-  color: #cbd5e1;
   font-weight: 600;
-  transition: color 0.3s ease;
+  font-size: 0.95rem;
+  color: var(--primary-color);
+  cursor: pointer;
   text-decoration: none !important;
+  z-index: 20;
 }
 
-.hover-underline-animation:hover {
-  color: #ffffff;
+.more-info-btn p {
+  margin: 0;
+  position: relative;
+  color: var(--primary-color);
 }
 
-.hover-underline-animation::after {
-  content: "";
+.more-info-btn p::before {
   position: absolute;
-  width: 100%;
-  height: 2px;
-  bottom: 0;
-  left: 0;
-  background-color: #10b981;
-  transform: scaleX(0);
-  transform-origin: bottom right;
-  transition: transform 0.3s cubic-bezier(0.25, 1, 0.5, 1);
+  content: attr(data-text);
+  width: 0%;
+  inset: 0;
+  color: var(--hovered-color);
+  overflow: hidden;
+  white-space: nowrap;
+  transition: width 0.3s ease-out;
 }
 
-.hover-underline-animation:hover::after {
-  transform: scaleX(1);
-  transform-origin: bottom left;
+.more-info-btn::after {
+  position: absolute;
+  content: "";
+  width: 0%;
+  left: 0;
+  bottom: -3px;
+  background: var(--hovered-color);
+  height: 2px;
+  transition: width 0.3s ease-out;
+}
+
+.more-info-btn:hover::after {
+  width: 100%;
+}
+
+.more-info-btn:hover p::before {
+  width: 100%;
 }
 
 .interactive-grid {

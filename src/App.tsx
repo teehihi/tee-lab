@@ -573,9 +573,9 @@ function ScrollProjectCard({ project, index }: { project: ProjectItem; index: nu
                   href={link.href}
                   target="_blank"
                   rel="noreferrer"
-                  className="hover-underline-animation text-sm sm:text-base font-semibold ml-2 sm:ml-4 cursor-pointer z-20"
+                  className="more-info-btn ml-2 sm:ml-4 cursor-pointer z-20"
                 >
-                  <span>{link.label}</span>
+                  <p data-text={link.label}>{link.label}</p>
                 </a>
               );
             })}
