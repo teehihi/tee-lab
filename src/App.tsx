@@ -494,20 +494,30 @@ function ScrollProjectCard({ project, index }: { project: ProjectItem; index: nu
             </p>
           </div>
 
-          {/* Action Buttons with Skew Fill Animation & Horizontal Rotating Arrow */}
-          <div className="flex flex-wrap items-center gap-4 pt-2 z-20">
+          {/* Action Buttons */}
+          <div className="flex items-center gap-4 pt-1 sm:pt-2">
             {project.links.map((link, idx) => {
               const isPrimary = idx === 0 || link.label.toLowerCase().includes("demo");
-              return (
+              return isPrimary ? (
                 <a
                   key={link.label}
                   href={link.href}
                   target="_blank"
                   rel="noreferrer"
-                  className={`skew-fill-btn ${isPrimary ? "" : "secondary-btn"} group cursor-pointer`}
+                  className="skew-fill-btn group cursor-pointer z-20"
                 >
                   <span>{link.label}</span>
                   <ArrowUpRight className="arrow-icon w-4 h-4" />
+                </a>
+              ) : (
+                <a
+                  key={link.label}
+                  href={link.href}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="inline-flex items-center gap-1 text-slate-300 hover:text-white font-semibold text-sm sm:text-base hover:underline transition-colors ml-2 sm:ml-4 cursor-pointer z-20"
+                >
+                  <span>{link.label}</span>
                 </a>
               );
             })}
