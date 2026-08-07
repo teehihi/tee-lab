@@ -25,6 +25,7 @@ import {
   ChevronLeft,
   ChevronRight,
   Film,
+  X,
   ExternalLink as ExternalIcon
 } from "lucide-react";
 
@@ -120,7 +121,7 @@ export interface ProjectItem {
   bgGraphic: string;
   mediaImages?: string[];
   mediaUrl?: string;
-  links: { label: string; href: string }[];
+  links: { label: string; href: string; isModal?: boolean }[];
 }
 
 const projects: ProjectItem[] = [
@@ -203,7 +204,7 @@ const projects: ProjectItem[] = [
     ],
     links: [
       { label: "Live Demo", href: "https://xenow.vercel.app/" },
-      { label: "More Info...", href: "https://github.com/teehihi/xe-now-ui" },
+      { label: "More Info...", href: "#xenow-modal", isModal: true },
     ],
   },
   {
@@ -453,7 +454,15 @@ function ProjectMedia({ project }: { project: ProjectItem }) {
   );
 }
 
-function ScrollProjectCard({ project, index }: { project: ProjectItem; index: number }) {
+function ScrollProjectCard({
+  project,
+  index,
+  onOpenModal,
+}: {
+  project: ProjectItem;
+  index: number;
+  onOpenModal?: (project: ProjectItem) => void;
+}) {
   const cardRef = useRef<HTMLDivElement>(null);
   const [isInFocus, setIsInFocus] = useState(false);
   const [tilt, setTilt] = useState({ x: 0, y: 0 });
@@ -479,37 +488,23 @@ function ScrollProjectCard({ project, index }: { project: ProjectItem; index: nu
   }, []);
 
   const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
-    const el = cardRef.current;
-    if (!el) return;
-
-    const rect = el.getBoundingClientRect();
-    const x = (e.clientX - rect.left) / rect.width - 0.5;
-    const y = (e.clientY - rect.top) / rect.height - 0.5;
-
-    // 6-degree tilt maximum for subtle Finera-style 3D corner response
-    const maxTilt = 6;
-    setTilt({
-      x: -y * maxTilt,
-      y: x * maxTilt,
-    });
-  };
-
-  const handleMouseEnter = () => {
-    setIsHovered(true);
+    if (!cardRef.current) return;
+    const rect = cardRef.current.getBoundingClientRect();
+    const x = e.clientX - rect.left - rect.width / 2;
+    const y = e.clientY - rect.top - rect.height / 2;
+    setTilt({ x: (y / rect.height) * -8, y: (x / rect.width) * 8 });
   };
 
   const handleMouseLeave = () => {
-    setIsHovered(false);
     setTilt({ x: 0, y: 0 });
+    setIsHovered(false);
   };
-
-  const isEven = index % 2 === 0;
 
   return (
     <div
       ref={cardRef}
       onMouseMove={handleMouseMove}
-      onMouseEnter={handleMouseEnter}
+      onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={handleMouseLeave}
       style={{
         transformStyle: "preserve-3d",
@@ -759,12 +754,135 @@ function Flip3DProjectCard({ project }: { project: SecondaryProjectItem }) {
   );
 }
 
+function XeNowRepoModal({ isOpen, onClose }: { isOpen: boolean; onClose: () => void }) {
+  if (!isOpen) return null;
+
+  return (
+    <div
+      className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/85 backdrop-blur-md animate-fade-in"
+      onClick={onClose}
+    >
+      <div
+        className="relative w-full max-w-lg rounded-3xl bg-slate-900/95 border border-white/15 p-6 sm:p-8 shadow-2xl overflow-hidden"
+        onClick={(e) => e.stopPropagation()}
+      >
+        {/* Background Glow Graphics */}
+        <div className="pointer-events-none absolute -top-24 -right-24 w-64 h-64 bg-emerald-500/15 rounded-full blur-3xl" />
+        <div className="pointer-events-none absolute -bottom-24 -left-24 w-64 h-64 bg-blue-500/15 rounded-full blur-3xl" />
+
+        {/* Close Button */}
+        <button
+          onClick={onClose}
+          className="absolute top-5 right-5 w-8 h-8 rounded-full bg-white/10 hover:bg-white/20 border border-white/15 flex items-center justify-center text-slate-300 hover:text-white transition-all cursor-pointer z-20"
+        >
+          <X className="w-4 h-4" />
+        </button>
+
+        {/* Modal Header */}
+        <div className="flex items-center gap-3 mb-3">
+          <div className="w-10 h-10 rounded-xl bg-emerald-500/20 border border-emerald-500/30 flex items-center justify-center text-emerald-400 font-extrabold font-mono text-lg">
+            XN
+          </div>
+          <div>
+            <h3 className="text-xl font-bold text-white font-mono leading-tight">
+              XeNow Code Repositories
+            </h3>
+            <p className="text-xs text-emerald-400 font-mono">
+              Full-Stack Vehicle Rental Platform
+            </p>
+          </div>
+        </div>
+
+        {/* Informational Text Above Repos */}
+        <div className="text-xs sm:text-sm text-slate-300 leading-relaxed mb-6 bg-slate-950/70 p-4 rounded-2xl border border-white/10 font-sans space-y-1.5">
+          <p className="font-semibold text-white flex items-center gap-1.5">
+            <span>💡</span> <span>Architecture & Multi-Repo Overview:</span>
+          </p>
+          <p className="text-slate-400 text-xs leading-normal">
+            XeNow is split into two specialized repositories to maintain clean separation of concerns between the full-stack architecture: a high-performance React + Vite frontend UI and a scalable Node.js + Express + MongoDB backend API.
+          </p>
+        </div>
+
+        {/* 2 Repo Choice Cards */}
+        <div className="space-y-3.5">
+          {/* Frontend Repo */}
+          <a
+            href="https://github.com/teehihi/xe-now-ui"
+            target="_blank"
+            rel="noreferrer"
+            className="group relative overflow-hidden flex items-start gap-4 p-4 rounded-2xl bg-slate-950/90 border border-white/10 hover:border-emerald-500/60 transition-all duration-300 hover:scale-[1.01] shadow-lg cursor-pointer"
+          >
+            <ShineBorder duration={3.4} shineColor="rgba(16, 185, 129, 0.45)" />
+            <div
+              aria-hidden
+              className="pointer-events-none absolute inset-0 -translate-x-full rounded-[inherit] bg-gradient-to-r from-transparent via-white/[0.12] to-transparent transition-transform duration-700 group-hover:translate-x-full"
+            />
+            <div className="w-10 h-10 rounded-xl bg-blue-500/10 border border-blue-500/20 flex items-center justify-center text-blue-400 shrink-0 mt-0.5 group-hover:scale-110 transition-transform">
+              <Code2 className="w-5 h-5" />
+            </div>
+            <div className="flex-1 min-w-0">
+              <div className="flex items-center justify-between gap-2 mb-1">
+                <h4 className="text-sm font-bold text-white font-mono group-hover:text-emerald-400 transition-colors flex items-center gap-1.5">
+                  Frontend UI Repository <ArrowUpRight className="w-3.5 h-3.5 opacity-70 group-hover:opacity-100 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
+                </h4>
+                <span className="text-[10px] font-mono font-semibold px-2 py-0.5 rounded-full bg-blue-500/20 text-blue-300 border border-blue-500/30">
+                  Client UI
+                </span>
+              </div>
+              <p className="text-xs text-slate-400 leading-snug mb-2">
+                User interface, car & motorcycle booking flow, smart filter search, identity verification UI.
+              </p>
+              <span className="text-[11px] font-mono text-emerald-400/90 font-semibold group-hover:underline">
+                github.com/teehihi/xe-now-ui ↗
+              </span>
+            </div>
+          </a>
+
+          {/* Backend Repo */}
+          <a
+            href="https://github.com/teehihi/xe-now-be"
+            target="_blank"
+            rel="noreferrer"
+            className="group relative overflow-hidden flex items-start gap-4 p-4 rounded-2xl bg-slate-950/90 border border-white/10 hover:border-emerald-500/60 transition-all duration-300 hover:scale-[1.01] shadow-lg cursor-pointer"
+          >
+            <ShineBorder duration={3.4} shineColor="rgba(16, 185, 129, 0.45)" />
+            <div
+              aria-hidden
+              className="pointer-events-none absolute inset-0 -translate-x-full rounded-[inherit] bg-gradient-to-r from-transparent via-white/[0.12] to-transparent transition-transform duration-700 group-hover:translate-x-full"
+            />
+            <div className="w-10 h-10 rounded-xl bg-purple-500/10 border border-purple-500/20 flex items-center justify-center text-purple-400 shrink-0 mt-0.5 group-hover:scale-110 transition-transform">
+              <Cpu className="w-5 h-5" />
+            </div>
+            <div className="flex-1 min-w-0">
+              <div className="flex items-center justify-between gap-2 mb-1">
+                <h4 className="text-sm font-bold text-white font-mono group-hover:text-emerald-400 transition-colors flex items-center gap-1.5">
+                  Backend API Repository <ArrowUpRight className="w-3.5 h-3.5 opacity-70 group-hover:opacity-100 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
+                </h4>
+                <span className="text-[10px] font-mono font-semibold px-2 py-0.5 rounded-full bg-purple-500/20 text-purple-300 border border-purple-500/30">
+                  Server API
+                </span>
+              </div>
+              <p className="text-xs text-slate-400 leading-snug mb-2">
+                RESTful APIs, JWT authentication middleware, booking management system, database schema.
+              </p>
+              <span className="text-[11px] font-mono text-emerald-400/90 font-semibold group-hover:underline">
+                github.com/teehihi/xe-now-be ↗
+              </span>
+            </div>
+          </a>
+        </div>
+      </div>
+    </div>
+  );
+}
+
 export default function App() {
   const [copied, setCopied] = useState(false);
   const [activeSection, setActiveSection] = useState("about");
   const [showIntro, setShowIntro] = useState(true);
   const [isHeroRevealed, setIsHeroRevealed] = useState(false);
   const [isMacOpen, setIsMacOpen] = useState(false);
+  const [isXeNowModalOpen, setIsXeNowModalOpen] = useState(false);
   const [isSkillsVisible, setIsSkillsVisible] = useState(false);
   const skillsRef = useRef<HTMLElement>(null);
   const [isCarouselVisible, setIsCarouselVisible] = useState(false);
@@ -998,7 +1116,12 @@ export default function App() {
 
               <div className="featured-projects mt-12 space-y-10 sm:space-y-12 lg:space-y-14">
                 {projects.map((project, idx) => (
-                  <ScrollProjectCard key={project.id} project={project} index={idx} />
+                  <ScrollProjectCard
+                    key={project.id}
+                    project={project}
+                    index={idx}
+                    onOpenModal={() => setIsXeNowModalOpen(true)}
+                  />
                 ))}
               </div>
             </div>
@@ -1080,6 +1203,9 @@ export default function App() {
 
         </div>
       </main>
+
+      {/* XeNow Multi-Repo Selection Modal */}
+      <XeNowRepoModal isOpen={isXeNowModalOpen} onClose={() => setIsXeNowModalOpen(false)} />
     </>
   );
 }
