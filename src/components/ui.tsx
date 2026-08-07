@@ -54,11 +54,48 @@ export function SectionHeader({ eyebrow, title, description, className }: { eyeb
   );
 }
 
+function ShineBorder({
+  borderWidth = 1,
+  duration = 3.4,
+  shineColor = "rgba(16, 185, 129, 0.45)",
+  className = "",
+}: {
+  borderWidth?: number;
+  duration?: number;
+  shineColor?: string;
+  className?: string;
+}) {
+  return (
+    <div
+      style={{
+        backgroundImage: `radial-gradient(transparent, transparent, ${shineColor}, transparent, transparent)`,
+        backgroundSize: "300% 300%",
+        animation: `shine ${duration}s linear infinite`,
+        mask: "linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)",
+        WebkitMask: "linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)",
+        WebkitMaskComposite: "xor",
+        maskComposite: "exclude",
+        padding: `${borderWidth}px`,
+      }}
+      className={`pointer-events-none absolute inset-0 size-full rounded-[inherit] will-change-[background-position] ${className}`}
+    />
+  );
+}
+
 export function Stat({ value, label }: { value: string; label: string }) {
   return (
-    <Card className="hero-stat-card p-3 sm:p-4 border-[var(--line)] bg-[color-mix(in_oklch,var(--card)_92%,transparent)]">
-      <p className="text-xl sm:text-2xl font-black text-[var(--foreground)]">{value}</p>
-      <span className="text-[0.68rem] text-[var(--muted-foreground)] font-medium uppercase tracking-wider">{label}</span>
-    </Card>
+    <div className="group relative overflow-hidden flex flex-col justify-between p-4 sm:p-5 rounded-2xl bg-slate-950/80 border border-white/10 shadow-lg transition-all duration-300 hover:border-emerald-500/50 hover:bg-white/[0.04] hover:scale-[1.02] cursor-default">
+      <ShineBorder duration={3.4} shineColor="rgba(16, 185, 129, 0.45)" />
+      <div
+        aria-hidden
+        className="pointer-events-none absolute inset-0 -translate-x-full rounded-[inherit] bg-gradient-to-r from-transparent via-white/[0.12] to-transparent transition-transform duration-700 group-hover:translate-x-full"
+      />
+      <p className="relative z-10 text-2xl sm:text-3xl font-extrabold font-mono text-white group-hover:text-emerald-400 transition-colors leading-none mb-2">
+        {value}
+      </p>
+      <span className="relative z-10 text-[10px] sm:text-xs font-mono font-semibold uppercase tracking-widest text-slate-400 group-hover:text-slate-200 transition-colors leading-tight">
+        {label}
+      </span>
+    </div>
   );
 }

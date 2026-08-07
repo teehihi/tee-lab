@@ -914,7 +914,7 @@ export default function App() {
                     <br />
                     I build scalable full-stack applications, intelligent computer vision systems with YOLOv11, and Retrieval-Augmented Generation (RAG) solutions—focusing on clean architecture, real-world usability, and measurable impact rather than prototypes that never leave the lab.
                   </p>
-                  <div className="stat-strip">
+                  <div className="stat-strip grid grid-cols-1 sm:grid-cols-3 gap-3.5 my-6">
                     <Stat value="3.24" label="HCMUTE GPA" />
                     <Stat value="10+" label="Projects Built" />
                     <Stat value="2" label="Hackathons Won" />
@@ -922,41 +922,6 @@ export default function App() {
                   <div className="hero-actions">
                     <Button href="#projects">Showcase & Case Studies</Button>
                     <Button href="#honors" variant="secondary">My Achievements</Button>
-                  </div>
-
-                  {/* SOCIALS STRIP (Copied from conqazht/portfolio with ShineBorder & Glare Sweep) */}
-                  <div className="mt-8 pt-6 border-t border-white/10">
-                    <p className="text-[11px] font-mono font-bold uppercase tracking-widest text-slate-400 mb-3">
-                      SOCIALS
-                    </p>
-                    <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
-                      {[
-                        { label: "@teehihi", href: personalInfo.github, Icon: Github },
-                        { label: "@tee21", href: personalInfo.linkedin, Icon: Linkedin },
-                        { label: "Email Me", href: `mailto:${personalInfo.email}`, Icon: Mail },
-                        { label: "nteelab.app", href: "https://nteelab.vercel.app", Icon: Globe },
-                      ].map((item) => (
-                        <a
-                          key={item.label}
-                          href={item.href}
-                          target="_blank"
-                          rel="noreferrer"
-                          className="group relative overflow-hidden flex items-center gap-3 px-3.5 py-2.5 rounded-xl bg-slate-950/80 border border-white/10 shadow-md transition-all duration-300 hover:border-emerald-500/50 hover:bg-white/[0.04] hover:scale-[1.02] cursor-pointer"
-                        >
-                          <ShineBorder duration={3.4} shineColor="rgba(16, 185, 129, 0.45)" />
-                          <div
-                            aria-hidden
-                            className="pointer-events-none absolute inset-0 -translate-x-full rounded-[inherit] bg-gradient-to-r from-transparent via-white/[0.12] to-transparent transition-transform duration-700 group-hover:translate-x-full"
-                          />
-                          <div className="relative z-10 text-white group-hover:text-emerald-400 transition-colors shrink-0">
-                            <item.Icon className="w-4 h-4 sm:w-5 sm:h-5" />
-                          </div>
-                          <span className="relative z-10 text-xs sm:text-sm font-mono font-semibold text-slate-200 group-hover:text-white transition-colors truncate">
-                            {item.label}
-                          </span>
-                        </a>
-                      ))}
-                    </div>
                   </div>
                 </div>
               </div>
