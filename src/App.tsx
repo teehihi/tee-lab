@@ -529,16 +529,16 @@ function ScrollProjectCard({ project, index }: { project: ProjectItem; index: nu
 
           {/* Tech Stack Icons Row (Above Action Buttons) */}
           {project.techIcons && project.techIcons.length > 0 && (
-            <div className="flex flex-wrap items-center gap-2.5 pt-2 z-20">
+            <div className="flex flex-wrap items-center gap-3.5 pt-2 z-20">
               {project.techIcons.map((tech) => (
                 <div
                   key={tech.name}
-                  className="group/tech relative flex items-center justify-center w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-white/10 border border-white/15 backdrop-blur-md hover:bg-white/20 hover:border-emerald-400/60 hover:scale-110 transition-all duration-300 shadow-md cursor-pointer"
+                  className="group/tech relative flex items-center justify-center p-1 cursor-pointer hover:scale-125 transition-transform duration-300"
                 >
                   <img
                     src={tech.iconUrl}
                     alt={tech.name}
-                    className="w-5 h-5 sm:w-5.5 sm:h-5.5 object-contain drop-shadow-sm group-hover/tech:scale-110 transition-transform"
+                    className="w-7 h-7 sm:w-8 sm:h-8 object-contain drop-shadow-md transition-transform"
                     onError={(e) => {
                       (e.target as HTMLElement).style.display = "none";
                     }}
