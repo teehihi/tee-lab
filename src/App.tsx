@@ -914,7 +914,7 @@ export default function App() {
                     <br />
                     I build scalable full-stack applications, intelligent computer vision systems with YOLOv11, and Retrieval-Augmented Generation (RAG) solutions—focusing on clean architecture, real-world usability, and measurable impact rather than prototypes that never leave the lab.
                   </p>
-                  <div className="stat-strip grid grid-cols-1 sm:grid-cols-3 gap-3.5 my-6">
+                  <div className="stat-strip flex flex-col sm:flex-row items-center gap-4 sm:gap-5 my-6 w-full">
                     <Stat value="3.24" label="HCMUTE GPA" />
                     <Stat value="10+" label="Projects Built" />
                     <Stat value="2" label="Hackathons Won" />
