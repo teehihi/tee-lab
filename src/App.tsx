@@ -796,18 +796,16 @@ function XeNowRepoModal({ isOpen, onClose }: { isOpen: boolean; onClose: () => v
 
   return (
     <div
-      className={`fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/80 backdrop-blur-md transition-opacity duration-300 ease-out ${
-        isVisible ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"
-      }`}
+      className={`fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/80 backdrop-blur-md transition-opacity duration-300 ease-out ${isVisible ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"
+        }`}
       onClick={handleClose}
     >
       {/* Modal Card using User's Gradient & Dual Shadow Button Styling - Expanded Size */}
       <div
-        className={`relative w-full max-w-xl sm:w-[560px] rounded-[24px] bg-gradient-to-tr from-[#07102d] via-[#1a2340] to-[#3a3c54] border border-[#545a6a] p-7 sm:p-10 shadow-[0_25px_80px_rgba(0,0,0,0.85)] flex flex-col text-left font-sans transition-all duration-300 cubic-bezier(0.16, 1, 0.3, 1) transform ${
-          isVisible
+        className={`relative w-full max-w-xl sm:w-[560px] rounded-[24px] bg-gradient-to-tr from-[#07102d] via-[#1a2340] to-[#3a3c54] border border-[#545a6a] p-7 sm:p-10 shadow-[0_25px_80px_rgba(0,0,0,0.85)] flex flex-col text-left font-sans transition-all duration-300 cubic-bezier(0.16, 1, 0.3, 1) transform ${isVisible
             ? "scale-100 opacity-100 translate-y-0"
             : "scale-90 opacity-0 translate-y-6"
-        }`}
+          }`}
         onClick={(e) => e.stopPropagation()}
       >
         {/* Exit Button */}
@@ -1214,7 +1212,7 @@ export default function App() {
           {/* FOOTER */}
           <footer className="py-8 border-t border-line text-center text-xs text-muted-foreground">
             <p>© {new Date().getFullYear()} {personalInfo.name}. All rights reserved.</p>
-            <p className="mt-1">Engineered with React, Vite & Tailwind CSS • Powered by prompt-to-play architecture.</p>
+            <p className="mt-1">Engineered with React, Vite & Tailwind CSS • Enhanced with AI-assisted development.</p>
           </footer>
 
         </div>
