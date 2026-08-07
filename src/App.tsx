@@ -594,6 +594,19 @@ function ScrollProjectCard({
                   <span>{link.label}</span>
                   <ArrowUpRight className="arrow-icon w-4 h-4" />
                 </a>
+              ) : link.isModal ? (
+                <button
+                  key={link.label}
+                  type="button"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    if (onOpenModal) onOpenModal(project);
+                  }}
+                  className="more-info-btn ml-2 sm:ml-4 cursor-pointer z-20 bg-transparent border-none p-0 outline-none"
+                >
+                  <p data-text={link.label}>{link.label}</p>
+                </button>
               ) : (
                 <a
                   key={link.label}
